@@ -1,0 +1,55 @@
+.header {
+  padding: 10px 16px;
+  background: #555;
+  color: #f1f1f1;
+  width: 100%;
+}
+
+body {
+  margin-top: 0%;
+  margin-left: 0%;
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+
+.sticky+.content {
+  padding-top: 102px;
+}
+.title{
+  padding: 10px 16px;
+  display: inline;
+}
+.market{
+  font-size: 15px;
+  padding: 10px 16px;
+  display: inline;
+  color: white;
+}
+.inventaire{
+  font-size: 15px;
+  padding: 10px 16px;
+  display: inline;
+  color: white;
+}
+.quest{
+  font-size: 15px;
+  padding: 10px 16px;
+  display: inline;
+  color: white;
+}
+a {
+  cursor: default;
+  text-decoration: none;
+}
+
+#mainBody{
+  background-image: url('img_girl.jpg');
+}
