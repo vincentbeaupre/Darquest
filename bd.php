@@ -36,5 +36,34 @@ class Database
   {
     self::$pdo = null;
   }
+
+  public static function getAllJoueurs()
+  {
+    $pdo = Database::connect();
+
+    $stmt = $pdo->query("SELECT * FROM Joueurs");
+
+    Database::disconnect();
+
+    return $stmt;
+  }
+
+  public static function validerJoueur($alias, $password)
+  {
+    $stmt = Database::getAllJoueurs();
+
+    foreach ($stmt as $joueur) {
+      if ($joueur['pseudo'] == $alias && password_verify($password, $joueur['password'])) {
+
+        $_SESSION['pseudo'] = $joueur['pseudo'];
+        $_SESSION['nom'] = $joueur['nom'];
+        $_SESSION['prenom'] = $joueur['prenom'];
+        $_SESSION['email'] = $joueur['email'];
+
+        return true;
+      }
+
+      return false;
+    }
+  }
 }
-?>
