@@ -40,25 +40,31 @@ class Database
   public static function getAllJoueurs()
   {
     $pdo = Database::connect();
-
-    $stmt = $pdo->query("SELECT * FROM Joueurs");
-
+  
+    $stmt = $pdo->query("CALL GetAllJoueurs()");
+  
+    $rows = $stmt->fetchAll();
+  
     Database::disconnect();
-
-    return $stmt;
+  
+    return $rows;
   }
+  
 
   public static function validerJoueur($alias, $password)
   {
     $stmt = Database::getAllJoueurs();
 
     foreach ($stmt as $joueur) {
-      if ($joueur['pseudo'] == $alias && password_verify($password, $joueur['password'])) {
+      if ($joueur['alias'] == $alias && password_verify($password, $joueur['password'])) {
 
-        $_SESSION['pseudo'] = $joueur['pseudo'];
+        $_SESSION['alias'] = $joueur['alias'];
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
-        $_SESSION['email'] = $joueur['email'];
+        $_SESSION['courriel'] = $joueur['courriel'];
+        $_SESSION['solde'] = $joueur['solde'];
+        $_SESSION['estMage'] = $joueur['estMage'];
+        $_SESSION['estAdmin'] = $joueur['estAdmin'];
 
         return true;
       }
