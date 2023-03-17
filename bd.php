@@ -56,8 +56,8 @@ class Database
   public static function addJoueur($alias, $nom, $prenom, $password, $email)
   {
     $conn = Database::connect();
-    $stmt = $conn->prepare("CALL AjouterJoueur(?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $alias, $nom, $prenom, $password, $email);
+    $stmt = $conn->prepare("CALL AjouterJoueur(?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $alias, $nom, $prenom, $password, $email);
     $stmt->execute();
     mysqli_close($conn);
   }
