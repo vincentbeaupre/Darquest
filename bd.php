@@ -62,15 +62,18 @@ class Database
     mysqli_close($conn);
   }
 
-  public static function checkAlias($alias)
+  public static function checkAlias($alias) 
   {
     $conn = Database::connect();
-
-    $sql = "SELECT COUNT(alias) FROM Joueurs WHERE alias = '$alias' LIMIT 1";
-    $result = $conn->query($sql);
-    $count = $result->fetch_column();
+    $stmt = $conn->prepare("CALL check_alias(?, @count)");
+    $stmt->bind_param("s", $alias);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    mysqli_stmt_close($stmt);
     mysqli_close($conn);
 
     return $count;
-  }
+}
+
 }
