@@ -10,10 +10,12 @@ class Database
 
   public static function connect()
   {
-    $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database, null, null, self::$charset);
+    $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database);
     
     if (!$conn)
-      die("Échec de connexion au serveur: " . mysqli_connect_error());
+      die("Échec de connexion au serveur");
+    else 
+      mysqli_set_charset($conn, self::$charset);
 
     return $conn;
   }
