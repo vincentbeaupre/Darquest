@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<?php include "showHeader.php" ?> 
+<?php include "header.php" ?> 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit feugiat leo ac ultrices. Phasellus tortor ante, ultricies in lacus eget, commodo mollis nisi. Vestibulum eu ligula velit. Donec finibus enim non pretium commodo. Pellentesque pulvinar enim quis arcu ultrices, sed pharetra orci vestibulum. Suspendisse tristique dignissim pellentesque. Nunc commodo est ut nulla gravida, a lacinia diam gravida. Vivamus ultrices tempus leo aliquam volutpat. Nulla dignissim purus urna, at dictum erat consequat sed. Nulla suscipit erat at fermentum rutrum. Pellentesque ac fermentum purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
 
 Pellentesque vel sodales justo. Nam eget vestibulum velit. Suspendisse venenatis pulvinar arcu, id suscipit ante finibus ac. Suspendisse urna dui, lobortis at auctor non, scelerisque eget nisl. Aenean ut nibh nibh. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed a accumsan eros. Etiam dignissim ligula nibh. Maecenas cursus bibendum risus.

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<?php include "showHeader.php" ?>  
+<?php include "header.php" ?>  
 
 
 </body>
