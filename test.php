@@ -1,4 +1,9 @@
 <?php
 require_once("bd.php");
 
-echo $_SESSION['alias'];
+if(Database::connect()) {
+  echo "fuck yeah";
+}
+else{
+  echo "fuck...";
+}
