@@ -2,29 +2,21 @@
 <html lang="fr">
 
 <head>
-<title>Inventaire</title>
+  <title>Inventaire</title>
   <link rel="stylesheet" href="stylesheet.css">
   <script src="fonctionJavaScript.js"></script>
   <?php require 'fonction.php'; ?>
 </head>
 
 <body>
+  <?php include "showHeader.php" ?>
 
-  <div class="header" id="myHeader">
-    <h2 class="title">DarQuest</h2>
-    <a href="http://167.114.152.54/~darquest6/market.php">
-      <p class="market">Market</p>
-    </a>
-    <a href="http://167.114.152.54/~darquest6/inventaire.php">
-      <p class="inventaire">Inventaire</p>
-    </a>
-    <a href="http://167.114.152.54/~darquest6/quest.php">
-      <p class="quest">Quest</p>
-    </a>
-
-
-
+  <div id="mainPage">
+    <div id="inventaireMainContainer"></div>
+    <div id="seachInventaireContainer"></div>
   </div>
+
+
 
 </body>
 
