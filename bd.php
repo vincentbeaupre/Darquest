@@ -8,25 +8,44 @@ class Database
   private static $password = "hx843s4s";
   private static $charset = "utf8";
 
+  private static $options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+  ];
+
+  private static $pdo = null;
+
   public static function connect()
   {
-    $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database);
+    try {
+      self::$pdo = new PDO(
+        "mysql:host=" . self::$host . ";dbname="
+          . self::$database . ";charset=" . self::$charset,
+        self::$username,
+        self::$password,
+        self::$options
+      );
+    } catch (PDOException $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
 
-    if (!$conn)
-      die("Échec de connexion au serveur");
-    else
-      mysqli_set_charset($conn, self::$charset);
+    return self::$pdo;
+  }
 
-    return $conn;
+  public static function disconnect()
+  {
+    self::$pdo = null;
   }
 
   public static function getAllJoueurs()
   {
-    $conn = Database::connect();
-    $result = $conn->query("SELECT * FROM Joueurs");
-    mysqli_close($conn);
+    $pdo = Database::connect();
 
-    return $result;
+    $stmt = $pdo->query("SELECT * FROM Joueurs");
+
+    Database::disconnect();
+
+    return $stmt;
   }
 
 
@@ -54,22 +73,24 @@ class Database
 
   public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
   {
-    $conn = Database::connect();
-    $sql = "INSERT INTO Joueurs (alias, nom, prenom, password, email, token)
-            VALUES (:pseudo, :nom, :prenom, :password, :email, :token)";
-    $stmt = $conn->prepare($sql);
+    $pdo = Database::connect();
+
+    $sql = "INSERT INTO Joueurs (alias, nom, prenom, motDePasse, courriel)
+            VALUES (:pseudo, :nom, :prenom, :motDePasse, :courriel)";
+    $stmt = $pdo->prepare($sql);
     $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
-    mysqli_close($conn);
+    
+    Database::disconnect();
   }
 
   public static function checkAlias($alias)
   {
-    $conn = Database::connect();
+    $pdo = Database::connect();
 
     $sql = "SELECT COUNT(alias) FROM Joueurs WHERE alias = '$alias' LIMIT 1";
-    $result = $conn->query($sql);
-    $count = $result->fetch_column();
-    mysqli_close($conn);
+    $result = $pdo->query($sql);
+    $count = $result->fetchColumn();
+    Database::disconnect();
 
     return $count;
   }
