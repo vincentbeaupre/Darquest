@@ -11,10 +11,10 @@ class Database
   public static function connect()
   {
     $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database);
-    
+
     if (!$conn)
       die("Échec de connexion au serveur");
-    else 
+    else
       mysqli_set_charset($conn, self::$charset);
 
     return $conn;
@@ -26,10 +26,10 @@ class Database
     $result = $conn->query("CALL GetAllJoueurs()");
     $rows = $result->fetch_all();
     mysqli_close($conn);
-  
+
     return $rows;
   }
-  
+
 
   public static function validerJoueur($alias, $password)
   {
@@ -62,17 +62,16 @@ class Database
     mysqli_close($conn);
   }
 
-  public static function checkAlias($alias) 
+  public static function checkAlias($alias)
   {
     $conn = Database::connect();
     $stmt = $conn->prepare("CALL CheckAlias(?)");
     $stmt->bind_param("s", $alias);
     $stmt->execute();
-    $count = $stmt->fetch();
-    mysqli_stmt_close($stmt);
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
     mysqli_close($conn);
-
     return $count;
-}
-
+  }
 }
