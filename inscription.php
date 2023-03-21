@@ -34,7 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if (count($erreurs) === 0) {
-    Database::addJoueur($alias, $nom, $prenom, $password, $email);
+    if(Database::addJoueur($alias, $nom, $prenom, $password, $email)){
+      echo "yes";
+    }
+    else {
+      echo "no";
+    }
 
     $_SESSION['alias'] = $alias;
     $_SESSION['nom'] = $nom;
