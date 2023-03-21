@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['prenom'] = $prenom;
     $_SESSION['password'] = $password;
     $_SESSION['email'] = $email;
-    // header('location: login.php');
+    header('location: login.php');
   }
 }
 ?>
