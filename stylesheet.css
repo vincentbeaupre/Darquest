@@ -1,15 +1,36 @@
 .header {
-  padding: 10px 16px;
   background: #555;
-  color: #f1f1f1;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
 }
 
+.navTitle {
+  color: white;
+  cursor: default;
+  text-decoration: none;
+}
+
+.navItem {
+  color: white;
+  cursor: default;
+  text-decoration: none;
+}
+
+.navItem:last-child {
+  margin-left: auto;
+  padding: 20px;
+}
+
 body {
-  margin-top: 0%;
-  margin-left: 0%;
   background-image: url("Assets/Pictures/background_wallpaper.jpg");
-  background-repeat: no-repeat;
 }
 
 .content {
@@ -25,33 +46,21 @@ body {
 .sticky+.content {
   padding-top: 102px;
 }
-.title{
+
+/*
+.navTitle {
   padding: 10px 16px;
   display: inline;
-}
-.market{
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
-}
-.inventaire{
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
-}
-.quest{
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
-}
-a {
-  cursor: default;
-  text-decoration: none;
+  color: white
 }
 
-#mainBody{
+.navItem {
+  font-size: 15px;
+  padding: 10px 16px;
+  display: inline;
+  color: white;
+}*/
+
+#mainBody {
   background-image: url('img_girl.jpg');
 }
