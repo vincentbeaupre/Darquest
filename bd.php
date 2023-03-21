@@ -68,8 +68,7 @@ class Database
     $stmt = $conn->prepare("CALL CheckAlias(?)");
     $stmt->bind_param("s", $alias);
     $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
+    $count = $stmt->fetch();
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
 
