@@ -9,13 +9,7 @@
 </head>
 
 <body>
-  <?php include "showHeader.php" ?>
-
-  <div id="mainPage">
-    <div id="inventaireMainContainer"></div>
-    <div id="seachInventaireContainer"></div>
-  </div>
-
+  <?php include "header.php" ?>
 
 
 </body>

@@ -3,62 +3,48 @@
 class Database
 {
   private static $host = "167.114.152.54";
-  public  static $databaseName = "dbdarquest6";
-  private static $user = "equipe6";
+  private static $database = "dbdarquest6";
+  private static $username = "equipe6";
   private static $password = "hx843s4s";
   private static $charset = "utf8";
 
-  private static $options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-  ];
-
-  private static $pdo = null;
-
   public static function connect()
   {
-    try {
-      self::$pdo = new PDO(
-        "mysql:host=" . self::$host . ";dbname="
-          . self::$databaseName . ";charset=" . self::$charset,
-        self::$user,
-        self::$password,
-        self::$options
-      );
-    } catch (PDOException $e) {
-      throw new Exception($e->getMessage(), $e->getCode());
-    }
+    $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database);
+    
+    if (!$conn)
+      die("Échec de connexion au serveur");
+    else 
+      mysqli_set_charset($conn, self::$charset);
 
-    return self::$pdo;
-  }
-
-  public static function disconnect()
-  {
-    self::$pdo = null;
+    return $conn;
   }
 
   public static function getAllJoueurs()
   {
-    $pdo = Database::connect();
-
-    $stmt = $pdo->query("SELECT * FROM Joueurs");
-
-    Database::disconnect();
-
-    return $stmt;
+    $conn = Database::connect();
+    $result = $conn->query("CALL GetAllJoueurs()");
+    $rows = $result->fetch_all();
+    mysqli_close($conn);
+  
+    return $rows;
   }
+  
 
   public static function validerJoueur($alias, $password)
   {
     $stmt = Database::getAllJoueurs();
 
     foreach ($stmt as $joueur) {
-      if ($joueur['pseudo'] == $alias && password_verify($password, $joueur['password'])) {
+      if ($joueur['alias'] == $alias && password_verify($password, $joueur['password'])) {
 
-        $_SESSION['pseudo'] = $joueur['pseudo'];
+        $_SESSION['alias'] = $joueur['alias'];
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
-        $_SESSION['email'] = $joueur['email'];
+        $_SESSION['courriel'] = $joueur['courriel'];
+        $_SESSION['solde'] = $joueur['solde'];
+        $_SESSION['estMage'] = $joueur['estMage'];
+        $_SESSION['estAdmin'] = $joueur['estAdmin'];
 
         return true;
       }
@@ -66,4 +52,28 @@ class Database
       return false;
     }
   }
+
+  public static function addJoueur($alias, $nom, $prenom, $password, $email)
+  {
+    $conn = Database::connect();
+    $stmt = $conn->prepare("CALL AjouterJoueur(?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $alias, $nom, $prenom, $password, $email);
+    $stmt->execute();
+    mysqli_close($conn);
+  }
+
+  public static function checkAlias($alias) 
+  {
+    $conn = Database::connect();
+    $stmt = $conn->prepare("CALL check_alias(?, @count)");
+    $stmt->bind_param("s", $alias);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return $count;
+}
+
 }

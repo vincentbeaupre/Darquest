@@ -1,13 +1,38 @@
 .header {
-  padding: 10px 16px;
   background: #555;
-  color: #f1f1f1;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 40px;
+}
+
+.navTitle {
+  color: white;
+  cursor: default;
+  text-decoration: none;
+}
+
+.navItem {
+  color: white;
+  cursor: default;
+  text-decoration: none;
+}
+
+.navItem:last-child {
+  margin-left: auto;
+  padding: 20px;
 }
 
 body {
   background-image: url("Assets/Pictures/background_wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .content {
@@ -24,38 +49,78 @@ body {
   padding-top: 102px;
 }
 
-.titleHeader {
-  padding: 10px 16px;
-  display: inline;
+#marketPage {
+  padding-top: 5%;
 }
 
-.marketHeader {
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
+#box1 {
+  float: left;
+  display: flex;
+  flex-direction:row;
+  height: 750px;
+  width: 70%;
+
 }
 
-.inventaireHeader {
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
+#box2 {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  height: 750px;
+  width: 30%;
 }
 
-.questHeader {
-  font-size: 15px;
-  padding: 10px 16px;
-  display: inline;
-  color: white;
+#marketItemList {
+  background-color: fuchsia;
+  width: 75%;
 }
 
-a {
-  cursor: default;
+#marketSearchBy {
+  background-color: beige;
+  flex-direction: column;
+  width: 25%;
+}
+
+#currency {
+  background-color: yellow;
+  height: 30%;
+}
+
+#panier {
+  background-color: red;
+  height: 60%;
+}
+
+#boutonPanier {
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+}
+
+.buttonMarket {
+  background-color: black;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin-left: 10px;
+  margin-top: 10px;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
   text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
-
-#mainBody {
-  background-image: url('img_girl.jpg');
-}
-
