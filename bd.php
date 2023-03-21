@@ -23,20 +23,19 @@ class Database
   public static function getAllJoueurs()
   {
     $conn = Database::connect();
-    $result = $conn->query("CALL GetAllJoueurs()");
-    $rows = $result->fetch_all();
+    $result = $conn->query("SELECT * FROM Joueurs");
     mysqli_close($conn);
 
-    return $rows;
+    return $result;
   }
 
 
-  public static function validerJoueur($alias, $password)
+  public static function validerJoueur($alias, $motDePasse)
   {
-    $stmt = Database::getAllJoueurs();
+    $joueurs = Database::getAllJoueurs();
 
-    foreach ($stmt as $joueur) {
-      if ($joueur['alias'] == $alias && password_verify($password, $joueur['password'])) {
+    foreach ($joueurs as $joueur) {
+      if ($joueur['alias'] == $alias && password_verify($motDePasse, $joueur['motDePasse'])) {
 
         $_SESSION['alias'] = $joueur['alias'];
         $_SESSION['nom'] = $joueur['nom'];
@@ -53,25 +52,25 @@ class Database
     }
   }
 
-  public static function addJoueur($alias, $nom, $prenom, $password, $email)
+  public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
   {
     $conn = Database::connect();
-    $stmt = $conn->prepare("CALL AjouterJoueur(?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $alias, $nom, $prenom, $password, $email);
-    $stmt->execute();
+    $sql = "INSERT INTO Joueurs (alias, nom, prenom, password, email, token)
+            VALUES (:pseudo, :nom, :prenom, :password, :email, :token)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
     mysqli_close($conn);
   }
 
   public static function checkAlias($alias)
   {
     $conn = Database::connect();
-    $stmt = $conn->prepare("CALL CheckAlias(?)");
-    $stmt->bind_param("s", $alias);
-    $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    $stmt->close();
+
+    $sql = "SELECT COUNT(alias) FROM Joueurs WHERE alias = '$alias' LIMIT 1";
+    $result = $conn->query($sql);
+    $count = $result->fetch_column();
     mysqli_close($conn);
+
     return $count;
   }
 }
