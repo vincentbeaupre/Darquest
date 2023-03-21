@@ -76,7 +76,7 @@ class Database
     $pdo = Database::connect();
 
     $sql = "INSERT INTO Joueurs (alias, nom, prenom, motDePasse, courriel)
-            VALUES (:pseudo, :nom, :prenom, :motDePasse, :courriel)";
+            VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
     
