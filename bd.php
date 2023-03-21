@@ -65,8 +65,7 @@ class Database
   public static function checkAlias($alias) 
   {
     $conn = Database::connect();
-    $stmt = $conn->prepare("CALL check_alias(?, @count)");
-    $stmt->bind_param("s", $alias);
+    $stmt = $conn->prepare("CALL CheckAlias($alias)");
     $stmt->execute();
     $stmt->bind_result($count);
     $stmt->fetch();
