@@ -8,34 +8,53 @@ class Database
   private static $password = "hx843s4s";
   private static $charset = "utf8";
 
+  private static $options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+  ];
+
+  private static $pdo = null;
+
   public static function connect()
   {
-    $conn = mysqli_connect(self::$host, self::$username, self::$password, self::$database);
-    
-    if (!$conn)
-      die("Échec de connexion au serveur");
-    else 
-      mysqli_set_charset($conn, self::$charset);
+    try {
+      self::$pdo = new PDO(
+        "mysql:host=" . self::$host . ";dbname="
+          . self::$database . ";charset=" . self::$charset,
+        self::$username,
+        self::$password,
+        self::$options
+      );
+    } catch (PDOException $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
 
-    return $conn;
+    return self::$pdo;
+  }
+
+  public static function disconnect()
+  {
+    self::$pdo = null;
   }
 
   public static function getAllJoueurs()
   {
-    $conn = Database::connect();
-    $result = $conn->query("CALL GetAllJoueurs()");
-    $rows = $result->fetch_all();
-    mysqli_close($conn);
-  
-    return $rows;
+    $pdo = Database::connect();
+
+    $stmt = $pdo->query("SELECT * FROM Joueurs");
+
+    Database::disconnect();
+
+    return $stmt;
   }
 
-  public static function validerJoueur($alias, $password)
-  {
-    $stmt = Database::getAllJoueurs();
 
-    foreach ($stmt as $joueur) {
-      if ($joueur['pseudo'] == $alias && password_verify($password, $joueur['password'])) {
+  public static function validerJoueur($alias, $motDePasse)
+  {
+    $joueurs = Database::getAllJoueurs();
+
+    foreach ($joueurs as $joueur) {
+      if ($joueur['alias'] == $alias && password_verify($motDePasse, $joueur['motDePasse'])) {
 
         $_SESSION['pseudo'] = $joueur['pseudo'];
         $_SESSION['nom'] = $joueur['nom'];
@@ -49,27 +68,27 @@ class Database
     }
   }
 
-  public static function addJoueur($alias, $nom, $prenom, $password, $email)
+  public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
   {
-    $conn = Database::connect();
-    $stmt = $conn->prepare("CALL AjouterJoueur(?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $alias, $nom, $prenom, $password, $email);
-    $stmt->execute();
-    mysqli_close($conn);
+    $pdo = Database::connect();
+
+    $sql = "INSERT INTO Joueurs (alias, nom, prenom, motDePasse, courriel)
+            VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
+    
+    Database::disconnect();
   }
 
-  public static function checkAlias($alias) 
+  public static function checkAlias($alias)
   {
-    $conn = Database::connect();
-    $stmt = $conn->prepare("CALL check_alias(?, @count)");
-    $stmt->bind_param("s", $alias);
-    $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    mysqli_stmt_close($stmt);
-    mysqli_close($conn);
+    $pdo = Database::connect();
+
+    $sql = "SELECT COUNT(alias) FROM Joueurs WHERE alias = '$alias' LIMIT 1";
+    $result = $pdo->query($sql);
+    $count = $result->fetchColumn();
+    Database::disconnect();
 
     return $count;
-}
-
+  }
 }

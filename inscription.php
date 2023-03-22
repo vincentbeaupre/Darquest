@@ -10,10 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $prenom = trim($_POST['prenom']);
   $alias = trim($_POST['alias']);
 
-  if(!empty(trim($_POST['password']))) {
+  if (!empty(trim($_POST['password']))) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
   }
-  
+
   $email = trim($_POST['email']);
 
   if (empty($nom)) {
@@ -34,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if (count($erreurs) === 0) {
-    Database::addJoueur($alias, $nom, $prenom, $password, $email);
+    if (Database::addJoueur($alias, $nom, $prenom, $password, $email)) {
+      $erreurs['inscription'] = "inscription ne fonctionne pas";
+    }
 
     $_SESSION['alias'] = $alias;
     $_SESSION['nom'] = $nom;
@@ -68,15 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <table>
             <tr>
               <td><label for="nom">Nom: </label></td>
-              <td><input type="text" name="nom" id="nom" value="<?php echo !empty($_POST['nom'])? $_POST['nom'] : ''?>" required></td>
+              <td><input type="text" name="nom" id="nom" value="<?php echo !empty($_POST['nom']) ? $_POST['nom'] : '' ?>" required></td>
             </tr>
             <tr>
               <td><label for="prenom">Prénom: </label></td>
-              <td><input type="text" name="prenom" id="prenom" value="<?php echo !empty($_POST['prenom'])? $_POST['prenom'] : ''?>"required></td>
+              <td><input type="text" name="prenom" id="prenom" value="<?php echo !empty($_POST['prenom']) ? $_POST['prenom'] : '' ?>" required></td>
             </tr>
             <tr>
               <td><label for="alias">Alias: </label></td>
-              <td><input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['alias'])? $_POST['alias'] : ''?>" required></td>
+              <td><input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['alias']) ? $_POST['alias'] : '' ?>" required></td>
             </tr>
             <tr>
               <td><label for="password">Mot de passe: </label></td>
@@ -84,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
             <tr>
               <td><label for="email">Adresse courriel: </label></td>
-              <td><input type="email" name="email" id="email" value="<?php echo !empty($_POST['email'])? $_POST['email'] : ''?>" required></td>
+              <td><input type="email" name="email" id="email" value="<?php echo !empty($_POST['email']) ? $_POST['email'] : '' ?>" required></td>
             </tr>
             <tr>
               <td><input type="submit" class="button" name="inscription_btn" value="Inscription"></td>
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <?php foreach ($erreurs as $erreur) : ?>
             <li>
               <?= $erreur ?>
-          </li>
+            </li>
           <?php endforeach; ?>
         </div>
       <?php endif; ?>

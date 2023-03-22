@@ -12,7 +12,7 @@ if (isset($_SESSION['alias'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  if (Database::validerJoueur($_POST['pseudo'], $_POST['password'])) {
+  if (Database::validerJoueur($_POST['alias'], $_POST['motDePasse'])) {
     header("Location: index.php");
   } else {
     $erreur = "<span class='erreur'>Données de connexion non valides</span>";
@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <td><input type="text" name="pseudo" id="pseudo" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required></td>
             </tr>
             <tr>
-              <td><label for="password">Mot de passe: </label></td>
-              <td><input type="password" name="password" id="password" required></td>
+              <td><label for="motDePasse">Mot de passe: </label></td>
+              <td><input type="motDePasse" name="motDePasse" id="motDePasse" required></td>
             </tr>
             <tr>
               <td><input class="button" type="submit" name="connexion_btn" value="Connexion"></td>
