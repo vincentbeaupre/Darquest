@@ -9,6 +9,13 @@ li, a, button {
   text-decoration: none;
 }
 
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 10%;
+}
+
 .header {
   background: white;
   display: flex;
