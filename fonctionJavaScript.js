@@ -9,4 +9,14 @@ document.addEventListener("DOMContentLoaded", function() {
       header.classList.remove("sticky");
     }
   };
+/*
+  var liste = document.getElementById("navList")
+  var burger = document.getElementById("burger");
+  burger.onmouseover = function(){
+    if (liste.style.display === "block") {
+      liste.style.display = "none";
+    } else {
+      liste.style.display = "block";
+    }
+  } ;*/
 });

@@ -31,6 +31,8 @@
 
 body {
   background-image: url("Assets/Pictures/background_wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .content {
@@ -178,3 +180,31 @@ body {
   color: inherit;
   transition: color 0.4s ease;
 }
+
+
+.marketMain {
+  display: grid;
+  gap: 2vh;
+  grid-template-columns: 10vw 10vw 10vw 10vw;
+  justify-content: space-evenly;
+  justify-items: center;
+}
+
+.marketChild {
+  background-color: blue;
+  color: yellow;
+  height: 100px;
+  width: 100px;
+}
+
+#navList {
+  display: flex;
+  background-color: #555;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+
