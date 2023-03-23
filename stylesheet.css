@@ -182,7 +182,7 @@ body {
 }
 
 
-.marketMain {
+.itemCardMain {
   display: grid;
   gap: 2vh;
   grid-template-columns: 10vw 10vw 10vw 10vw;
@@ -190,11 +190,17 @@ body {
   justify-items: center;
 }
 
-.marketChild {
+.itemCardChild {
   background-color: blue;
-  color: yellow;
-  height: 100px;
-  width: 100px;
+    color: yellow;
+    height: fit-content;
+    width: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px black solid;
+    border-radius: 15px;
 }
 
 #navList {
