@@ -1,26 +1,18 @@
-<nav class="header">
-  <div class="menu-button">
-    <input type="checkbox" class="toggle">
-    <div class="hamburger">
-      <div></div>
-    </div>
-    <div class="menu">
-      <div>
-        <div>
-          <ul>
-            <li><a href="market.php">Marché</a></li>
-            <li><a href="quest.php">Enigma</a></li>
-            <?php
-            if (isset($_SESSION["alias"])) {
-              echo '<li><a href="inventaire.php">Inventaire</a></li>';
-            }
-            ?>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
+<header>
+  <nav>
+    <h1>Darquest</h1>
+    <ul>
+      <li><a href="market.php">Marché</a></li>
+      <li><a href="quest.php">Enigma</a></li>
+      <?php
+      if (isset($_SESSION["alias"])) {
+        echo '<li><a href="inventaire.php">Inventaire</a></li>';
+      }
+      ?>
+    </ul>
+  </nav>
+</header>
+
 
 <!-- <a class="navTitle" href="http://167.114.152.54/~darquest6/">
     <h2>DarQuest</h2>
