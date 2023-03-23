@@ -18,6 +18,7 @@
       </div>
       <div id="marketSearchBy">
         <h2>Recherche</h2>
+
         <h3>Filtrer par type</h3>
         <input type="checkbox" id="Armure" name="Armure" value="Armure">
         <label for="Armure"> Armures</label><br>
@@ -27,6 +28,15 @@
         <label for="Potion"> Potion</label><br>
         <input type="checkbox" id="Sort" name="Sort" value="Sort">
         <label for="Sort"> Sort</label><br>
+        <h3>Trier par</h3>
+        <label for="poids">Poids:</label>
+        <input type="button" id="poidsASC" name="trierPoids" value="↑">
+        <input type="button" id="poidsDESC" name="trierPoids" value="↓">
+        <br>
+        <label for="poids">Prix:&nbsp&nbsp</label>
+        <input type="button" id="prixASC" name="trierPrix" value="↑">
+        <input type="button" id="prixDESC" name="trierPrix" value="↓">
+        
 
       </div>
     </div>
