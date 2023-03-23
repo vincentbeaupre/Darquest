@@ -8,7 +8,7 @@
       <div>
         <div>
           <ul>
-            <li><a href="market.html">Marché</a></li>
+            <li><a href="market.php">Marché</a></li>
             <li><a href="quest.php">Enigma</a></li>
             <?php
             if (isset($_SESSION["alias"])) {
