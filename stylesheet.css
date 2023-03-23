@@ -56,7 +56,7 @@ body {
 #box1 {
   float: left;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   height: 100%;
   width: 70%;
 
@@ -71,11 +71,12 @@ body {
 }
 
 #marketItemList {
-  background-color: fuchsia;
+  background-color: #C8AE7E;
   width: 75%;
 }
 
 #marketSearchBy {
+  background-color: #F5F5DC;
   flex-direction: column;
   width: 25%;
 }
