@@ -76,7 +76,7 @@ class Database
             VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
-    
+
     Database::disconnect();
   }
 
@@ -90,5 +90,23 @@ class Database
     Database::disconnect();
 
     return $count;
+  }
+
+  public static function getAllItemsMinimum()
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT * FROM Items";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      echo "<div class='itemCardChild'>
+      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
+      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
+      <span>Prix: <span>" . $row['prix'] . "</span></span>
+  </div>
+";
+    }
+    Database::disconnect();
   }
 }
