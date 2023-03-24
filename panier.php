@@ -1,6 +1,7 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <title>Panier</title>
   <link rel="stylesheet" href="stylesheet.css">
@@ -8,7 +9,6 @@
   <?php require_once 'fonction.php'; ?>
   <?php require_once 'fonctionPanier.php'; ?>
 </head>
-
 <body class="panierBody">
   <?php include "header.php" ?>
   <h1>Panier</h1>
