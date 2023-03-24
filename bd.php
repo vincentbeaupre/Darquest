@@ -91,14 +91,38 @@ class Database
 
     return $count;
   }
-  public static function getPanier($idJoueur)
+
+  //------------------- Panier
+  public static function getPanier($idJoueur) // a Débuger plus tard avec id Joueur et panier rempli
   {
-    $pdo = Database::connect(); // a tester plus tard avec id Joueur
+    $pdo = Database::connect();
 
     $sql = "SELECT * FROM Paniers inner join Items on Paniers.idItem = Item.idItem WHERE Paniers.idJoueur = $idJoueur";
     $result = $pdo->query($sql);
     Database::disconnect();
-    
+
     return $result;
+  }
+  public static function supprimerFromPanier()
+  {
+    $pdo = Database::connect();
+  }
+  public static function estQuantitéValide($idItem, $quantité)
+  {
+    return true;
+  }
+  public static function modifiéQuantitéItem($idJoueur, $idItem, $quantité)
+  {
+    if (Database::estQuantitéValide($idItem, $quantité)) {
+
+    }
+  }
+  public static function payerPanier($idJoueur)
+  {
+
+  }
+  public static function getSoldeJoueur($idJoueur)
+  {
+    
   }
 }
