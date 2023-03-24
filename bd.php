@@ -76,7 +76,7 @@ class Database
             VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
-    
+
     Database::disconnect();
   }
 
@@ -90,5 +90,15 @@ class Database
     Database::disconnect();
 
     return $count;
+  }
+  public static function getPanier($idJoueur)
+  {
+    $pdo = Database::connect(); // a tester plus tard avec id Joueur
+
+    $sql = "SELECT * FROM Paniers inner join Items on Paniers.idItem = Item.idItem WHERE Paniers.idJoueur = $idJoueur";
+    $result = $pdo->query($sql);
+    Database::disconnect();
+    
+    return $result;
   }
 }
