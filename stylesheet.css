@@ -81,5 +81,83 @@ nav {
     width: 30%;
   }
 }
+#marketPage {
+  padding-top: 5%;
+}
+
+#box1 {
+  float: left;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 70%;
+
+}
+
+#box2 {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 30%;
+}
+
+#marketItemList {
+  background-color: #C8AE7E;
+  width: 75%;
+}
+
+#marketSearchBy {
+  background-color: #F5F5DC;
+  flex-direction: column;
+  width: 25%;
+}
+
+#currency {
+  background-color: yellow;
+  height: 30%;
+}
+
+#panier {
+  background-color: red;
+  height: 60%;
+}
+
+#boutonPanier {
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+}
+
+.buttonMarket {
+  background-color: black;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin-left: 10px;
+  margin-top: 10px;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+#panierBody{
+  padding-top: 5%;
+}
 
 

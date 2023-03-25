@@ -77,7 +77,7 @@ class Database
             VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
-    
+
     Database::disconnect();
   }
 
@@ -91,5 +91,54 @@ class Database
     Database::disconnect();
 
     return $count;
+  }
+
+  //------------------- Panier
+  public static function getPanier($idJoueur) // a Débuger plus tard avec id Joueur et panier rempli
+  {
+    $pdo = Database::connect();
+
+    $sql = "SELECT * FROM Paniers inner join Items on Paniers.idItem = Item.idItem WHERE Paniers.idJoueur = $idJoueur";
+    $result = $pdo->query($sql);
+    Database::disconnect();
+
+    return $result;
+  }
+  public static function supprimerFromPanier()
+  {
+    $pdo = Database::connect();
+  }
+  public static function estQuantitéValide($idItem, $quantité)
+  {
+    return true;
+  }
+  public static function modifiéQuantitéItem($idJoueur, $idItem, $quantité)
+  {
+    if (Database::estQuantitéValide($idItem, $quantité)) {
+    }
+  }
+  public static function payerPanier($idJoueur)
+  {
+  }
+  public static function getSoldeJoueur($idJoueur)
+  {
+    
+  }
+  public static function getAllItemsMinimum()
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT * FROM Items";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      echo "<div class='itemCardChild'>
+      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
+      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
+      <span>Prix: <span>" . $row['prix'] . "</span></span>
+  </div>
+";
+    }
+    Database::disconnect();
   }
 }
