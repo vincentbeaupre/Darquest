@@ -1,29 +1,45 @@
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DarQuest</title>
   <link rel="stylesheet" href="stylesheet.css">
-  <script src="fonctionJavaScript.js"></script>
-  <script src="https://kit.fontawesome.com/93bf009440.js" crossorigin="anonymous"></script>
-  <?php require 'fonction.php'; ?>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="fonctions.js"></script>
 </head>
 
 <body>
   <header>
-    <nav class="nav-container">
+    <nav>
       <div class="logo">
         <a href="index.php">DarQuest</a>
       </div>
-      <ul class="nav-links">
-        <li><a href="market.php">Marché</a></li>
-        <li><a href="quest.php">Enigma</a></li>
+      <div class="nav_links">
+        <a href="market.php">Magasin</a>
+        <a href="enigma.php">Enigma</a>
         <?php
         if (isset($_SESSION["alias"])) {
-          echo '<li><a href="inventaire.php">Inventaire</a></li>';
+          echo '<a href="inventaire.php">Inventaire</a>';
         }
         ?>
-      </ul>
-      <ul class="nav-links right">
-        <li><a href="login.php"><i class="fa-regular fa-circle-user userIcon"></i><?php echo isset($_SESSION["alias"]) ? $_SESSION["alias"] : ""; ?></a></li>
-      </ul>
+      </div>
+      <div class="user_info">
+        <?php
+        if (isset($_SESSION["alias"])) {
+          echo "<a href='profil.php'>
+                <i class='fa fa-user-circle-o icon'></i>
+                <span>&nbsp" . $_SESSION['alias'] . "</span>
+              </a>
+              <a href='logout.php'>
+                <i class='fa fa-sign-out icon'></i>
+                <span>&nbspDéconnexion</span>
 
+              </a>";
+        } else {
+          echo "<a href='login.php'>
+                <i class='fa fa-sign-in icon'></i>
+                <span>&nbspConnexion</span>
+              </a>";
+        }
+        ?>
+      </div>
     </nav>
   </header>

@@ -6,8 +6,16 @@ session_start();
 <html lang="fr">
 
 <?php include "header.php" ?>
-<div style="background-color: red; height: 2000px"></div>
 
+<main>
+  <div class="welcome_title">
+    <div class="smaller">
+      Bienvenue sur
+      <div>
+        <div class="bigger">
+          DarQuest
+        </div>
+</main>
 </body>
 
 </html>
