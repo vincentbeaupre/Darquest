@@ -56,7 +56,8 @@ class Database
     foreach ($joueurs as $joueur) {
       if ($joueur['alias'] == $alias && password_verify($motDePasse, $joueur['motDePasse'])) {
 
-        $_SESSION['pseudo'] = $joueur['pseudo'];
+        $_SESSION['idJoueur'] = $joueur['idJoueur'];
+        $_SESSION['alias'] = $joueur['alias'];
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['email'] = $joueur['email'];

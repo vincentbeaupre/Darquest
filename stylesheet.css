@@ -1,95 +1,85 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
 
-body {
+* {
   font-family: "Merriweather";
 }
 
-li, a, button {
-  font-size: 16px;
-  text-decoration: none;
-}
-
-header {
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 10%;
-}
-
-.header {
-  background: white;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 15px;
-  padding: 8px;
+  background-color: black;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0 1rem;
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
-.navTitle {
+.userIcon {
+  font-size: 2.5vmax;
+  margin-right: 1vmax;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo a {
   color: white;
-  cursor: default;
   text-decoration: none;
+  font-size: 4vmax;
+  font-weight: bold;
 }
 
-.navItem {
-  color: white;
-  cursor: default;
-  text-decoration: none;
-}
-
-.navItem:last-child {
-  margin-left: auto;
-  padding: 20px;
-}
-
-body {
-  background-image: url("Assets/Pictures/background_wallpaper.jpg");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.content {
-  padding: 16px;
-}
-
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-
-.sticky+.content {
-  padding-top: 102px;
-}
-
-.marketMain {
-  display: grid;
-  gap: 2vh;
-  grid-template-columns: 10vw 10vw 10vw 10vw;
-  justify-content: space-evenly;
-  justify-items: center;
-}
-
-.marketChild {
-  background-color: blue;
-  color: yellow;
-  height: 100px;
-  width: 100px;
-}
-
-#navList {
+.nav-links {
   display: flex;
-  background-color: #555;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  display: none;
+  justify-content: space-around;
+  width: 30%;
+}
+
+.nav-links li {
+  list-style: none;
+  padding: 1vmax;
+}
+
+.nav-links a {
+  color: rgb(196, 196, 196);
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  transition: ease-in-out .4s;
+  color: rgb(255, 255, 255);
+}
+
+.nav-links.right {
+  margin-left: auto;
+}
+.nav-links.right li {
+  margin-left: 40px;
+  text-align: right;
+}
+@media screen and (max-width: 1024px) {
+  .nav-links {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .nav-links {
+    width: 30%;
+  }
 }
 
 

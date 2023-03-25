@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-<title>Quest</title>
+<title>Enigma</title>
   <link rel="stylesheet" href="stylesheet.css">
   <script src="fonctionJavaScript.js"></script>
   <?php require 'fonction.php'; ?>
