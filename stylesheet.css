@@ -93,7 +93,7 @@ main {
   align-items: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900) {
   .navbar .nav_links, .navbar .user_info {
     display: none;
   }
