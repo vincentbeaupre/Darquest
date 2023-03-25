@@ -29,8 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-  <div id="page-container">
-    <div id="content-wrap">
       <header>
         <h1><a href="index.php" class="header_link">Darquest</a></h1>
       </header>
