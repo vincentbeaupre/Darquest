@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
           <table>
             <tr>
-              <td><label for="pseudo">Alias: </label></td>
-              <td><input type="text" name="pseudo" id="pseudo" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required></td>
+              <td><label for="alias">Alias: </label></td>
+              <td><input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required></td>
             </tr>
             <tr>
               <td><label for="motDePasse">Mot de passe: </label></td>
-              <td><input type="motDePasse" name="motDePasse" id="motDePasse" required></td>
+              <td><input type="password" name="motDePasse" id="motDePasse" required></td>
             </tr>
             <tr>
               <td><input class="button" type="submit" name="connexion_btn" value="Connexion"></td>

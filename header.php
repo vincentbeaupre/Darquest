@@ -1,41 +1,45 @@
-<nav class="header">
-  <div class="menu-button">
-    <input type="checkbox" class="toggle">
-    <div class="hamburger">
-      <div></div>
-    </div>
-    <div class="menu">
-      <div>
-        <div>
-          <ul>
-            <li><a href="market.html">Marché</a></li>
-            <li><a href="quest.php">Enigma</a></li>
-            <?php
-            if (isset($_SESSION["alias"])) {
-              echo '<li><a href="inventaire.php">Inventaire</a></li>';
-            }
-            ?>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DarQuest</title>
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="fonctions.js"></script>
+</head>
 
-<!-- <a class="navTitle" href="http://167.114.152.54/~darquest6/">
-    <h2>DarQuest</h2>
-  </a>
-  <a class="navItem" href="http://167.114.152.54/~darquest6/market.php">
-    <p>Market</p>
-  </a>
-  <a class="navItem" href="http://167.114.152.54/~darquest6/inventaire.php">
-    <p>Inventaire</p>
-  </a>
-  <a class="navItem" href="http://167.114.152.54/~darquest6/quest.php">
-    <p>Quest</p>
-  </a>
-  <svg class="navItem" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg> -->
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <a href="index.php">DarQuest</a>
+      </div>
+      <div class="nav_links">
+        <a href="market.php">Magasin</a>
+        <a href="enigma.php">Enigma</a>
+        <?php
+        if (isset($_SESSION["alias"])) {
+          echo '<a href="inventaire.php">Inventaire</a>';
+        }
+        ?>
+      </div>
+      <div class="user_info">
+        <?php
+        if (isset($_SESSION["alias"])) {
+          echo "<a href='profil.php'>
+                <i class='fa fa-user-circle-o icon'></i>
+                <span>&nbsp" . $_SESSION['alias'] . "</span>
+              </a>
+              <a href='logout.php'>
+                <i class='fa fa-sign-out icon'></i>
+                <span>&nbspDéconnexion</span>
+
+              </a>";
+        } else {
+          echo "<a href='login.php'>
+                <i class='fa fa-sign-in icon'></i>
+                <span>&nbspConnexion</span>
+              </a>";
+        }
+        ?>
+      </div>
+    </nav>
+  </header>

@@ -1,16 +1,13 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-  <title>Market</title>
-  <link rel="stylesheet" href="stylesheet.css">
-  <script src="fonctionJavaScript.js"></script>
-  <?php require 'fonction.php'; ?>
-</head>
+<?php include "header.php" ?>
 
-<body>
-  <?php include "header.php" ?>
-
+<main>
   <div id="marketPage">
     <div id="box1">
       <div id="marketItemList">
@@ -36,7 +33,7 @@
         <label for="poids">Prix:&nbsp&nbsp</label>
         <input type="button" id="prixASC" name="trierPrix" value="↑">
         <input type="button" id="prixDESC" name="trierPrix" value="↓">
-        
+
 
       </div>
     </div>
@@ -57,7 +54,7 @@
       </div>
     </div>
   </div>
-
+</main>
 </body>
 
 </html>

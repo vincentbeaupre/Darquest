@@ -1,17 +1,21 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-  <title>Page Principale</title>
-  <link rel="stylesheet" href="stylesheet.css">
-  <script src="fonctionJavaScript.js"></script>
-  <?php require 'fonction.php'; ?>
-</head>
+<?php include "header.php" ?>
 
-<body>
-<?php include "header.php" ?>  
-
-
+<main>
+  <div class="welcome_title">
+    <div class="smaller">
+      Bienvenue sur
+      <div>
+        <div class="bigger">
+          DarQuest
+        </div>
+</main>
 </body>
 
 </html>
