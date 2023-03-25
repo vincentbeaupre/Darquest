@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function displayMenu() {
-  var x = document.getElementById("navbar");
-  if (x.className === "topnav") {
-    x.className += " responsive";
+  var menu = document.querySelector(".menu");
+  if (menu.style.display === "flex") {
+    menu.style.display = "none";
   } else {
-    x.className = "topnav";
+    menu.style.display = "flex";
   }
 }

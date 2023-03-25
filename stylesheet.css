@@ -8,7 +8,7 @@ main {
   margin-top: 80px;
 }
 
-nav {
+.navbar {
   background-color: black;
   display: flex;
   position: fixed;
@@ -20,7 +20,7 @@ nav {
   padding-right: 30px;
 }
 
-nav a {
+.navbar a {
   float: left;
   display: flex;
   color: #f2f2f2;
@@ -55,6 +55,7 @@ nav a {
 .nav_links a:hover::after {
   transform: scaleX(1);
 }
+
 .user_info {
   margin-left: auto;
 }
@@ -62,6 +63,45 @@ nav a {
 .user_info a i {
   font-size: 30px;
 }
+
+.navbar .hamburger {
+  display: none;
+  margin-left: auto;
+}
+
+.menu {
+  transition: ease 1s;
+  display: none;
+  position: fixed;
+  margin: auto;
+  width: 80%;
+  top: 80px;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  border-radius: 6px;
+}
+
+.menu a {
+  display: flex;
+  color: #f2f2f2;
+  padding: 10px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+  .navbar .nav_links, .navbar .user_info {
+    display: none;
+  }
+  .navbar .hamburger {
+    display: flex;
+  }
+}
+
 
 .welcome_title {
   text-align: center;
@@ -72,11 +112,11 @@ nav a {
 }
 
 .smaller {
-  font-size: 4vw;
+  font-size: 4vmax;
 }
 
 .bigger {
-  font-size: 9vw;
+  font-size: 8vmax;
   font-weight: bold;
 }
 
