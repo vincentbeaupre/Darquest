@@ -8,6 +8,15 @@ main {
   margin-top: 80px;
 }
 
+/* General */
+
+.erreur {
+  color: darkred;
+  font-weight: bold;
+}
+
+/* Navbar */
+
 .navbar {
   background-color: black;
   display: flex;
@@ -93,7 +102,7 @@ main {
   align-items: center;
 }
 
-@media screen and (max-width: 900) {
+@media screen and (max-width: 900px) {
   .navbar .nav_links, .navbar .user_info {
     display: none;
   }
@@ -224,6 +233,7 @@ main {
 }
 
 /*Classes pour la connexion*/
+
 .loginForm {
   display: flex;
   flex-direction: column;
