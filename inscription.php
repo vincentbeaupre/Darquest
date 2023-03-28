@@ -10,11 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $prenom = trim($_POST['prenom']);
   $alias = trim($_POST['alias']);
 
-  if (!empty(trim($_POST['password']))) {
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+  if (!empty(trim($_POST['motDePasse']))) {
+    $motDePasse = password_hash($_POST['motDePasse'], PASSWORD_DEFAULT);
   }
 
-  $email = trim($_POST['email']);
+  $courriel = trim($_POST['courriel']);
 
   if (empty($nom)) {
     $erreurs['nom'] = "Nom requis";
@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (empty($alias)) {
     $erreurs['alias'] = "Alias requis";
   }
-  if (empty(trim($_POST['password']))) {
-    $erreurs['password'] = "Mot de passe requis";
+  if (empty(trim($_POST['motDePasse']))) {
+    $erreurs['motDePasse'] = "Mot de passe requis";
   }
 
   if (Database::checkAlias($alias) > 0) {
@@ -34,15 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if (count($erreurs) === 0) {
-    if (Database::addJoueur($alias, $nom, $prenom, $password, $email)) {
-      $erreurs['inscription'] = "inscription ne fonctionne pas";
+    if (Database::addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)) {
+      $_SESSION['message'] = "Inscription complétée avec succès";
     }
 
-    $_SESSION['alias'] = $alias;
-    $_SESSION['nom'] = $nom;
-    $_SESSION['prenom'] = $prenom;
-    $_SESSION['password'] = $password;
-    $_SESSION['email'] = $email;
     header('location: login.php');
   }
 }
@@ -70,10 +65,10 @@ include 'header.php' ?>
       <input type="text" name="prenom" id="prenom" value="<?php echo !empty($_POST['prenom']) ? $_POST['prenom'] : '' ?>" required>
       <label for="alias">Alias: </label>
       <input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['alias']) ? $_POST['alias'] : '' ?>" required>
-      <label for="password">Mot de passe: </label>
-      <input type="password" name="password" id="password" required>
-      <label for="email">Adresse courriel: </label>
-      <input type="email" name="email" id="email" value="<?php echo !empty($_POST['email']) ? $_POST['email'] : '' ?>" required>
+      <label for="motDePasse">Mot de passe: </label>
+      <input type="password" name="motDePasse" id="motDePasse" required>
+      <label for="courriel">Adresse courriel: </label>
+      <input type="email" name="courriel" id="courriel" value="<?php echo !empty($_POST['courriel']) ? $_POST['courriel'] : '' ?>" required>
       <input type="submit" class="button" name="inscription_btn" value="Inscription">
 
     </form>

@@ -52,17 +52,14 @@
       <a href="enigma.php">Enigma</a>
       <?php
       if (isset($_SESSION["alias"])) {
-        echo '<a href="inventaire.php">Inventaire</a>';
-      }
-      if (isset($_SESSION["alias"])) {
-        echo "<a href='profil.php'>
+        echo "<a href='inventaire.php'>Inventaire</a>
+              <a href='profil.php'>
                 <i class='fa fa-user-circle-o icon'></i>
                 <span>&nbsp" . $_SESSION['alias'] . "</span>
               </a>
               <a href='logout.php'>
                 <i class='fa fa-sign-out icon'></i>
                 <span>&nbspDéconnexion</span>
-
               </a>";
       } else {
         echo "<a href='login.php'>

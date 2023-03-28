@@ -62,6 +62,7 @@ class Database
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['email'] = $joueur['email'];
 
+        echo "YES";
         return true;
       }
 

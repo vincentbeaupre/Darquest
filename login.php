@@ -41,13 +41,14 @@ if (isset($_SESSION['message'])) {
       Connexion
     </legend>
     <form class="loginForm" method="POST">
+      <?= $erreur ?>
       <label for="alias">Alias: </label>
-      <input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required>
+      <input type="text" name="alias" id="alias" required>
       <label for="motDePasse">Mot de passe: </label>
       <input type="password" name="motDePasse" id="motDePasse" required>
       <input class="button" type="submit" name="connexion_btn" value="Connexion">
     </form>
-    <?= $erreur ?>
+
   </div>
   <p style="text-align:center;">
     <a href="inscription.php">Inscription</a>

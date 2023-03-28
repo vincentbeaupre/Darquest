@@ -8,6 +8,15 @@ main {
   margin-top: 80px;
 }
 
+/* General */
+
+.erreur {
+  color: darkred;
+  font-weight: bold;
+}
+
+/* Navbar */
+
 .navbar {
   background-color: black;
   display: flex;
@@ -224,6 +233,7 @@ main {
 }
 
 /*Classes pour la connexion*/
+
 .loginForm {
   display: flex;
   flex-direction: column;
