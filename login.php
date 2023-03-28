@@ -23,11 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="stylesheet.css">
-</head>
-
 <?php include 'header.php' ?>
 <?php
 if (isset($_SESSION['message'])) {

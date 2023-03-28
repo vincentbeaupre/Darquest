@@ -35,10 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if (count($erreurs) === 0) {
     if (Database::addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)) {
-      $_SESSION['message'] = "Inscription complétée avec succès";
+      header('location: login.php');
     }
 
-    header('location: login.php');
   }
 }
 ?>

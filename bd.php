@@ -42,12 +42,12 @@ class Database
     $pdo = Database::connect();
 
     $stmt = $pdo->query("SELECT * FROM Joueurs");
+    $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     Database::disconnect();
 
-    return $stmt;
+    return $joueurs;
   }
-
 
   public static function validerJoueur($alias, $motDePasse)
   {
@@ -60,14 +60,14 @@ class Database
         $_SESSION['alias'] = $joueur['alias'];
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
-        $_SESSION['email'] = $joueur['email'];
+        $_SESSION['courriel'] = $joueur['courriel'];
 
-        echo "YES";
         return true;
       }
 
-      return false;
     }
+    return false;
+
   }
 
   public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
@@ -77,9 +77,12 @@ class Database
     $sql = "INSERT INTO Joueurs (alias, nom, prenom, motDePasse, courriel)
             VALUES (:alias, :nom, :prenom, :motDePasse, :courriel)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
+    $result = $stmt->execute(["alias" => $alias, "nom" => $nom, "prenom" => $prenom, "motDePasse" => $motDePasse, "courriel" => $courriel]);
 
     Database::disconnect();
+
+    return $result;
+
   }
 
   public static function checkAlias($alias)
