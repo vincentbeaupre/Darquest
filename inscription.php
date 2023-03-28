@@ -53,54 +53,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 
-<body>
-  <div id="page-container">
-    <div id="content-wrap">
-      <header>
-        <h1><a href="index.php" class="header_link">Darquest</a></h1>
-      </header>
-      <fieldset>
-        <legend>
-          Inscription
-        </legend>
-        <form method="POST">
-          <table>
-            <tr>
-              <td><label for="nom">Nom: </label></td>
-              <td><input type="text" name="nom" id="nom" value="<?php echo !empty($_POST['nom']) ? $_POST['nom'] : '' ?>" required></td>
-            </tr>
-            <tr>
-              <td><label for="prenom">Prénom: </label></td>
-              <td><input type="text" name="prenom" id="prenom" value="<?php echo !empty($_POST['prenom']) ? $_POST['prenom'] : '' ?>" required></td>
-            </tr>
-            <tr>
-              <td><label for="alias">Alias: </label></td>
-              <td><input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['alias']) ? $_POST['alias'] : '' ?>" required></td>
-            </tr>
-            <tr>
-              <td><label for="password">Mot de passe: </label></td>
-              <td><input type="password" name="password" id="password" required></td>
-            </tr>
-            <tr>
-              <td><label for="email">Adresse courriel: </label></td>
-              <td><input type="email" name="email" id="email" value="<?php echo !empty($_POST['email']) ? $_POST['email'] : '' ?>" required></td>
-            </tr>
-            <tr>
-              <td><input type="submit" class="button" name="inscription_btn" value="Inscription"></td>
-            </tr>
-          </table>
+<?php
+include 'header.php' ?>
+<main>
+  <div>
+    <legend style="text-align:center;">
+      Inscription
+    </legend>
+    <form class=loginForm method="POST">
+      <label for="nom">Nom: </label>
+      <input type="text" name="nom" id="nom" value="<?php echo !empty($_POST['nom']) ? $_POST['nom'] : '' ?>" required>
+      <label for="prenom">Prénom: </label>
+      <input type="text" name="prenom" id="prenom" value="<?php echo !empty($_POST['prenom']) ? $_POST['prenom'] : '' ?>" required>
+      <label for="alias">Alias: </label>
+      <input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['alias']) ? $_POST['alias'] : '' ?>" required>
+      <label for="password">Mot de passe: </label>
+      <input type="password" name="password" id="password" required>
+      <label for="email">Adresse courriel: </label>
+      <input type="email" name="email" id="email" value="<?php echo !empty($_POST['email']) ? $_POST['email'] : '' ?>" required>
+      <input type="submit" class="button" name="inscription_btn" value="Inscription">
 
-        </form>
-      </fieldset>
-      <?php if (count($erreurs) > 0) : ?>
-        <div class="erreur">
-          <?php foreach ($erreurs as $erreur) : ?>
-            <li>
-              <?= $erreur ?>
-            </li>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
+    </form>
+  </div>
+
+  <?php if (count($erreurs) > 0) : ?>
+    <div class="erreur">
+      <?php foreach ($erreurs as $erreur) : ?>
+        <li>
+          <?= $erreur ?>
+        </li>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+
+</main>
+</body>
+
+</html>
