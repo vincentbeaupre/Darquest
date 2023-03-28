@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'bd.php';
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +11,10 @@ session_start();
 <main>
   <div id="marketPage">
     <div id="box1">
-      <div id="marketItemList">
-
+      <div id="marketItemList" class="itemCardMain">
+          <?php
+          Database::getAllItemsMinimum();
+          ?>
       </div>
       <div id="marketSearchBy">
         <h2>Recherche</h2>

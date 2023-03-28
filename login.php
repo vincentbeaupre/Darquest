@@ -28,37 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="stylesheet.css">
 </head>
 
-<body>
-      <header>
-        <h1><a href="index.php" class="header_link">Darquest</a></h1>
-      </header>
-      <?php
-      if (isset($_SESSION['message'])) {
-        echo "<div>" . $_SESSION['message'] . "</div>";
-        unset($_SESSION['message']);
-      }
-      ?>
-      <fieldset>
-        <legend>
-          Connexion
-        </legend>
-        <form method="POST">
-          <table>
-            <tr>
-              <td><label for="alias">Alias: </label></td>
-              <td><input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required></td>
-            </tr>
-            <tr>
-              <td><label for="motDePasse">Mot de passe: </label></td>
-              <td><input type="password" name="motDePasse" id="motDePasse" required></td>
-            </tr>
-            <tr>
-              <td><input class="button" type="submit" name="connexion_btn" value="Connexion"></td>
-            </tr>
-          </table>
-        </form>
-        <?= $erreur ?>
-      </fieldset>
-      <p>
-        <a class="link" href="inscription.php">Inscription</a>
-      </p>
+<?php include 'header.php' ?>
+<?php
+if (isset($_SESSION['message'])) {
+  echo "<div>" . $_SESSION['message'] . "</div>";
+  unset($_SESSION['message']);
+}
+?>
+<main>
+  <div class="loginBox">
+    <legend style="text-align:center;">
+      Connexion
+    </legend>
+    <form class="loginForm" method="POST">
+      <label for="alias">Alias: </label>
+      <input type="text" name="alias" id="alias" value="<?php echo !empty($_POST['pseudo']) ? $_POST['pseudo'] : '' ?>" required>
+      <label for="motDePasse">Mot de passe: </label>
+      <input type="password" name="motDePasse" id="motDePasse" required>
+      <input class="button" type="submit" name="connexion_btn" value="Connexion">
+    </form>
+    <?= $erreur ?>
+  </div>
+  <p style="text-align:center;">
+    <a href="inscription.php">Inscription</a>
+  </p>
+</main>
+</body>
