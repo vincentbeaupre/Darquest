@@ -94,35 +94,59 @@ class Database
   }
 
   //------------------- Panier
-  public static function getPanier($idJoueur) // a Débuger plus tard avec id Joueur et panier rempli
+  public static function getPanier($idJoueur)
   {
     $pdo = Database::connect();
 
-    $sql = "SELECT * FROM Paniers inner join Items on Paniers.idItem = Item.idItem WHERE Paniers.idJoueur = $idJoueur";
-    $result = $pdo->query($sql);
+    $sql = "SELECT * FROM Paniers inner join Items on Paniers.idItem = Items.idItem WHERE Paniers.idJoueur = :idJoueur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $results = $stmt->fetchAll();
     Database::disconnect();
 
-    return $result;
+    return $results;
   }
-  public static function supprimerFromPanier()
+  public static function supprimerFromPanier($idItem, $idJoueur)
   {
     $pdo = Database::connect();
+
+    $sql = "DELETE FROM Paniers WHERE idItem = :idItem AND idJoueur = :idJoueur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+
+    Database::disconnect();
   }
   public static function estQuantitéValide($idItem, $quantité)
   {
-    return true;
+    $pdo = Database::connect();
+    $sql = "SELECT quantiteStock FROM Items WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $result = $stmt->fetchAll();
+
+    if ($quantité <= $result[0]['quantiteStock']) {
+      return true;
+    } else {
+      return false;
+    }
   }
   public static function modifiéQuantitéItem($idJoueur, $idItem, $quantité)
   {
     if (Database::estQuantitéValide($idItem, $quantité)) {
+      $pdo = Database::connect();
+      $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
+      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+      $stmt->bindParam(3, $quantité, PDO::PARAM_INT);
+      $stmt->execute();
     }
   }
   public static function payerPanier($idJoueur)
   {
+    
   }
   public static function getSoldeJoueur($idJoueur)
   {
-    
   }
   public static function getAllItemsMinimum()
   {
