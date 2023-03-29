@@ -122,12 +122,76 @@ class Database
   }
   public static function getSoldeJoueur($idJoueur)
   {
-    
   }
-  public static function getAllItemsMinimum()
+
+  public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
+  {
+    $sql = "SELECT * FROM Items";
+    if (isset($type) && $type == 'oui') {
+      $stringWhere = "where typeItem =";
+      if (isset($armes) && $armes == 'oui') {
+        $stringWhere .= "'Armes' or typeItem =";
+      }
+      if (isset($armures) && $armures == 'oui') {
+        $stringWhere .= "'Armures' or typeItem =";
+      }
+      if (isset($potions) && $potions == 'oui') {
+        $stringWhere .= "'Sorts' or typeItem =";
+      }
+      if (isset($sorts) && $sorts == 'oui') {
+        $stringWhere .= "'Potions' or typeItem =";
+      }
+
+      if(substr($stringWhere,-1) == "="){
+        $stringWhere = substr($stringWhere,0,-14);
+      }
+      $sql = "SELECT * FROM Items ". $stringWhere;
+    }
+    if(isset($prix)){
+      if($prix == 'asc'){
+        $sql .= " ORDER BY typeItem,prix asc";
+      }
+      if($prix == 'desc'){
+        $sql .= " ORDER BY typeItem,prix desc";
+      }
+    }
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      echo "<div class='itemCardChild'>
+      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
+      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
+      <span>Prix: <span>" . $row['prix'] . "</span></span>
+  </div>
+";
+    }
+    Database::disconnect();
+  }
+
+
+  public static function getAllItemsPrixAsc()
   {
     $pdo = Database::connect();
-    $sql = "SELECT * FROM Items";
+    $sql = "SELECT * FROM Items Order by prix asc";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      echo "<div class='itemCardChild'>
+      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
+      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
+      <span>Prix: <span>" . $row['prix'] . "</span></span>
+  </div>
+";
+    }
+    Database::disconnect();
+  }
+  public static function getAllItemsPrixDesc()
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT * FROM Items Order by prix desc";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
