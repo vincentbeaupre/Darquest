@@ -15,6 +15,10 @@ main {
   font-weight: bold;
 }
 
+.coinIcon {
+  width: 15px;
+  height: 15px;
+}
 /* Navbar */
 
 .navbar {
