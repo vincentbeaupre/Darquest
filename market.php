@@ -1,5 +1,6 @@
 <?php
 include 'bd.php';
+require_once 'fonctions.php';
 session_start();
 
 (isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     <div id="box2">
       <div id="currency">
         <?php
-        echo (isset($_SESSION['idJoueur'])) ? "<h4 style='font-weight:bold;margin:5px;''>" . Database::getSoldeJoueur($idJoueur)  . "</h4>": "<span>Vous n'êtes présentement pas connecter. </span>";
+        echo (isset($_SESSION['idJoueur'])) ? "<h4 style='font-weight:bold;margin:5px;''>" . afficherMontant(Database::getSoldeJoueur($idJoueur)) . "</h4>": "";
         ?>
       </div>
       <div id="panier">box2 panier

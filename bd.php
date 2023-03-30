@@ -36,6 +36,8 @@ class Database
   {
     self::$pdo = null;
   }
+  
+  //------------------- Joueur
 
   public static function getAllJoueurs()
   {
@@ -157,6 +159,8 @@ class Database
     return $row['solde'];
   }
 
+    //------------------- Items
+    
   public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
   {
     $sql = "SELECT * FROM Items";
