@@ -236,7 +236,34 @@ main {
   border: 3px black solid;
   border-radius: 15px;
 }
+.itemCardLink{
+text-decoration: none;
+color:inherit
+}
 
+/*Classes pour la page de détails d'un item*/
+.itemDetail{
+  background-color: #2c2415;
+  color: #ffffff;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap:nowrap;
+  border: 3px black solid;
+  border-radius: 15px;
+  margin: 10%
+}
+
+.itemDetail>span{
+  padding:10px;
+  font-weight: bold;
+  font-size: medium;
+}
+.iconDetail{
+  font-size: 30px;
+  padding: 5px;
+
+}
 /*Classes pour la connexion*/
 
 .loginForm {
