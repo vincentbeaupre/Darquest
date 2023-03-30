@@ -2,6 +2,7 @@
 include 'bd.php';
 session_start();
 
+(isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";
 $prix = 'asc';
 $type = 'non';
 $armes = 'non';
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     <div id="box2">
       <div id="currency">
         <?php
-        echo (isset($_SESSION['alias'])) ? Database::getSoldeJoueur($idJoueur) : "<span>Vous n'êtes présentement pas connecter. </span>";
+        echo (isset($_SESSION['idJoueur'])) ? "<h4 style='font-weight:bold;margin:5px;''>" . Database::getSoldeJoueur($idJoueur)  . "</h4>": "<span>Vous n'êtes présentement pas connecter. </span>";
         ?>
       </div>
       <div id="panier">box2 panier
