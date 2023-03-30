@@ -67,7 +67,6 @@ class Database
 
     }
     return false;
-
   }
 
   public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
@@ -128,6 +127,8 @@ class Database
   {
   }
 
+    //------------------- Items
+    
   public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
   {
     $sql = "SELECT * FROM Items";
