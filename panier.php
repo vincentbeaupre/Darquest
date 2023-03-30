@@ -13,7 +13,12 @@
   <?php include "header.php" ?>
   <h1>Panier</h1>
   <div id="itemPanier">
-  <?php afficherPanier($_SESSION['idJoueur'])?>
+  <?php
+  if(isset($_SESSION['idJoueur']))
+  {
+    afficherPanier($_SESSION['idJoueur']);
+  }
+   ?>
 
   </div>
 </body>
