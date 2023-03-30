@@ -10,6 +10,16 @@ function displayMenu() {
   }
 }
 
+function displayDetails(idItem,typeItem){
+  var item = document.getElementById(idItem);
+  if(item.style.display === "flex"){
+    item.style.display = "none";
+  }
+  else{
+    item.style.display = "flex";
+  }
+}
+
 function launchSnackbar() {
   // Get the snackbar DIV
   var x = document.getElementById("snackbar");
