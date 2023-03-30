@@ -36,6 +36,8 @@ class Database
   {
     self::$pdo = null;
   }
+  
+  //------------------- Joueur
 
   public static function getAllJoueurs()
   {
