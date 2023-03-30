@@ -66,7 +66,6 @@ class Database
 
         return true;
       }
-
     }
     return false;
   }
@@ -83,7 +82,6 @@ class Database
     Database::disconnect();
 
     return $result;
-
   }
 
   public static function checkAlias($alias)
@@ -150,8 +148,16 @@ class Database
   {
     
   }
+
   public static function getSoldeJoueur($idJoueur)
   {
+    $pdo = Database::connect();
+    $sql = 'SELECT solde from Joueurs where idJoueur=?';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1,$idJoueur);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['solde'];
   }
 
     //------------------- Items
@@ -174,16 +180,16 @@ class Database
         $stringWhere .= "'Potions' or typeItem =";
       }
 
-      if(substr($stringWhere,-1) == "="){
-        $stringWhere = substr($stringWhere,0,-14);
+      if (substr($stringWhere, -1) == "=") {
+        $stringWhere = substr($stringWhere, 0, -14);
       }
-      $sql = "SELECT * FROM Items ". $stringWhere;
+      $sql = "SELECT * FROM Items " . $stringWhere;
     }
-    if(isset($prix)){
-      if($prix == 'asc'){
+    if (isset($prix)) {
+      if ($prix == 'asc') {
         $sql .= " ORDER BY typeItem,prix asc";
       }
-      if($prix == 'desc'){
+      if ($prix == 'desc') {
         $sql .= " ORDER BY typeItem,prix desc";
       }
     }
@@ -202,7 +208,7 @@ class Database
     Database::disconnect();
   }
 
-
+  /*
   public static function getAllItemsPrixAsc()
   {
     $pdo = Database::connect();
@@ -237,4 +243,5 @@ class Database
     }
     Database::disconnect();
   }
+  */
 }
