@@ -109,6 +109,19 @@ class Database
 
     return $results;
   }
+
+  public static function getNumItemsInCart($idJoueur) {
+    $pdo = Database::connect();
+
+    $sql = "SELECT COUNT(*) FROM Paniers WHERE idJoueur = :idJoueur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+
+    return $result;
+  }
+
   public static function supprimerFromPanier($idItem, $idJoueur)
   {
     $pdo = Database::connect();
@@ -264,6 +277,7 @@ class Database
     }
     Database::disconnect();
   }
+
 
   /*
   public static function getAllItemsPrixAsc()

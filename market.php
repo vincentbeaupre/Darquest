@@ -66,24 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
         <a link href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
       </div>
     </div>
-    <div id="box2">
-      <div class="montant">
-        <?php
-        echo (isset($_SESSION['idJoueur'])) ? afficherMontant(Database::getSoldeJoueur($idJoueur)) : "";
-        ?>
-        <div>
-        <i class="fa fa-shopping-cart cartIcon"></i>
-        </div>
-      </div>
-      <div id="boutonPanier">
-        <a href="http://167.114.152.54/~darquest6/panier.php">
-          <button type="button" class="buttonMarket">Afficher Panier</button>
-        </a>
-        <a href="http://167.114.152.54/~darquest6/payerPanier.php">
-          <button type="button" class="buttonMarket">Payer Panier</button>
-        </a>
-      </div>
-    </div>
   </div>
 </main>
 </body>
