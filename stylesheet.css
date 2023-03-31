@@ -15,12 +15,17 @@ main {
   font-weight: bold;
 }
 
-.coinIcon {
-  width: 15px;
-  height: 15px;
+.soldeJoueur {
+  float: left;
+  display: flex;
+  color: #f2f2f2;
+  text-align: center;
+  align-items: center;
+  padding: 16px 16px;
+  font-size: 20px;
 }
 
-/* Navbar */
+/* Header */
 
 .navbar {
   background-color: black;
@@ -70,21 +75,31 @@ main {
   transform: scaleX(1);
 }
 
-.user_info {
+.shopping, .user_links, .hamburger {
   margin-left: auto;
 }
 
-.user_info a i {
+.shopping a i, .user_links a i{
   font-size: 30px;
 }
 
-.navbar .hamburger {
+.cart-badge {
+  position: relative;
+  top: -10px;
+  left: -7px;
+  background-color: rgb(218, 0, 0);
+  color: white;
+  font-weight: bold;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.hamburger {
   display: none;
-  margin-left: auto;
 }
 
 .menu {
-  transition: ease 1s;
   display: none;
   position: fixed;
   margin: auto;
@@ -108,7 +123,7 @@ main {
 }
 
 @media screen and (max-width: 900px) {
-  .navbar .nav_links, .navbar .user_info {
+  .navbar .nav_links, .navbar .user_links {
     display: none;
   }
 
@@ -117,6 +132,7 @@ main {
   }
 }
 
+/* Index */
 
 .welcome_title {
   text-align: center;

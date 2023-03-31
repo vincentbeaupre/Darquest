@@ -13,7 +13,7 @@ if (isset($_SESSION['alias'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (Database::validerJoueur($_POST['alias'], $_POST['motDePasse'])) {
-    header("Location: index.php");
+    header("Location: market.php");
   } else {
     $erreur = "<span class='erreur'>Données de connexion non valides</span>";
   }
