@@ -37,35 +37,37 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 
 <?php include "header.php" ?>
 
-<main>
-  <div id="marketPage">
-    <div id="box1">
-      <div id="marketItemList" class="itemCardMain">
-        <?php
-        Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts);
-        ?>
-      </div>
-      <div id="marketSearchBy">
-        <h2>Recherche</h2>
-        <form action="" method="GET">
-          <h3>Filtrer par type</h3>
-          <input type="checkbox" id="Armure" name="Armure" value="Armure" <?php echo (isset($_GET['Armure']))? 'checked':''?>>
-          <label for="Armure"> Armures</label><br>
-          <input type="checkbox" id="Armes" name="Arme" value="Arme" <?php echo (isset($_GET['Arme']))? 'checked':''?>>
-          <label for="Armes"> Armes</label><br>
-          <input type="checkbox" id="Potion" name="Potion" value="Potion" <?php echo (isset($_GET['Potion']))? 'checked':''?>>
-          <label for="Potion"> Potion</label><br>
-          <input type="checkbox" id="Sort" name="Sort" value="Sort" <?php echo (isset($_GET['Sort']))? 'checked':''?>>
-          <label for="Sort"> Sort</label><br>
-          <h3>Trier par</h3>
-          <label for="trierPrix">Prix:&nbsp&nbsp</label>
-          <input type="radio" id="prixASC" name="trierPrix" value="asc">↑
-          <input type="radio" id="prixDESC" name="trierPrix" value="desc">↓
-          <input class="button" type="submit" name="filtrage_btn" value="Enter">
-        </form>
-        <a link href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
-      </div>
-    </div>
+<main class="marketMain">
+  <!-- Liste des Items -->
+  <div class="itemCardMain">
+    <?php
+    Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts);
+    ?>
+  </div>
+  <!-- Recherche des Items-->
+  <div class="marketSearch">
+    <?php
+    echo (isset($_SESSION['idJoueur'])) ? "<h4 style='font-weight:bold;margin:5px;''>" . afficherMontant(Database::getSoldeJoueur($idJoueur)) . "</h4>" : "";
+    ?>
+    <h2>Recherche</h2>
+    <form action="" method="GET">
+      <h3>Filtrer par type</h3>
+      <input type="checkbox" id="Armure" name="Armure" value="Armure" <?php echo (isset($_GET['Armure'])) ? 'checked' : '' ?>>
+      <label for="Armure"> Armures</label><br>
+      <input type="checkbox" id="Armes" name="Arme" value="Arme" <?php echo (isset($_GET['Arme'])) ? 'checked' : '' ?>>
+      <label for="Armes"> Armes</label><br>
+      <input type="checkbox" id="Potion" name="Potion" value="Potion" <?php echo (isset($_GET['Potion'])) ? 'checked' : '' ?>>
+      <label for="Potion"> Potion</label><br>
+      <input type="checkbox" id="Sort" name="Sort" value="Sort" <?php echo (isset($_GET['Sort'])) ? 'checked' : '' ?>>
+      <label for="Sort"> Sort</label><br>
+      <h3>Trier par</h3>
+      <label for="trierPrix">Prix:&nbsp&nbsp</label>
+      <input type="radio" id="prixASC" name="trierPrix" value="asc"><i class="fa fa-arrow-up" aria-hidden="true"></i>
+      <input type="radio" id="prixDESC" name="trierPrix" value="desc"><i class="fa fa-arrow-down" aria-hidden="true"></i>
+      <br>
+      <input class="button" type="submit" name="filtrage_btn" value="Enter">
+    </form>
+    <a style="text-decoration:none;color:red;" href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
   </div>
 </main>
 </body>

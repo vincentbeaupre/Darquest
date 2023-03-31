@@ -1,5 +1,5 @@
 <?php
-
+include 'fonctions.php';
 class Database
 {
   private static $host = "167.114.152.54";
@@ -186,10 +186,10 @@ class Database
         $stringWhere .= "'Armures' or typeItem =";
       }
       if (isset($potions) && $potions == 'oui') {
-        $stringWhere .= "'Sorts' or typeItem =";
+        $stringWhere .= "'Potions' or typeItem =";
       }
       if (isset($sorts) && $sorts == 'oui') {
-        $stringWhere .= "'Potions' or typeItem =";
+        $stringWhere .= "'Sorts' or typeItem =";
       }
 
       if (substr($stringWhere, -1) == "=") {
@@ -209,12 +209,12 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      echo "<div id='".$row['idItem']."' class='itemCardChild'>
-      <a class='itemCardLink' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
+      echo "<div id='".$row['idItem']."'>
+      <a class='itemCardChild' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
       <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
       <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
       <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
-      <span>Prix: <span>" . $row['prix'] . "</span></span>
+      <span>Prix: " . $row['prix'] . "</span>
       <input type='hidden' id='idItem' name='idItem' value=" . $row['idItem'] . " />
       <input type='hidden' id='typeItem' name='typeItem' value=" . $row['typeItem'] . " />
       </a>
@@ -259,13 +259,14 @@ class Database
       echo "<span>Type: " . $row['typeItem'] . "</span>
       <img src='" . $row['photo'] . "' width='128' height='128' style='border:3px black solid;border-radius:10px;'>
       <h1>" . $row['nom'] . "</h1>
-      <span>Prix: " . $row['prix'] . "</span>
       <span>Stock: " . $row['quantiteStock'] . "</span>
       <span>" . $nomColonnes[0] . $row[6] . "</span>
       <span>" . $nomColonnes[1] . $row[7] . "</span>";
       if ($typeItem == 'Armes') {
         echo "<span>Genre: " . $row['genre'] ."</span>";
       }
+      echo "<span>Prix:";
+      echo afficherMontant($row['prix']) ."</span>";
       echo "<span>
       <a style='text-decoration: none; color: #ffffff' href='market.php'>
       <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
