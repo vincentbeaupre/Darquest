@@ -167,20 +167,18 @@ main {
   padding:5px;
 }
 
-#currency {
-  background-color: yellow;
-  height: 30%;
+.montant {
+  display: inline-flex;
+  background-color: black;
+  color: white;
+  margin: auto;
+  padding: 20px;
+  justify-content: space-between;
+  border-radius: 20px;
 }
 
-#panier {
-  background-color: red;
-  height: 60%;
-}
-
-#boutonPanier {
-  height: 10%;
-  display: flex;
-  flex-direction: row;
+i.cartIcon{
+  font-size: 30px;
 }
 
 .buttonMarket {
@@ -209,10 +207,6 @@ main {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-}
-
-#panierBody {
-  padding-top: 5%;
 }
 
 .itemCardMain {

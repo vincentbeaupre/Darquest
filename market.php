@@ -67,13 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       </div>
     </div>
     <div id="box2">
-      <div id="currency">
+      <div class="montant">
         <?php
-        echo (isset($_SESSION['idJoueur'])) ? "<h4 style='font-weight:bold;margin:5px;''>" . afficherMontant(Database::getSoldeJoueur($idJoueur)) . "</h4>": "";
+        echo (isset($_SESSION['idJoueur'])) ? afficherMontant(Database::getSoldeJoueur($idJoueur)) : "";
         ?>
-      </div>
-      <div id="panier">box2 panier
-
+        <div>
+        <i class="fa fa-shopping-cart cartIcon"></i>
+        </div>
       </div>
       <div id="boutonPanier">
         <a href="http://167.114.152.54/~darquest6/panier.php">
