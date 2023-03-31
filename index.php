@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 <!DOCTYPE html>
 <html lang="fr">
 
-<?php include "header.php" ?>
+<?php 
+  include "header.php"; 
+  ?>
 <main>
   <button onclick="launchSnackbar()">Show Snackbar</button>
   <?php
