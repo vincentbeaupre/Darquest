@@ -173,10 +173,10 @@ class Database
         $stringWhere .= "'Armures' or typeItem =";
       }
       if (isset($potions) && $potions == 'oui') {
-        $stringWhere .= "'Sorts' or typeItem =";
+        $stringWhere .= "'Potions' or typeItem =";
       }
       if (isset($sorts) && $sorts == 'oui') {
-        $stringWhere .= "'Potions' or typeItem =";
+        $stringWhere .= "'Sorts' or typeItem =";
       }
 
       if (substr($stringWhere, -1) == "=") {
@@ -196,8 +196,8 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      echo "<div id='".$row['idItem']."' class='itemCardChild'>
-      <a class='itemCardLink' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
+      echo "<div id='".$row['idItem']."'>
+      <a class='itemCardChild' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
       <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
       <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
       <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
