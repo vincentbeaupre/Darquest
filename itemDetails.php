@@ -1,5 +1,4 @@
 <?php
-include 'bd.php';
 session_start();
 
 (isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";

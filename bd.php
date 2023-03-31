@@ -1,5 +1,4 @@
 <?php
-include 'fonctions.php';
 class Database
 {
   private static $host = "167.114.152.54";

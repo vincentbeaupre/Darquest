@@ -1,4 +1,7 @@
-<?php require_once 'fonctions.php' ?>
+<?php 
+require_once "fonctions.php";
+require_once "bd.php";
+?>
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,27 +22,30 @@
       <div class="nav_links">
         <a href="market.php">Magasin</a>
         <a href="enigma.php">Enigma</a>
-        <?php if (isset($_SESSION["alias"])) : ?>
+        <?php if (isset($_SESSION["idJoueur"])) : ?>
           <a href="inventaire.php">Inventaire</a>
         <?php endif; ?>
       </div>
 
-      <div class="shopping">
-        <span class="soldeJoueur">
-          <?php afficherMontant(Database::getSoldeJoueur($_SESSION['idJoueur'])) ?>
-        </span>
-        <a href="panier.php">
-          <i class="fa fa-shopping-cart"></i>
-          <?php
-          $num_items = Database::getNumItemsInCart($_SESSION['idJoueur']);
-          if ($num_items > 0) : ?>
-            <span class='cart-badge'><?= $num_items ?></span>
-          <?php endif; ?>
-        </a>
-      </div>
+      <?php if (isset($_SESSION["idJoueur"])) : ?>
+        <div class="shopping">
+          <span class="soldeJoueur">
+            <?php afficherMontant(Database::getSoldeJoueur($_SESSION['idJoueur'])) ?>
+          </span>
+          <a href="panier.php">
+            <i class="fa fa-shopping-cart"></i>
+            <?php
+            $num_items = Database::getNumItemsInCart($_SESSION['idJoueur']);
+            if ($num_items > 0) : ?>
+              <span class='cart-badge'><?= $num_items ?></span>
+            <?php endif; ?>
+          </a>
+        </div>
+      <?php endif; ?>
+
 
       <div class="user_links">
-        <?php if (isset($_SESSION["alias"])) : ?>
+        <?php if (isset($_SESSION["idJoueur"])) : ?>
           <a href="profil.php">
             <i class="fa fa-user-circle-o cart"></i>
             <span>&nbsp;<?= $_SESSION['alias'] ?></span>
