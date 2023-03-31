@@ -59,8 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
           <label for="Sort"> Sort</label><br>
           <h3>Trier par</h3>
           <label for="trierPrix">Prix:&nbsp&nbsp</label>
-          <input type="radio" id="prixASC" name="trierPrix" value="asc">↑
-          <input type="radio" id="prixDESC" name="trierPrix" value="desc">↓
+          <input type="radio" id="prixASC" name="trierPrix" value="asc"><i class="fa fa-arrow-up" aria-hidden="true"></i>
+          <input type="radio" id="prixDESC" name="trierPrix" value="desc"><i class="fa fa-arrow-down" aria-hidden="true"></i>
+          <br>
           <input class="button" type="submit" name="filtrage_btn" value="Enter">
         </form>
         <a link href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>

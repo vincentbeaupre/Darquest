@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
   if ($logout) {
     /*
     echo '
-    <script src="fonctions.js" defer>launchSnackbar()</script>
+    <script type="text/javascript">launchSnackbar()</script>
     ';*/
     echo '<script type="text/javascript">alert("Vous êtes déconnectés.");</script>';
   }
