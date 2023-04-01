@@ -15,16 +15,6 @@ main {
   font-weight: bold;
 }
 
-.soldeJoueur {
-  float: left;
-  display: flex;
-  color: #f2f2f2;
-  text-align: center;
-  align-items: center;
-  padding: 16px 16px;
-  font-size: 20px;
-}
-
 /* Header */
 
 .navbar {
@@ -81,6 +71,16 @@ main {
 
 .shopping a i, .user_links a i{
   font-size: 30px;
+}
+
+.soldeJoueur {
+  float: left;
+  display: flex;
+  color: #f2f2f2;
+  text-align: center;
+  align-items: center;
+  padding: 16px 16px;
+  font-size: 20px;
 }
 
 .cart-badge {
@@ -297,3 +297,43 @@ input[type=button], input[type=submit], input[type=reset] {
   cursor: pointer;
 }
 
+/* Panier */
+
+.cartContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.itemsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 60vh;
+  padding: 20px;
+  border: 1px solid black;
+  overflow: auto;
+  margin: 20px auto;
+}
+
+.itemContainer {
+  display: flex;
+  margin: 10px;
+  background-color: #f2f2f2;
+  padding: 10px 0;
+  border-radius: 10px;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .5);
+  font-weight: bold;
+}
+
+.itemContainer img {
+  border-radius: 10px;
+  border: 6px solid rgb(0, 0, 0);
+}
+
+.cartSummary {
+  margin: auto;
+  font-weight: bold;
+}
