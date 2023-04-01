@@ -112,7 +112,7 @@ class Database
   public static function getNumItemsInCart($idJoueur) {
     $pdo = Database::connect();
 
-    $sql = "SELECT COUNT(*) FROM Paniers WHERE idJoueur = :idJoueur";
+    $sql = "SELECT SUM(quantiteAchat) FROM Paniers WHERE idJoueur = :idJoueur";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idJoueur" => $idJoueur]);
     $result = $stmt->fetchColumn();
