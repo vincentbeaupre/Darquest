@@ -108,7 +108,26 @@ class Database
 
     return $results;
   }
-
+  public static function ajouterItemPanier($idItem,$quantite,$idJoueur){
+    if (Database::estQuantitéValide($idItem, $quantite)) {
+      $pdo = Database::connect();
+      $stmt = $pdo->prepare("CALL AjoutPanier(?,?,?)");
+      $stmt->bindParam(1, $idItem, PDO::PARAM_INT);
+      $stmt->bindParam(2, $quantite, PDO::PARAM_INT);
+      $stmt->bindParam(3, $idJoueur, PDO::PARAM_INT);
+      if($stmt->execute()){
+        return "
+        <div class='marketSearch'>
+          Vous avez ajouté ".$quantite ." objet(s) à votre panier
+      </div>";
+      }
+      else{
+        return "<div class='marketSearch'>
+        Il y a eu une erreur lors de l'ajout de l'item au panier
+        </div>";
+      }
+    }
+  }
   public static function getNumItemsInCart($idJoueur) {
     $pdo = Database::connect();
 
@@ -217,9 +236,9 @@ class Database
       <input type='hidden' id='idItem' name='idItem' value=" . $row['idItem'] . " />
       <input type='hidden' id='typeItem' name='typeItem' value=" . $row['typeItem'] . " />
       </a>
-  </div>
-";
-//<a class='itemCardLink' href='javascript:void(0);' onclick='displayDetails(".$row['idItem'].",`".$row['typeItem']."`)'>
+    </div>
+    ";
+      //<a class='itemCardLink' href='javascript:void(0);' onclick='displayDetails(".$row['idItem'].",`".$row['typeItem']."`)'>
     }
     Database::disconnect();
   }
@@ -264,38 +283,33 @@ class Database
       if ($typeItem == 'Armes') {
         echo "<span>Genre: " . $row['genre'] ."</span>";
       }
-      echo "<span>Prix:";
+      echo "<span>Prix: ";
       echo afficherMontant($row['prix']) ."</span>";
       echo "<span>
       <a style='text-decoration: none; color: #ffffff' href='market.php'>
       <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
       </a>
-      <a style='text-decoration: none; color: #ffffff' href='market.php'>
-      <i class='fa fa-cart-arrow-down fa-2x' style='padding:10px;'></i>
-      </a>
+      </span>
+      <span>
+      Ajouter l'item au panier:
+      </span>";
+      echo "<span>
+      <form method='POST' action='market.php'>
+        <input type='hidden' name='idItem' value='".$row['idItem']."'>
+        <label for='quantite'>Quantité (entre 1 and ".$row['quantiteStock']."):</label>
+          <input type='number' id='quantite' name='quantite' min='1' max=".$row['quantiteStock'].">
+        <label for='btnSubmit'></label>
+        <button id='btnSubmit' type='submit'>
+          <i class='fa fa-plus'></i>
+        </button>
+      </form>
       </span>";
     }
     Database::disconnect();
   }
-
-
-  /*
-  public static function getAllItemsPrixAsc()
-  {
-    $pdo = Database::connect();
-    $sql = "SELECT * FROM Items Order by prix asc";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      echo "<div class='itemCardChild'>
-      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
-      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
-      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
-      <span>Prix: <span>" . $row['prix'] . "</span></span>
-  </div>
-";
-    }
-    Database::disconnect();
-  }
+/*
+<a style='text-decoration: none; color: #ffffff' href='market.php'>
+<i class='fa fa-cart-arrow-down fa-2x' style='padding:10px;'></i>
+</a>
 */
 }
