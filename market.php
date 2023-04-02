@@ -1,4 +1,5 @@
 <?php
+require_once 'bd.php';
 session_start();
 
 (isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";
@@ -27,6 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       $sorts = 'oui';
     }
   }
+}
+else if ($_SERVER['REQUEST_METHOD'] === "POST"){
+  $idItem = $_POST['idItem'];
+  $quantite = $_POST['quantite'];
+  $messagePanier = Database::ajouterItemPanier($idItem,$quantite,$idJoueur);
 }
 ?>
 
@@ -68,6 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     <a style="text-decoration:none;color:red;" href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
   </div>
 </main>
+  <?php
+  echo (isset($messagePanier)) ? $messagePanier : "";
+  ?>
 </body>
 
 </html>
