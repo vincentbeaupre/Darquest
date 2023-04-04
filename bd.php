@@ -116,16 +116,12 @@ class Database
       $stmt->bindParam(1, $idItem, PDO::PARAM_INT);
       $stmt->bindParam(2, $quantite, PDO::PARAM_INT);
       $stmt->bindParam(3, $idJoueur, PDO::PARAM_INT);
-      if ($stmt->execute()) {
-        return "
-        <div class='marketSearch'>
-          Vous avez ajouté " . $quantite . " objet(s) à votre panier
-      </div>";
-      } else {
-        return "<div class='marketSearch'>
-        Il y a eu une erreur lors de l'ajout de l'item au panier
-        </div>";
+      try{
+        $stmt->execute();
+      }catch (PDOException $e){
+        return false;
       }
+      return true;
     }
   }
 
@@ -157,33 +153,35 @@ class Database
 
     $sql = "DELETE FROM Paniers WHERE idItem = :idItem AND idJoueur = :idJoueur";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
-
-    Database::disconnect();
+    return $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
   }
-  public static function estQuantitéValide($idItem, $quantité)
+  public static function estQuantitéValide($idItem, $quantite)
   {
     $pdo = Database::connect();
     $sql = "SELECT quantiteStock FROM Items WHERE idItem = :idItem";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idItem" => $idItem]);
     $result = $stmt->fetchAll();
-
-    if ($quantité <= $result[0]['quantiteStock']) {
+    if ($quantite <= $result[0]['quantiteStock']) {
       return true;
     } else {
       return false;
     }
   }
-  public static function modifiéQuantitéItem($idJoueur, $idItem, $quantité)
+  public static function modifiéQuantitéItem($idJoueur, $idItem, $quantite)
   {
-    if (Database::estQuantitéValide($idItem, $quantité)) {
+    if (Database::estQuantitéValide($idItem, $quantite)) {
       $pdo = Database::connect();
       $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
       $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
       $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
       $stmt->bindParam(3, $quantité, PDO::PARAM_INT);
-      $stmt->execute();
+      try{
+        $stmt->execute();
+      }catch (PDOException $e){
+        return false;
+      }
+      return true;
     }
   }
 
@@ -237,12 +235,13 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      echo "<div id='" . $row['idItem'] . "'>
+      $montant = afficherMontant($row['prix']);
+      echo "<div id='".$row['idItem']."'>
       <a class='itemCardChild' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
       <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
       <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
       <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
-      <span>Prix: " . $row['prix'] . "</span>
+      <span>Prix: " . $montant . "</span>
       <input type='hidden' id='idItem' name='idItem' value=" . $row['idItem'] . " />
       <input type='hidden' id='typeItem' name='typeItem' value=" . $row['typeItem'] . " />
       </a>
@@ -317,7 +316,20 @@ class Database
     }
     Database::disconnect();
   }
-  /*
+  //Inventaire:
+  public static function getInventaire($idJoueur){
+    $pdo = Database::connect();
+
+    $sql = "SELECT * FROM Inventaires v JOIN Items i ON v.idItem = i.idItem WHERE idJoueur = :idJoueur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $results = $stmt->fetchAll();
+    Database::disconnect();
+
+    return $results;
+  }
+
+/*
 <a style='text-decoration: none; color: #ffffff' href='market.php'>
 <i class='fa fa-cart-arrow-down fa-2x' style='padding:10px;'></i>
 </a>

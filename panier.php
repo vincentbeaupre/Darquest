@@ -5,16 +5,44 @@ require_once('bd.php');
 if (!isset($_SESSION['idJoueur']))
   header('Location: index.php');
 
-  $message = "";
+$message = "";
 
 if (isset($_POST['payer_panier'])) {
   $idJoueur = $_SESSION['idJoueur'];
+  $items = Database::getPanier($idJoueur);
   $fonds = Database::getSoldeJoueur($idJoueur);
+  $total = 0;
+
+  foreach ($items as $item) {
+    $total += $item['prix'] * $item['quantiteAchat'];
+  }
 
   if ($total <= $fonds) {
     Database::payerPanier($idJoueur) ? $message = "Achat effectué avec succès." : "Une erreur est survenue lors de l'achat.";
   } else {
     $message = "Fonds insuffisants pour effectuer le paiement.";
+  }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+  $idItem = $_POST['idItem'];
+  $idJoueur = $_SESSION['idJoueur'];
+  $action = $_POST['action'];
+  if ($action == 'updateQuantite') {
+    $quantite = $_POST['quantiteAchat'];
+    if (Database::modifiéQuantitéItem($idJoueur, $idItem, $quantite)) {
+      $messageAction = "<div class='marketSearch'>La quantité à été mis à jour.</div>";
+    } else {
+      $messageAction = "<div class='marketSearch'> Il y a eu une erreur lors du changement de la quantité dans le panier,
+      veuillez réessayer ou contacter un administrateur</div>";
+    }
+  } elseif ($action == 'supprimerItem') {
+    if (Database::supprimerFromPanier($idItem, $idJoueur)) {
+      $messageAction = "<div class='marketSearch'>L'objet à été supprimer de votre panier !</div>";
+    } else {
+      $messageAction = "<div class='marketSearch'> Il y a eu une erreur lors de la suppresion de l'item au panier,
+      veuillez réessayer ou contacter un administrateur</div>";
+    }
   }
 }
 
@@ -42,13 +70,24 @@ foreach ($items as $item) {
         ?>
 
           <div class="itemContainer">
+            <form method="POST">
+              <input type="hidden" name="idItem" value="<?= $item['idItem'] ?>" />
+              <input type="hidden" name="action" value="supprimerItem" />
+              <button id='btnSubmit' type='submit'>
+                <i class='fa fa-trash fa-2x' style='color:red;'></i>
+              </button>
+            </form>
             <img src=<?= $item['photo'] ?>></img>
             <span><?= $item['nom'] ?></span>
             <span><?= afficherMontant($item['prix']) ?></span>
             <form method="post">
               <label for="quantiteAchat">Qté:</label>
-              <input id="quantiteAchat<?= $item['idItem'] ?>" type='number' value=<?= $item['quantiteAchat'] ?> min="1" max=<?= $item['quantiteStock'] ?>>
-              <input type="hidden" name="idArticle" value="<?= $item['idItem'] ?>" />
+              <input id="quantiteAchat<?= $item['idItem'] ?>" name='quantiteAchat' type='number' value=<?= $item['quantiteAchat'] ?> min="1" max=<?= $item['quantiteStock'] ?>>
+              <input type="hidden" name="idItem" value="<?= $item['idItem'] ?>" />
+              <input type="hidden" name="action" value="updateQuantite" />
+              <button id='btnSubmit' type='submit'>
+                <i class='fa fa-check-circle fa-2x' style='color:green;'></i>
+              </button>
             </form>
           </div>
 
@@ -69,6 +108,11 @@ foreach ($items as $item) {
         </form>
       </div>
     <?php endif; ?>
+    <?php
+    if (isset($messageAction)) {
+      echo $messageAction;
+    }
+    ?>
     <div>
       <?= $message ?>
     </div>
