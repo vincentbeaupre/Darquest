@@ -150,10 +150,15 @@ class Database
   public static function supprimerFromPanier($idItem, $idJoueur)
   {
     $pdo = Database::connect();
-
-    $sql = "DELETE FROM Paniers WHERE idItem = :idItem AND idJoueur = :idJoueur";
-    $stmt = $pdo->prepare($sql);
-    return $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+      $stmt = $pdo->prepare("CALL supprimerFromPanier(?,?)");
+      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+      try{
+        $stmt->execute();
+      }catch (PDOException $e){
+        return false;
+      }
+      return true;
   }
   public static function estQuantitéValide($idItem, $quantite)
   {
