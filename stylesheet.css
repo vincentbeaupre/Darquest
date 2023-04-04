@@ -311,7 +311,7 @@ input[type=button], input[type=submit], input[type=reset] {
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 60vh;
+  max-height: 60vh;
   padding: 20px;
   border: 3px black solid;
   border-radius: 15px;
