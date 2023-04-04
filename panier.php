@@ -6,8 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST"){
   $idItem = $_POST['idItem'];
   $idJoueur = $_SESSION['idJoueur'];
   $action = $_POST['action'];
+  $quantite = $_POST['quantiteAchat'];
   if($action == 'updateQuantite'){
-    $quantite = $_POST['quantiteAchat'];
     if (Database::modifiéQuantitéItem($idJoueur,$idItem,$quantite)){
       $messageAction = "<div class='marketSearch'>La quantité à été mis à jour.</div>";
     }
@@ -58,7 +58,7 @@ $total = 0;
             <span><?= afficherMontant($item['prix']) ?></span>
             <form method="post">
               <label for="quantiteAchat">Qté:</label>
-              <input id="quantiteAchat<?= $item['idItem'] ?>" name='quantiteAchat' type='number' value=<?= $item['quantiteAchat'] ?> min="1" max=<?= $item['quantiteStock'] ?>>
+              <input id="quantiteAchat<?= $item['idItem'] ?>" name='quantiteAchat' type='number' value=<?= $item['quantiteAchat'] ?> min="1" max=<?= $item['quantiteStock'] + $item['quantiteAchat'] ?>>
               <input type="hidden" name="idItem" value="<?= $item['idItem'] ?>" />
               <input type="hidden" name="action" value="updateQuantite" />
               <button id='btnSubmit' type='submit'>

@@ -155,7 +155,7 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idItem" => $idItem]);
     $result = $stmt->fetchAll();
-    if ($quantite <= $result[0]['quantiteStock']) {
+    if (count($result) > 0 && $quantite <= $result[0]['quantiteStock']) {
       return true;
     } else {
       return false;
@@ -163,12 +163,13 @@ class Database
   }
   public static function modifiéQuantitéItem($idJoueur, $idItem, $quantite)
   {
+    
     if (Database::estQuantitéValide($idItem, $quantite)) {
       $pdo = Database::connect();
       $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
       $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
       $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      $stmt->bindParam(3, $quantité, PDO::PARAM_INT);
+      $stmt->bindParam(3, $quantite, PDO::PARAM_INT);
       try{
         $stmt->execute();
       }catch (PDOException $e){
