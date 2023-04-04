@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       <br>
       <input class="button" type="submit" name="filtrage_btn" value="Recherche">
     </form>
-    <a style="text-decoration:none;color:red;" href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
+    <a style="text-decoration:none;color:red;" href='market.php'>Réinitialiser</a>
   </div>
 </main>
   <?php

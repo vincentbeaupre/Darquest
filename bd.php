@@ -35,7 +35,7 @@ class Database
   {
     self::$pdo = null;
   }
-  
+
   //------------------- Joueur
 
   public static function getAllJoueurs()
@@ -108,7 +108,8 @@ class Database
 
     return $results;
   }
-  public static function ajouterItemPanier($idItem,$quantite,$idJoueur){
+  public static function ajouterItemPanier($idItem, $quantite, $idJoueur)
+  {
     if (Database::estQuantitéValide($idItem, $quantite)) {
       $pdo = Database::connect();
       $stmt = $pdo->prepare("CALL AjoutPanier(?,?,?)");
@@ -123,7 +124,18 @@ class Database
       return true;
     }
   }
-  public static function getNumItemsInCart($idJoueur) {
+
+  public static function payerPanier($idJoueur) {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL PayerPanier(?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+
+    return $stmt->execute();
+  }
+
+
+  public static function getNumItemsInCart($idJoueur)
+  {
     $pdo = Database::connect();
 
     $sql = "SELECT SUM(quantiteAchat) FROM Paniers WHERE idJoueur = :idJoueur";
@@ -177,23 +189,22 @@ class Database
       return true;
     }
   }
-  public static function payerPanier($idJoueur)
-  {
-  }
 
   public static function getSoldeJoueur($idJoueur)
   {
     $pdo = Database::connect();
-    $sql = 'SELECT solde from Joueurs where idJoueur=?';
+    $sql = 'SELECT solde FROM Joueurs WHERE idJoueur = :idJoueur';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(1, $idJoueur);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $row['solde'];
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+
+    Database::disconnect();
+
+    return $result;
   }
 
-    //------------------- Items
-    
+  //------------------- Items
+
   public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
   {
     $sql = "SELECT * FROM Items";
@@ -231,7 +242,7 @@ class Database
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       $montant = afficherMontant($row['prix']);
       echo "<div id='".$row['idItem']."'>
-      <a class='itemCardChild' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
+      <a class='itemCardChild' href='itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
       <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
       <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
       <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
@@ -284,10 +295,10 @@ class Database
       <span>" . $nomColonnes[0] . $row[6] . "</span>
       <span>" . $nomColonnes[1] . $row[7] . "</span>";
       if ($typeItem == 'Armes') {
-        echo "<span>Genre: " . $row['genre'] ."</span>";
+        echo "<span>Genre: " . $row['genre'] . "</span>";
       }
       echo "<span>Prix: ";
-      echo afficherMontant($row['prix']) ."</span>";
+      echo afficherMontant($row['prix']) . "</span>";
       echo "<span>
       <a style='text-decoration: none; color: #ffffff' href='market.php'>
       <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
@@ -298,9 +309,9 @@ class Database
       </span>";
       echo "<span>
       <form method='POST' action='market.php'>
-        <input type='hidden' name='idItem' value='".$row['idItem']."'>
-        <label for='quantite'>Quantité (entre 1 and ".$row['quantiteStock']."):</label>
-          <input type='number' id='quantite' name='quantite' min='1' max=".$row['quantiteStock'].">
+        <input type='hidden' name='idItem' value='" . $row['idItem'] . "'>
+        <label for='quantite'>Quantité (entre 1 and " . $row['quantiteStock'] . "):</label>
+          <input type='number' id='quantite' name='quantite' min='1' max=" . $row['quantiteStock'] . ">
         <label for='btnSubmit'></label>
         <button id='btnSubmit' type='submit'>
           <i class='fa fa-plus'></i>

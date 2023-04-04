@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['idJoueur']))
+  header('Location: index.php');
+  
 require_once('bd.php');
 $items = Database::getInventaire($_SESSION['idJoueur']);
 
