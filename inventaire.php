@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['idJoueur']))
+  header('Location: index.php');
+  
 ?>
 
 <!DOCTYPE html>

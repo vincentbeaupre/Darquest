@@ -2,11 +2,32 @@
 session_start();
 require_once('bd.php');
 
+if (!isset($_SESSION['idJoueur']))
+  header('Location: index.php');
+
+  $message = "";
+
+if (isset($_POST['payer_panier'])) {
+  $idJoueur = $_SESSION['idJoueur'];
+  $fonds = Database::getSoldeJoueur($idJoueur);
+
+  if ($total <= $fonds) {
+    Database::payerPanier($idJoueur) ? $message = "Achat effectué avec succès." : "Une erreur est survenue lors de l'achat.";
+  } else {
+    $message = "Fonds insuffisants pour effectuer le paiement.";
+  }
+}
+
 $items = Database::getPanier($_SESSION['idJoueur']);
 $numItemsInCart = Database::getNumItemsInCart($_SESSION['idJoueur']);
 $total = 0;
 
+foreach ($items as $item) {
+  $total += $item['prix'] * $item['quantiteAchat'];
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -18,8 +39,6 @@ $total = 0;
       <?php if (sizeof($items) > 0) : ?>
         <?php
         foreach ($items as $item) {
-
-          $total += $item['prix'] * $item['quantiteAchat'];
         ?>
 
           <div class="itemContainer">
@@ -45,8 +64,14 @@ $total = 0;
       <div class="cartSummary">
         Sous-total (<?= $numItemsInCart ?> <?= $numItemsInCart > 1 ? "articles" : "article" ?> ):
         <?= afficherMontant($total) ?>
+        <form method="post">
+          <input type="submit" name="payer_panier" value="Payer panier">
+        </form>
       </div>
     <?php endif; ?>
+    <div>
+      <?= $message ?>
+    </div>
   </div>
 </main>
 
