@@ -30,7 +30,7 @@ require_once "bd.php";
       <?php if (isset($_SESSION["idJoueur"])) : ?>
         <div class="shopping">
           <span class="soldeJoueur">
-            <?php afficherMontant(Database::getSoldeJoueur($_SESSION['idJoueur'])) ?>
+            <?php echo afficherMontant(Database::getSoldeJoueur($_SESSION['idJoueur'])) ?>
           </span>
           <a href="panier.php">
             <i class="fa fa-shopping-cart"></i>

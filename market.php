@@ -28,11 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       $sorts = 'oui';
     }
   }
-}
-else if ($_SERVER['REQUEST_METHOD'] === "POST"){
+}elseif ($_SERVER['REQUEST_METHOD'] === "POST"){
   $idItem = $_POST['idItem'];
   $quantite = $_POST['quantite'];
-  $messagePanier = Database::ajouterItemPanier($idItem,$quantite,$idJoueur);
+  if (Database::ajouterItemPanier($idItem,$quantite,$idJoueur)){
+    $messagePanier = "<div class='marketSearch'>Vous avez ajouté un objet à votre panier</div>";
+  }else {
+    $messagePanier = "<div class='marketSearch'> Il y a eu une erreur lors de l'ajout de l'item au panier.
+    Si vous essayer de modifier la quantité, s'il vous plait vous diriger dans le panier. 
+    Si l'erreur persite,veuillez contacter un administrateur</div>";
+  }
 }
 ?>
 
@@ -69,13 +74,15 @@ else if ($_SERVER['REQUEST_METHOD'] === "POST"){
       <input type="radio" id="prixASC" name="trierPrix" value="asc"><i class="fa fa-arrow-up" aria-hidden="true"></i>
       <input type="radio" id="prixDESC" name="trierPrix" value="desc"><i class="fa fa-arrow-down" aria-hidden="true"></i>
       <br>
-      <input class="button" type="submit" name="filtrage_btn" value="Enter">
+      <input class="button" type="submit" name="filtrage_btn" value="Recherche">
     </form>
     <a style="text-decoration:none;color:red;" href='http://167.114.152.54/~darquest6/market.php'>Réinitialiser</a>
   </div>
 </main>
   <?php
-  echo (isset($messagePanier)) ? $messagePanier : "";
+  if (isset($messagePanier)){
+    echo $messagePanier;
+  }
   ?>
 </body>
 
