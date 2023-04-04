@@ -231,7 +231,7 @@ class Database
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       $montant = afficherMontant($row['prix']);
       echo "<div id='".$row['idItem']."'>
-      <a class='itemCardChild' href='http://167.114.152.54/~darquest6/itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
+      <a class='itemCardChild' href='itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
       <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
       <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
       <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
