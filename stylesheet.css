@@ -223,7 +223,7 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .marketSearch {
@@ -304,6 +304,7 @@ input[type=button], input[type=submit], input[type=reset] {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  align-items: center;
 }
 
 .itemsContainer {
@@ -312,7 +313,8 @@ input[type=button], input[type=submit], input[type=reset] {
   width: 90%;
   height: 60vh;
   padding: 20px;
-  border: 1px solid black;
+  border: 3px black solid;
+  border-radius: 15px;
   overflow: auto;
   margin: 20px auto;
 }
