@@ -2,6 +2,11 @@
 @session_start();
 require_once("bd.php");
 
+if (isset($_SESSION['message'])) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+}
+
 $erreur = "";
 
 if (isset($_SESSION['alias'])) {
@@ -24,13 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 
 <?php include 'header.php' ?>
-<?php
-if (isset($_SESSION['message'])) {
-  echo "<div>" . $_SESSION['message'] . "</div>";
-  unset($_SESSION['message']);
-}
-?>
+
 <main>
+
+  <?php if (isset($message)) : ?>
+    <div id="snackbar"><?= $message ?></div>
+  <?php endif; ?>
+
   <div class="loginBox">
     <legend style="text-align:center;">
       Connexion
@@ -49,4 +54,13 @@ if (isset($_SESSION['message'])) {
     <a href="inscription.php">Inscription</a>
   </p>
 </main>
+
+<script>
+if (document.getElementById("snackbar") != null) {
+  var snackbar = document.getElementById("snackbar");
+  snackbar.classList.add("show");
+  setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
+}
+</script>
+
 </body>
