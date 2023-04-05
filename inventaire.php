@@ -18,7 +18,7 @@ $items = Database::getInventaire($_SESSION['idJoueur']);
         <?php
         foreach ($items as $item) {
         ?>
-          <div class="itemContainer" onMouseOver="this.style.cursor='pointer'" onclick="location='http://167.114.152.54/~darquest6/itemDetails.php?idItem=<?= $item['idItem'] ?>&typeItem=<?= $item['typeItem'] ?>'">
+          <div class="itemContainer" onMouseOver="this.style.cursor='pointer'" onclick="location='itemDetails.php?idItem=<?= $item['idItem'] ?>&typeItem=<?= $item['typeItem'] ?>'">
               <img src=<?= $item['photo'] ?>></img>
               <span><?= $item['nom'] ?></span>
               <span>Qté: <?= $item['quantiteInventaire'] ?></span>
