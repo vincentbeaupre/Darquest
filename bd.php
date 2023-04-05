@@ -175,8 +175,6 @@ class Database
   }
   public static function modifiéQuantitéItem($idJoueur, $idItem, $quantite)
   {
-    
-    if (Database::estQuantitéValide($idItem, $quantite)) {
       $pdo = Database::connect();
       $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
       $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
@@ -188,7 +186,7 @@ class Database
         return false;
       }
       return true;
-    }
+    
   }
 
   public static function getSoldeJoueur($idJoueur)

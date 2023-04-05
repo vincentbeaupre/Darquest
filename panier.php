@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $idItem = $_POST['idItem'];
     $idJoueur = $_SESSION['idJoueur'];
     $action = $_POST['action'];
+    $quantite = $_POST['quantiteAchat'];
     if ($action == 'updateQuantite') {
-      $quantite = $_POST['quantiteAchat'];
       if (Database::modifiéQuantitéItem($idJoueur, $idItem, $quantite)) {
         $messageAction = "<div class='marketSearch'>La quantité à été mis à jour.</div>";
       } else {
