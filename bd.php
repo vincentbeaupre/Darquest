@@ -204,57 +204,6 @@ class Database
 
   //------------------- Items
 
-  public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
-  {
-    $sql = "SELECT * FROM Items";
-    if (isset($type) && $type == 'oui') {
-      $stringWhere = "where typeItem =";
-      if (isset($armes) && $armes == 'oui') {
-        $stringWhere .= "'Armes' or typeItem =";
-      }
-      if (isset($armures) && $armures == 'oui') {
-        $stringWhere .= "'Armures' or typeItem =";
-      }
-      if (isset($potions) && $potions == 'oui') {
-        $stringWhere .= "'Potions' or typeItem =";
-      }
-      if (isset($sorts) && $sorts == 'oui') {
-        $stringWhere .= "'Sorts' or typeItem =";
-      }
-
-      if (substr($stringWhere, -1) == "=") {
-        $stringWhere = substr($stringWhere, 0, -14);
-      }
-      $sql = "SELECT * FROM Items " . $stringWhere;
-    }
-    if (isset($prix)) {
-      if ($prix == 'asc') {
-        $sql .= " ORDER BY typeItem,prix asc";
-      }
-      if ($prix == 'desc') {
-        $sql .= " ORDER BY typeItem,prix desc";
-      }
-    }
-    $pdo = Database::connect();
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      $montant = afficherMontant($row['prix']);
-      echo "<div id='".$row['idItem']."'>
-      <a class='itemCardChild' href='itemDetails.php?idItem=" . $row['idItem'] . "&typeItem=" . $row['typeItem'] . "'>
-      <h4 style='font-weight:bold;margin:5px;''>" . $row['nom'] . "</h4>
-      <img src=" . $row['photo'] . " style='border:3px black solid;border-radius:10px;'>
-      <span>Stock: <span>" . $row['quantiteStock'] . "</span></span>
-      <span>Prix: " . $montant . "</span>
-      <input type='hidden' id='idItem' name='idItem' value=" . $row['idItem'] . " />
-      <input type='hidden' id='typeItem' name='typeItem' value=" . $row['typeItem'] . " />
-      </a>
-    </div>
-    ";
-      //<a class='itemCardLink' href='javascript:void(0);' onclick='displayDetails(".$row['idItem'].",`".$row['typeItem']."`)'>
-    }
-    Database::disconnect();
-  }
 
   public static function getItemDetails($idItem, $typeItem)
   {
@@ -330,6 +279,45 @@ class Database
     $results = $stmt->fetchAll();
     Database::disconnect();
 
+    return $results;
+  }
+
+  public static function getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
+  {
+    $sql = "SELECT * FROM Items";
+    if (isset($type) && $type == 'oui') {
+      $stringWhere = "where typeItem =";
+      if (isset($armes) && $armes == 'oui') {
+        $stringWhere .= "'Armes' or typeItem =";
+      }
+      if (isset($armures) && $armures == 'oui') {
+        $stringWhere .= "'Armures' or typeItem =";
+      }
+      if (isset($potions) && $potions == 'oui') {
+        $stringWhere .= "'Potions' or typeItem =";
+      }
+      if (isset($sorts) && $sorts == 'oui') {
+        $stringWhere .= "'Sorts' or typeItem =";
+      }
+
+      if (substr($stringWhere, -1) == "=") {
+        $stringWhere = substr($stringWhere, 0, -14);
+      }
+      $sql = "SELECT * FROM Items " . $stringWhere;
+    }
+    if (isset($prix)) {
+      if ($prix == 'asc') {
+        $sql .= " ORDER BY typeItem,prix asc";
+      }
+      if ($prix == 'desc') {
+        $sql .= " ORDER BY typeItem,prix desc";
+      }
+    }
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+    Database::disconnect();
     return $results;
   }
 

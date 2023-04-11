@@ -1,5 +1,6 @@
 <?php
 require_once 'bd.php';
+require_once('fonctions.php');
 session_start();
 
 (isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";
@@ -39,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     Si l'erreur persite,veuillez contacter un administrateur</div>";
   }
 }
+
+$items = Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts);
 ?>
 
 <!DOCTYPE html>
@@ -49,9 +52,27 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 <main class="marketMain">
   <!-- Liste des Items -->
   <div class="itemCardMain">
-    <?php
-    Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts);
-    ?>
+    <?php if (sizeof($items) > 0) : ?>
+        <?php
+        foreach ($items as $item) {
+          $montant = afficherMontant($item['prix']);
+        ?>
+      <div id=<?=$item['idItem']?>>
+      <a class='itemCardChild' href='itemDetails.php?idItem=<?=$item['idItem']?>&typeItem=<?=$item['typeItem']?>'>
+      <h4 style='font-weight:bold;margin:5px;'><?=$item['nom']?></h4>
+      <img src="<?=$item['photo']?>" style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span><?=$item['quantiteStock']?></span></span>
+      <span>Prix: <?=$montant?></span>
+      <input type='hidden' id='idItem' name='idItem' value="<?=$item['idItem']?>" />
+      <input type='hidden' id='typeItem' name='typeItem' value="<?=$item['typeItem']?>" />
+      </a>
+    </div>
+        <?php } ?>
+      <?php else : ?>
+        <div>
+          Le magasin est vide.
+        </div>
+      <?php endif; ?>
   </div>
   <!-- Recherche des Items-->
   <div class="marketSearch">
