@@ -51,7 +51,12 @@ if(isset($idItem)&& isset($typeItem)){
       <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
       </a>
       </span>
-      <?php if(isset($_SESSION['idJoueur'])){?>
+      <?php
+}else{
+    echo 'Il semble y avoir une erreur. Veuillez contactez un administrateur';
+}
+?>
+<?php if(isset($_SESSION['idJoueur'])){?>
         <span>
         Ajouter l'item au panier:
         </span><span>
@@ -65,11 +70,9 @@ if(isset($idItem)&& isset($typeItem)){
           </button>
         </form>
         </span>
-      <?php }
-}else{
-    echo 'Il semble y avoir une erreur. Veuillez contactez un administrateur';
-}
-?>
+      <?php }else{ ?>
+        <span> Afin d'ajouter un item à votre panier et l'acheter, veuillez vous connecter ! </span>
+      <?php } ?>
 </div>
 </main>
 </body>
