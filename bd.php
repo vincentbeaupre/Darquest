@@ -62,6 +62,7 @@ class Database
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
+        $_SESSION['estMage'] = $joueur['estMage'];
 
         return true;
       }
