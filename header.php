@@ -24,6 +24,9 @@ require_once "bd.php";
         <a href="enigma.php">Enigma</a>
         <?php if (isset($_SESSION["idJoueur"])) : ?>
           <a href="inventaire.php">Inventaire</a>
+        <?php endif ?>
+        <?php if($_SESSION["estAdmin"]) : ?>
+        <a href="administration.php">Administration</a>
         <?php endif; ?>
       </div>
 
@@ -74,6 +77,9 @@ require_once "bd.php";
       <a href="enigma.php">Enigma</a>
       <?php if (isset($_SESSION["alias"])) : ?>
         <a href="inventaire.php">Inventaire</a>
+        <?php if($_SESSION["estAdmin"]) : ?>
+        <a href="administration.php">Administration</a>
+        <?php endif; ?>
         <a href="profil.php">
           <i class="fa fa-user-circle-o icon"></i>
           <span>&nbsp;<?= $_SESSION['alias'] ?></span>

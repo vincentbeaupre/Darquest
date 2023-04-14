@@ -62,6 +62,15 @@ class Database
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
+        
+        if(Database::estAdmin($joueur['idJoueur']) == 1)
+        {
+          $_SESSION['estAdmin'] = true;
+        }
+        else
+        {
+          $_SESSION['estAdmin'] = false;
+        }
 
         return true;
       }
@@ -69,6 +78,16 @@ class Database
     return false;
   }
 
+  public static function estAdmin($id)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT estAdmin FROM Joueurs where idJoueur = $id";
+    $result = $pdo->query($sql);
+    $row = $result->fetch();
+    $result = $row['estAdmin'];
+    Database::disconnect();
+    return $result;
+  }
   public static function addJoueur($alias, $nom, $prenom, $motDePasse, $courriel)
   {
     $pdo = Database::connect();
