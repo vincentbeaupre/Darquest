@@ -1,6 +1,7 @@
 <?php
 session_start();
 session_destroy();
-header('Location: index.php?logout=on');
-exit;
+session_start();
+$_SESSION['message'] = "Vous êtes déconnectés.";
+header('location: index.php');
 ?>
