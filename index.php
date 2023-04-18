@@ -2,12 +2,11 @@
 session_start();
 
 //Permet de voir si l'utilisateur vient de se déconnecté
-$logout = false;
-if ($_SERVER['REQUEST_METHOD'] === "GET") {
-  if (isset($_GET['logout'])) {
-    $logout = true;
-  }
+if (isset($_SESSION['message'])) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -17,15 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
   include "header.php"; 
   ?>
 <main>
-  <?php
-  if ($logout) {
-    /*
-    echo '
-    <script type="text/javascript">launchSnackbar()</script>
-    ';*/
-    echo '<script type="text/javascript">alert("Vous êtes déconnectés.");</script>';
-  }
-  ?>
+<?php if (isset($message)) : ?>
+    <div id="snackbar"><?= $message ?></div>
+  <?php endif; ?>
   <div class="welcome_title">
     <div class="smaller">
       Bienvenue sur
@@ -34,6 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
           DarQuest
         </div>
 </main>
+<script>
+if (document.getElementById("snackbar") != null) {
+  var snackbar = document.getElementById("snackbar");
+  snackbar.classList.add("show");
+  setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
+}
+</script>
 </body>
 
 </html>

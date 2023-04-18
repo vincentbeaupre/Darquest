@@ -62,7 +62,8 @@ class Database
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
-        $_SESSION['estMage'] = $joueur['estMmage'];
+        $_SESSION['estAdmin'] = $joueur['estAdmin'];
+        $_SESSION['estMage'] = $joueur['estMage'];
 
         return true;
       }
@@ -204,31 +205,24 @@ class Database
   }
 
   //------------------- Items
-
-
   public static function getItemDetails($idItem, $typeItem)
   {
     switch ($typeItem) {
       case 'Armes':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,description,efficacite,genre
         FROM Items i JOIN Armes a ON i.idItem = a.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Description: ', 'Efficacité: '];
         break;
       case 'Armures':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,taille,matiere
         FROM Items i JOIN Armures a ON i.idItem = a.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Taille: ', 'Matière: '];
         break;
       case 'Sorts':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,instantane,nbpointvie
         FROM Items i JOIN Sorts s ON i.idItem = s.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Instantanéité: ', 'Nombre de point de vie: '];
-        //Oui oui, Instantanéité est un vrai mot: https://www.larousse.fr/dictionnaires/francais/instantan%C3%A9it%C3%A9/43422
         break;
       case 'Potions':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,duree,effet
         FROM Items i JOIN Potions p ON i.idItem = p.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Durée: ', 'Effet: '];
         break;
     }
 
@@ -236,40 +230,75 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $idItem);
     $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
-      echo "<span>Type: " . $row['typeItem'] . "</span>
-      <img src='" . $row['photo'] . "' width='128' height='128' style='border:3px black solid;border-radius:10px;'>
-      <h1>" . $row['nom'] . "</h1>
-      <span>Stock: " . $row['quantiteStock'] . "</span>
-      <span>" . $nomColonnes[0] . $row[6] . "</span>
-      <span>" . $nomColonnes[1] . $row[7] . "</span>";
-      if ($typeItem == 'Armes') {
-        echo "<span>Genre: " . $row['genre'] . "</span>";
-      }
-      echo "<span>Prix: ";
-      echo afficherMontant($row['prix']) . "</span>";
-      echo "<span>
-      <a style='text-decoration: none; color: #ffffff' href='market.php'>
-      <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
-      </a>
-      </span>
-      <span>
-      Ajouter l'item au panier:
-      </span>";
-      echo "<span>
-      <form method='POST' action='market.php'>
-        <input type='hidden' name='idItem' value='" . $row['idItem'] . "'>
-        <label for='quantite'>Quantité (entre 1 and " . $row['quantiteStock'] . "):</label>
-          <input type='number' id='quantite' name='quantite' min='1' max=" . $row['quantiteStock'] . ">
-        <label for='btnSubmit'></label>
-        <button id='btnSubmit' type='submit'>
-          <i class='fa fa-plus'></i>
-        </button>
-      </form>
-      </span>";
-    }
+    $results = $stmt->fetch(PDO::FETCH_BOTH);
     Database::disconnect();
+    return $results;
   }
+
+
+  //Admin
+ public static function ajouterQuestion($enonce,$difficulty,$reponse1,$reponse2,$reponse3,$reponse4,$bonneReponse)
+ {
+
+  $pdo = Database::connect();
+  $stmt = $pdo->prepare("CALL ajouterQuestion(?,?,?,?,?,?)");
+  $stmt->bindParam(1, $enonce, PDO::PARAM_STR);
+  $stmt->bindParam(2, $difficulty, PDO::PARAM_STR_CHAR);
+
+  if($bonneReponse == 1)
+  {
+    $stmt->bindParam(3, $reponse2, PDO::PARAM_STR);
+    $stmt->bindParam(4, $reponse3, PDO::PARAM_STR);
+    $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+    $stmt->bindParam(6, $reponse1, PDO::PARAM_STR);
+  }
+  else if($bonneReponse == 2)
+  {
+    $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+    $stmt->bindParam(4, $reponse3, PDO::PARAM_STR);
+    $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+    $stmt->bindParam(6, $reponse2, PDO::PARAM_STR);
+  }
+  else if($bonneReponse == 3)
+  {
+    $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+    $stmt->bindParam(4, $reponse2, PDO::PARAM_STR);
+    $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+    $stmt->bindParam(6, $reponse3, PDO::PARAM_STR);
+  }
+  else if($bonneReponse == 4)
+  {
+    $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+    $stmt->bindParam(4, $reponse2, PDO::PARAM_STR);
+    $stmt->bindParam(5, $reponse3, PDO::PARAM_STR);
+    $stmt->bindParam(6, $reponse4, PDO::PARAM_STR);
+  }
+  
+  try{
+    $stmt->execute();
+  }catch (PDOException $e){
+    return false;
+  }
+  return true;
+  
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Inventaire:
   public static function getInventaire($idJoueur)
   {
