@@ -63,6 +63,7 @@ class Database
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
         $_SESSION['estAdmin'] = $joueur['estAdmin'];
+        $_SESSION['estMage'] = $joueur['estMage'];
 
         return true;
       }
@@ -117,16 +118,17 @@ class Database
       $stmt->bindParam(1, $idItem, PDO::PARAM_INT);
       $stmt->bindParam(2, $quantite, PDO::PARAM_INT);
       $stmt->bindParam(3, $idJoueur, PDO::PARAM_INT);
-      try{
+      try {
         $stmt->execute();
-      }catch (PDOException $e){
+      } catch (PDOException $e) {
         return false;
       }
       return true;
     }
   }
 
-  public static function payerPanier($idJoueur) {
+  public static function payerPanier($idJoueur)
+  {
     $pdo = Database::connect();
     $stmt = $pdo->prepare("CALL PayerPanier(?)");
     $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
@@ -151,15 +153,15 @@ class Database
   public static function supprimerFromPanier($idItem, $idJoueur)
   {
     $pdo = Database::connect();
-      $stmt = $pdo->prepare("CALL supprimerFromPanier(?,?)");
-      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
-      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      try{
-        $stmt->execute();
-      }catch (PDOException $e){
-        return false;
-      }
-      return true;
+    $stmt = $pdo->prepare("CALL supprimerFromPanier(?,?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
   }
   public static function estQuantitéValide($idItem, $quantite)
   {
@@ -176,18 +178,17 @@ class Database
   }
   public static function modifiéQuantitéItem($idJoueur, $idItem, $quantite)
   {
-      $pdo = Database::connect();
-      $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
-      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
-      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      $stmt->bindParam(3, $quantite, PDO::PARAM_INT);
-      try{
-        $stmt->execute();
-      }catch (PDOException $e){
-        return false;
-      }
-      return true;
-    
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+    $stmt->bindParam(3, $quantite, PDO::PARAM_INT);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
   }
 
   public static function getSoldeJoueur($idJoueur)
@@ -204,31 +205,24 @@ class Database
   }
 
   //------------------- Items
-
-
   public static function getItemDetails($idItem, $typeItem)
   {
     switch ($typeItem) {
       case 'Armes':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,description,efficacite,genre
         FROM Items i JOIN Armes a ON i.idItem = a.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Description: ', 'Efficacité: '];
         break;
       case 'Armures':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,taille,matiere
         FROM Items i JOIN Armures a ON i.idItem = a.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Taille: ', 'Matière: '];
         break;
       case 'Sorts':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,instantane,nbpointvie
         FROM Items i JOIN Sorts s ON i.idItem = s.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Instantanéité: ', 'Nombre de point de vie: '];
-        //Oui oui, Instantanéité est un vrai mot: https://www.larousse.fr/dictionnaires/francais/instantan%C3%A9it%C3%A9/43422
         break;
       case 'Potions':
         $sql = 'SELECT i.idItem,nom,quantiteStock,prix,photo,typeItem,duree,effet
         FROM Items i JOIN Potions p ON i.idItem = p.idItem WHERE i.idItem=?';
-        $nomColonnes = ['Durée: ', 'Effet: '];
         break;
     }
 
@@ -236,39 +230,9 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $idItem);
     $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
-      echo "<span>Type: " . $row['typeItem'] . "</span>
-      <img src='" . $row['photo'] . "' width='128' height='128' style='border:3px black solid;border-radius:10px;'>
-      <h1>" . $row['nom'] . "</h1>
-      <span>Stock: " . $row['quantiteStock'] . "</span>
-      <span>" . $nomColonnes[0] . $row[6] . "</span>
-      <span>" . $nomColonnes[1] . $row[7] . "</span>";
-      if ($typeItem == 'Armes') {
-        echo "<span>Genre: " . $row['genre'] . "</span>";
-      }
-      echo "<span>Prix: ";
-      echo afficherMontant($row['prix']) . "</span>";
-      echo "<span>
-      <a style='text-decoration: none; color: #ffffff' href='market.php'>
-      <i class='fa fa-arrow-left fa-2x' style='padding:10px;'></i>
-      </a>
-      </span>
-      <span>
-      Ajouter l'item au panier:
-      </span>";
-      echo "<span>
-      <form method='POST' action='market.php'>
-        <input type='hidden' name='idItem' value='" . $row['idItem'] . "'>
-        <label for='quantite'>Quantité (entre 1 and " . $row['quantiteStock'] . "):</label>
-          <input type='number' id='quantite' name='quantite' min='1' max=" . $row['quantiteStock'] . ">
-        <label for='btnSubmit'></label>
-        <button id='btnSubmit' type='submit'>
-          <i class='fa fa-plus'></i>
-        </button>
-      </form>
-      </span>";
-    }
+    $results = $stmt->fetch(PDO::FETCH_BOTH);
     Database::disconnect();
+    return $results;
   }
 
 
@@ -336,7 +300,8 @@ class Database
 
 
   //Inventaire:
-  public static function getInventaire($idJoueur){
+  public static function getInventaire($idJoueur)
+  {
     $pdo = Database::connect();
 
     $sql = "SELECT * FROM Inventaires v JOIN Items i ON v.idItem = i.idItem WHERE idJoueur = :idJoueur";
@@ -387,9 +352,39 @@ class Database
     return $results;
   }
 
-/*
-<a style='text-decoration: none; color: #ffffff' href='market.php'>
-<i class='fa fa-cart-arrow-down fa-2x' style='padding:10px;'></i>
-</a>
-*/
+  //------------------- Enigma
+
+  public static function getReponses($idQuestion)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT * 
+    FROM Reponses 
+    WHERE idQuestion = :idQuestion
+    ORDER BY RAND()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idQuestion" => $idQuestion]);
+    $result = $stmt->fetchAll();
+    Database::disconnect();
+
+    return $result;
+  }
+
+  public static function getQuestionAleatoire($idJoueur) {
+    $pdo = Database::connect();
+    $sql = "SELECT *
+    FROM Questions
+    WHERE idQuestion NOT IN (
+      SELECT idQuestion
+      FROM Joueurs_Questions
+      WHERE idJoueur = :idJoueur
+    )
+    ORDER BY RAND()
+    LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetch();
+    Database::disconnect();
+
+    return $result;
+  }
 }
