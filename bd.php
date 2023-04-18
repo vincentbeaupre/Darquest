@@ -340,7 +340,8 @@ class Database
     return $result;
   }
 
-  public static function getQuestionAleatoire($idJoueur) {
+  public static function getQuestionAleatoire($idJoueur)
+  {
     $pdo = Database::connect();
     $sql = "SELECT *
     FROM Questions
