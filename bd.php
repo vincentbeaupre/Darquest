@@ -117,16 +117,17 @@ class Database
       $stmt->bindParam(1, $idItem, PDO::PARAM_INT);
       $stmt->bindParam(2, $quantite, PDO::PARAM_INT);
       $stmt->bindParam(3, $idJoueur, PDO::PARAM_INT);
-      try{
+      try {
         $stmt->execute();
-      }catch (PDOException $e){
+      } catch (PDOException $e) {
         return false;
       }
       return true;
     }
   }
 
-  public static function payerPanier($idJoueur) {
+  public static function payerPanier($idJoueur)
+  {
     $pdo = Database::connect();
     $stmt = $pdo->prepare("CALL PayerPanier(?)");
     $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
@@ -151,15 +152,15 @@ class Database
   public static function supprimerFromPanier($idItem, $idJoueur)
   {
     $pdo = Database::connect();
-      $stmt = $pdo->prepare("CALL supprimerFromPanier(?,?)");
-      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
-      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      try{
-        $stmt->execute();
-      }catch (PDOException $e){
-        return false;
-      }
-      return true;
+    $stmt = $pdo->prepare("CALL supprimerFromPanier(?,?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
   }
   public static function estQuantitéValide($idItem, $quantite)
   {
@@ -176,18 +177,17 @@ class Database
   }
   public static function modifiéQuantitéItem($idJoueur, $idItem, $quantite)
   {
-      $pdo = Database::connect();
-      $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
-      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
-      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      $stmt->bindParam(3, $quantite, PDO::PARAM_INT);
-      try{
-        $stmt->execute();
-      }catch (PDOException $e){
-        return false;
-      }
-      return true;
-    
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL UpdatePanier(?,?,?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+    $stmt->bindParam(3, $quantite, PDO::PARAM_INT);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
   }
 
   public static function getSoldeJoueur($idJoueur)
@@ -234,7 +234,8 @@ class Database
     return $results;
   }
   //Inventaire:
-  public static function getInventaire($idJoueur){
+  public static function getInventaire($idJoueur)
+  {
     $pdo = Database::connect();
 
     $sql = "SELECT * FROM Inventaires v JOIN Items i ON v.idItem = i.idItem WHERE idJoueur = :idJoueur";
@@ -285,9 +286,39 @@ class Database
     return $results;
   }
 
-/*
-<a style='text-decoration: none; color: #ffffff' href='market.php'>
-<i class='fa fa-cart-arrow-down fa-2x' style='padding:10px;'></i>
-</a>
-*/
+  //------------------- Enigma
+
+  public static function getReponses($idQuestion)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT * 
+    FROM Reponses 
+    WHERE idQuestion = :idQuestion
+    ORDER BY RAND()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idQuestion" => $idQuestion]);
+    $result = $stmt->fetchAll();
+    Database::disconnect();
+
+    return $result;
+  }
+
+  public static function getQuestionAleatoire($idJoueur) {
+    $pdo = Database::connect();
+    $sql = "SELECT *
+    FROM Questions
+    WHERE idQuestion NOT IN (
+      SELECT idQuestion
+      FROM Joueurs_Questions
+      WHERE idJoueur = :idJoueur
+    )
+    ORDER BY RAND()
+    LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetch();
+    Database::disconnect();
+
+    return $result;
+  }
 }
