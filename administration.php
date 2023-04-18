@@ -13,9 +13,19 @@ require_once('bd.php');
 
 
 <main>
-<?php if(isset($_POST["submit"]))
+<?php if(isset($_POST["submit"]) && isset($_SESSION['estAdmin']))
 {
-    echo "<h1>test</test>";
+  $enonce = $_POST['question'];
+  $difficulty = $_POST['difficulty'];
+  $reponse1 = $_POST['response1'];
+  $reponse2 = $_POST['response2'];
+  $reponse3 = $_POST['response3'];
+  $reponse4 = $_POST['response4'];
+  $correctAnswer = $_POST['correct-answer'];
+
+  echo "Question ajouter avec Succes";
+  Database::ajouterQuestion($enonce,$difficulty,$reponse1,$reponse2,$reponse3,$reponse4,$correctAnswer);
+ 
 }
 
 ?>
@@ -40,17 +50,17 @@ require_once('bd.php');
 
   <label for="correct-answer">Bonne réponse :</label><br>
   <select id="correct-answer" name="correct-answer">
-    <option value="response1">Réponse 1</option>
-    <option value="response2">Réponse 2</option>
-    <option value="response3">Réponse 3</option>
-    <option value="response3">Réponse 4</option>
+    <option value="1">Réponse 1</option>
+    <option value="2">Réponse 2</option>
+    <option value="3">Réponse 3</option>
+    <option value="4">Réponse 4</option>
   </select><br>
 
   <label for="difficulty">Difficulté :</label><br>
   <select id="difficulty" name="difficulty">
-    <option value="facile">Facile</option>
-    <option value="moyen">Moyen</option>
-    <option value="difficile">Difficile</option>
+    <option value="F">Facile</option>
+    <option value="M">Moyen</option>
+    <option value="D">Difficile</option>
   </select><br><br>
 
   <input type="submit" name="submit" value="submit">
