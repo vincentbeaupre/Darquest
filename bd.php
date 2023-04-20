@@ -62,6 +62,7 @@ class Database
         $_SESSION['nom'] = $joueur['nom'];
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
+        $_SESSION['estAdmin'] = $joueur['estAdmin'];
         $_SESSION['estMage'] = $joueur['estMage'];
 
         return true;
@@ -233,6 +234,63 @@ class Database
     Database::disconnect();
     return $results;
   }
+
+
+  //Admin
+  public static function ajouterQuestion($enonce, $difficulty, $reponse1, $reponse2, $reponse3, $reponse4, $bonneReponse)
+  {
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ajouterQuestion(?,?,?,?,?,?)");
+    $stmt->bindParam(1, $enonce, PDO::PARAM_STR);
+    $stmt->bindParam(2, $difficulty, PDO::PARAM_STR_CHAR);
+
+    if ($bonneReponse == 1) {
+      $stmt->bindParam(3, $reponse2, PDO::PARAM_STR);
+      $stmt->bindParam(4, $reponse3, PDO::PARAM_STR);
+      $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+      $stmt->bindParam(6, $reponse1, PDO::PARAM_STR);
+    } else if ($bonneReponse == 2) {
+      $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+      $stmt->bindParam(4, $reponse3, PDO::PARAM_STR);
+      $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+      $stmt->bindParam(6, $reponse2, PDO::PARAM_STR);
+    } else if ($bonneReponse == 3) {
+      $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+      $stmt->bindParam(4, $reponse2, PDO::PARAM_STR);
+      $stmt->bindParam(5, $reponse4, PDO::PARAM_STR);
+      $stmt->bindParam(6, $reponse3, PDO::PARAM_STR);
+    } else if ($bonneReponse == 4) {
+      $stmt->bindParam(3, $reponse1, PDO::PARAM_STR);
+      $stmt->bindParam(4, $reponse2, PDO::PARAM_STR);
+      $stmt->bindParam(5, $reponse3, PDO::PARAM_STR);
+      $stmt->bindParam(6, $reponse4, PDO::PARAM_STR);
+    }
+
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Inventaire:
   public static function getInventaire($idJoueur)
   {
@@ -303,19 +361,41 @@ class Database
     return $result;
   }
 
-  public static function getQuestionAleatoire($idJoueur) {
-    $pdo = Database::connect();
-    $sql = "SELECT *
-    FROM Questions
-    WHERE idQuestion NOT IN (
-      SELECT idQuestion
-      FROM Joueurs_Questions
-      WHERE idJoueur = :idJoueur
-    )
+  public static function getQuestionAleatoire($idJoueur)
+  {
+    $sql = "SELECT q.*
+    FROM Questions q
+    LEFT JOIN Joueurs_Questions jq
+      ON q.idQuestion = jq.idQuestion
+      AND jq.idJoueur = :idJoueur
+    WHERE jq.idQuestion IS NULL
     ORDER BY RAND()
     LIMIT 1";
+
+    $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetch();
+    Database::disconnect();
+
+    return $result;
+  }
+
+  public static function getQuestionDifficulte($idJoueur, $difficulte)
+  {
+    $sql = "SELECT q.*
+            FROM Questions q
+            LEFT JOIN Joueurs_Questions jq
+              ON q.idQuestion = jq.idQuestion
+              AND jq.idJoueur = :idJoueur
+            WHERE q.difficulte = :difficulte
+              AND jq.idJoueur IS NULL
+            ORDER BY RAND()
+            LIMIT 1";
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur, ":difficulte" => $difficulte]);
     $result = $stmt->fetch();
     Database::disconnect();
 
