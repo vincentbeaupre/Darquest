@@ -375,7 +375,7 @@ class Database
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idJoueur" => $idJoueur]);
-    $result = $stmt->fetch();
+    $result = $stmt->fetch(PDO::FETCH_BOTH);
     Database::disconnect();
 
     return $result;
@@ -396,9 +396,22 @@ class Database
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idJoueur" => $idJoueur, ":difficulte" => $difficulte]);
-    $result = $stmt->fetch();
+    $result = $stmt->fetch(PDO::FETCH_BOTH);
     Database::disconnect();
 
+    return $result;
+  }
+  public static function getQuestion($idQuestion)
+  {
+    $sql = "SELECT *
+            FROM Questions 
+            WHERE idQuestion = :idQuestion";
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idQuestion" => $idQuestion]);
+    $result = $stmt->fetch(PDO::FETCH_BOTH);
+    Database::disconnect();
     return $result;
   }
 }
