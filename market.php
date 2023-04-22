@@ -50,30 +50,6 @@ $items = Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
 <?php include "header.php" ?>
 
 <main class="marketMain">
-  <!-- Liste des Items -->
-  <div class="itemCardMain">
-    <?php if (sizeof($items) > 0) : ?>
-        <?php
-        foreach ($items as $item) {
-          $montant = afficherMontant($item['prix']);
-        ?>
-      <div id=<?=$item['idItem']?>>
-      <a class='itemCardChild' href='itemDetails.php?idItem=<?=$item['idItem']?>&typeItem=<?=$item['typeItem']?>'>
-      <h4 style='font-weight:bold;margin:5px;'><?=$item['nom']?></h4>
-      <img src="<?=$item['photo']?>" style='border:3px black solid;border-radius:10px;'>
-      <span>Stock: <span><?=$item['quantiteStock']?></span></span>
-      <span>Prix: <?=$montant?></span>
-      <input type='hidden' id='idItem' name='idItem' value="<?=$item['idItem']?>" />
-      <input type='hidden' id='typeItem' name='typeItem' value="<?=$item['typeItem']?>" />
-      </a>
-    </div>
-        <?php } ?>
-      <?php else : ?>
-        <div>
-          Le magasin est vide.
-        </div>
-      <?php endif; ?>
-  </div>
   <!-- Recherche des Items-->
   <div class="marketSearch">
     <?php
@@ -99,6 +75,31 @@ $items = Database::getAllItems($prix, $type, $armes, $armures, $potions, $sorts)
     </form>
     <a style="text-decoration:none;color:red;" href='market.php'>Réinitialiser</a>
   </div>
+  <!-- Liste des Items -->
+  <div class="itemCardMain">
+    <?php if (sizeof($items) > 0) : ?>
+        <?php
+        foreach ($items as $item) {
+          $montant = afficherMontant($item['prix']);
+        ?>
+      <div id=<?=$item['idItem']?>>
+      <a class='itemCardChild' href='itemDetails.php?idItem=<?=$item['idItem']?>&typeItem=<?=$item['typeItem']?>'>
+      <h4 style='font-weight:bold;margin:5px;'><?=$item['nom']?></h4>
+      <img src="<?=$item['photo']?>" style='border:3px black solid;border-radius:10px;'>
+      <span>Stock: <span><?=$item['quantiteStock']?></span></span>
+      <span>Prix: <?=$montant?></span>
+      <input type='hidden' id='idItem' name='idItem' value="<?=$item['idItem']?>" />
+      <input type='hidden' id='typeItem' name='typeItem' value="<?=$item['typeItem']?>" />
+      </a>
+    </div>
+        <?php } ?>
+      <?php else : ?>
+        <div>
+          Le magasin est vide.
+        </div>
+      <?php endif; ?>
+  </div>
+  
 </main>
   <?php
   if (isset($messagePanier)){
