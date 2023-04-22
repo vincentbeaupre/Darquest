@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +16,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="" method="post">
+    <form action="questions.php" method="POST">
       <input type="hidden" name="difficulte" value="A">
       <button type='submit' class="col-4 btnQuestion">Question aléatoire
       </button>
@@ -27,7 +28,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="" method="post">
+    <form action="questions.php" method="POST">
       <input type="hidden" name="difficulte" value="F">
       <button type='submit' class="col-4 btnQuestion">Question facile
       </button>
@@ -36,7 +37,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="" method="post">
+    <form action="questions.php" method="POST">
       <input type="hidden" name="difficulte" value="M">
       <button type='submit' class="col-4 btnQuestion">Question moyenne
       </button>
@@ -45,7 +46,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="" method="post">
+    <form action="questions.php" method="POST">
       <input type="hidden" name="difficulte" value="D">
       <button type='submit' class="col-4 btnQuestion">Question difficile
       </button>

@@ -8,6 +8,11 @@
 main {
   margin-top: 80px;
 }
+@media only screen and (max-width: 600px) {
+  main {
+    margin-top: 120px;
+  }
+}
 
 /* General */
 
@@ -413,11 +418,11 @@ input[type=button], input[type=submit], input[type=reset] {
 .btnQuestion{
   border: 1px solid black;
   border-radius: 15px;
-  background-color:#04AA6D;
+  background-color:#b3b5b4;
   transition: background-color 0.3s,font-size 0.3s;
 }
 .btnQuestion:hover{
   cursor: pointer;
-  background-color: hsl(158, 88%, 26%);
+  background-color: #999999;
   font-size:calc(100% + 2px);
 }
