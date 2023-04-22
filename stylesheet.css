@@ -6,7 +6,7 @@
 }
 
 main {
-  margin-top: 80px;
+  margin-top: 100px;
 }
 @media only screen and (max-width: 600px) {
   main {
@@ -28,6 +28,7 @@ main {
   position: fixed;
   z-index: 1;
   left: 50%;
+  right: 50%;
   bottom: 30px;
 }
 
@@ -73,7 +74,6 @@ main {
   right: 0;
   width: 100%;
   align-items: center;
-  padding-right: 30px;
 }
 
 .navbar a {
@@ -149,6 +149,7 @@ main {
 .menu {
   display: none;
   position: fixed;
+  z-index: 1;
   margin: auto;
   width: 80%;
   top: 80px;
@@ -169,13 +170,27 @@ main {
   align-items: center;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
   .navbar .nav_links, .navbar .user_links {
     display: none;
   }
 
   .navbar .hamburger {
     display: flex;
+  }
+
+  .shopping a i {
+    font-size: 20px;
+  }
+
+  .soldeJoueur {
+    float: left;
+    display: flex;
+    color: #f2f2f2;
+    text-align: center;
+    align-items: center;
+    padding: 16px 16px;
+    font-size: 15px;
   }
 }
 
@@ -416,13 +431,30 @@ input[type=button], input[type=submit], input[type=reset] {
   text-align: center;
 }
 .btnQuestion{
+  position: relative;
   border: 1px solid black;
   border-radius: 15px;
   background-color:#b3b5b4;
   transition: background-color 0.3s,font-size 0.3s;
+  justify-content: center;
 }
 .btnQuestion:hover{
   cursor: pointer;
   background-color: #999999;
   font-size:calc(100% + 2px);
+}
+.correctAnswer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  color: green;
+}
+
+.incorrectAnswer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  color: red;
 }
