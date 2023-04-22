@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+if (isset($_SESSION['idJoueur'])){
+  $idJoueur = $_SESSION['idJoueur'];
+}
+else{
+  $_SESSION['message'] = "Connectez-vous pour accéder à Enigma";
+  header('Location: index.php');
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +24,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="questions.php" method="POST">
+    <form action="questions.php" method="GET">
       <input type="hidden" name="difficulte" value="A">
       <button type='submit' class="col-4 btnQuestion">Question aléatoire
       </button>
@@ -28,7 +36,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="questions.php" method="POST">
+    <form action="questions.php" method="GET">
       <input type="hidden" name="difficulte" value="F">
       <button type='submit' class="col-4 btnQuestion">Question facile
       </button>
@@ -37,7 +45,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="questions.php" method="POST">
+    <form action="questions.php" method="GET">
       <input type="hidden" name="difficulte" value="M">
       <button type='submit' class="col-4 btnQuestion">Question moyenne
       </button>
@@ -46,7 +54,7 @@ session_start();
   </div>
   <div class="row">
     <div class="col-4"></div>
-    <form action="questions.php" method="POST">
+    <form action="questions.php" method="GET">
       <input type="hidden" name="difficulte" value="D">
       <button type='submit' class="col-4 btnQuestion">Question difficile
       </button>
