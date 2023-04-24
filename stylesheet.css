@@ -381,3 +381,13 @@ input[type=button], input[type=submit], input[type=reset] {
   margin: auto;
   font-weight: bold;
 }
+#ajoutQuestion {
+  border-radius: 10px;
+  border: 6px solid rgb(0, 0, 0);
+  text-align: center;
+}
+#ajouterSolde {
+  border-radius: 10px;
+  border: 6px solid rgb(0, 0, 0);
+  text-align: center;
+}
