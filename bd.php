@@ -361,6 +361,21 @@ class Database
     return $result;
   }
 
+  public static function getBonneReponse($idQuestion)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT idReponse
+    FROM Reponses 
+    WHERE idQuestion = :idQuestion
+    AND estBonneReponse = 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idQuestion" => $idQuestion]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+
+    return $result;
+  }
+
   public static function getQuestionAleatoire($idJoueur)
   {
     $sql = "SELECT q.*
@@ -399,19 +414,6 @@ class Database
     $result = $stmt->fetch(PDO::FETCH_BOTH);
     Database::disconnect();
 
-    return $result;
-  }
-  public static function getQuestion($idQuestion)
-  {
-    $sql = "SELECT *
-            FROM Questions 
-            WHERE idQuestion = :idQuestion";
-
-    $pdo = Database::connect();
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idQuestion" => $idQuestion]);
-    $result = $stmt->fetch(PDO::FETCH_BOTH);
-    Database::disconnect();
     return $result;
   }
 }
