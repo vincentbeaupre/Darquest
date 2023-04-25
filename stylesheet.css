@@ -447,7 +447,7 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: green;
 }
 
@@ -455,6 +455,6 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: red;
 }
