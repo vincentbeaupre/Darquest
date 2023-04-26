@@ -1,20 +1,27 @@
 <?php
 session_start();
 
-if (isset($_SESSION['idJoueur'])){
+if (isset($_SESSION['idJoueur'])) {
   $idJoueur = $_SESSION['idJoueur'];
-}
-else{
+} else {
   $_SESSION['message'] = "Connectez-vous pour accéder à Enigma";
   header('Location: index.php');
 }
 
+if (isset($_SESSION['message'])) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 
-<?php include "header.php" ?>
+<?php include_once "header.php" ?>
+
+<?php if (isset($message)) : ?>
+  <div id="snackbar"><?= $message ?></div>
+<?php endif; ?>
 
 <main class="enigmaContainer">
   <div class="row">
@@ -72,6 +79,15 @@ else{
     </div>
   </div>
 </main>
+<script>
+  if (document.getElementById("snackbar") != null) {
+    var snackbar = document.getElementById("snackbar");
+    snackbar.classList.add("show");
+    setTimeout(function() {
+      snackbar.classList.remove("show");
+    }, 3000);
+  }
+</script>
 </body>
 
 </html>

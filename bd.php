@@ -379,13 +379,13 @@ class Database
   public static function getQuestionAleatoire($idJoueur)
   {
     $sql = "SELECT q.*
-    FROM Questions q
-    LEFT JOIN Joueurs_Questions jq
-      ON q.idQuestion = jq.idQuestion
-      AND jq.idJoueur = :idJoueur
-    WHERE jq.idQuestion IS NULL
-    ORDER BY RAND()
-    LIMIT 1";
+            FROM Questions q
+            LEFT JOIN Joueurs_Questions jq
+              ON q.idQuestion = jq.idQuestion
+              AND jq.idJoueur = :idJoueur
+            WHERE jq.idQuestion IS NULL
+            ORDER BY RAND()
+            LIMIT 1";
 
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
@@ -415,5 +415,29 @@ class Database
     Database::disconnect();
 
     return $result;
+  }
+
+  public static function answerQuestion($idJoueur, $idQuestion, $estBonneReponse)
+  {
+    $sql = "INSERT INTO Joueurs_Questions (idJoueur, idQuestion, estBonneReponse)
+            VALUES (:idJoueur, :idQuestion, :estBonneReponse)";
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute([":idJoueur" => $idJoueur, ":idQuestion" => $idQuestion, ":estBonneReponse" => $estBonneReponse]);
+
+    return $result;
+  }
+
+  public static function modifierSolde($idJoueur, $montant){
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ModifierSolde(?, ?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $montant, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    Database::disconnect();
   }
 }

@@ -27,7 +27,7 @@ main {
   border-radius: 2px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 50%;
   right: 50%;
   bottom: 30px;
@@ -396,6 +396,7 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
 
 input[type=button], input[type=submit], input[type=reset] {
   background-color: #04AA6D;
+  border-radius: 5px;
   border: none;
   color: white;
   padding: 16px 32px;
@@ -540,7 +541,7 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: green;
 }
 
@@ -548,6 +549,6 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: red;
 }
