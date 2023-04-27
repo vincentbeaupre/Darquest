@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     $question = Database::getQuestionDifficulte($idJoueur, $difficulte);
   }
 
-  if(!$question){
+  if (!$question) {
     $_SESSION['message'] = "Aucune question disponible pour cette catégorie";
     header('Location: enigma.php');
     exit();
@@ -65,9 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         Database::modifierSolde($idJoueur, $gain);
 
-        $_SESSION['message'] = "Bonne réponse! Vous gagnez 10 pièces " . $typePiece;
+        $_SESSION['message'] = "Bonne réponse! Vous gagnez 10 pièces " . $typePiece . ".";
+
+        if (!$_SESSION['estMage'] && Database::getBonnesReponsesDifficiles($idJoueur) == "5") {
+
+          Database::updateMageStatus($idJoueur);
+          $_SESSION['estMage'] = true;
+          $_SESSION['message'] .= " De plus, vous êtes désormais un MAGE!";
+        }
       } else {
-        
+
         $_SESSION['message'] = "Mauvaise réponse... Meilleure chance la prochaine fois";
       }
 
@@ -75,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     } else {
       $_SESSION['message'] = "Erreur lors de la soumission de votre réponse";
     }
-
   } else {
     $_SESSION['message'] = "Vous ne pouvez répondre qu'une seule fois à chaque question";
   }
@@ -136,7 +142,7 @@ if (isset($_SESSION['message'])) {
 
     <div class="row">
       <div class="col-12">
-        <input type="button" value="Rejouer" onclick="window.location.href='enigma.php'"/>
+        <input type="button" value="Rejouer" onclick="window.location.href='enigma.php'" />
       </div>
     </div>
   <?php } ?>
