@@ -63,7 +63,7 @@ class Database
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
         $_SESSION['estAdmin'] = $joueur['estAdmin'];
-        $_SESSION['estMage'] = $joueur['estMage'];
+        $_SESSION['estMage'] = $joueur['estMage'] == 1 ? true:false;
 
         return true;
       }
@@ -234,6 +234,75 @@ class Database
     Database::disconnect();
     return $results;
   }
+ // profil
+
+ public static function changerNom($alias, $nouveauNom)
+ {
+  $pdo = Database::connect();
+  $stmt = $pdo->prepare("CALL ChangerNom(?,?)");
+  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+  $stmt->bindParam(2, $nouveauNom, PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "<h4> Erreur avec le changement de nom veuillez contactez un administrateur </h4>";
+    return false;
+  }
+  $_SESSION['nom'] = $nouveauNom;
+  echo "<h2> Nom changer avec succes </h2>";
+  return true;
+
+ }
+ public static function changerPrenom($alias, $nouveauPrenom)
+ {
+  $pdo = Database::connect();
+  $stmt = $pdo->prepare("CALL ChangerPrenom(?,?)");
+  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+  $stmt->bindParam(2, $nouveauPrenom, PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "<h4> Erreur avec le changement de prenom veuillez contactez un administrateur </h4>";
+    return false;
+  }
+  $_SESSION['prenom'] = $nouveauPrenom;
+  echo "<h2> Prenom changer avec succes </h2>";
+  return true;
+
+ }
+
+ public static function ChangerCourriel($alias, $nouveauCourriel)
+ {
+  $pdo = Database::connect();
+  $stmt = $pdo->prepare("CALL ChangerCourriel(?,?)");
+  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+  $stmt->bindParam(2, $nouveauCourriel, PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "<h4> Erreur avec le changement de courriel veuillez contactez un administrateur </h4>";
+    return false;
+  }
+  $_SESSION['courriel'] = $nouveauCourriel;
+  echo "<h2> Courriel changer avec succes </h2>";
+  return true;
+ }
+
+ public static function ChangerPassword($alias, $nouveauPassword)
+ {
+  $pdo = Database::connect();
+  $stmt = $pdo->prepare("CALL ChangerPassword(?,?)");
+  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+  $stmt->bindParam(2, $nouveauPassword, PDO::PARAM_STR);
+  try {
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "<h4> Erreur avec le changement de password veuillez contactez un administrateur </h4>";
+    return false;
+  }
+  echo "<h2> Password changer avec succes </h2>";
+  return true;
+ }
 
 
   //Admin
@@ -270,25 +339,28 @@ class Database
     try {
       $stmt->execute();
     } catch (PDOException $e) {
+      echo "<h4>Erreur d'ajout de question</h4>";
       return false;
     }
+    echo "<h4>Question ajouter avec succes</h4>";
     return true;
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  public static function ajouterSolde($alias)
+  {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ajouterFond(?)");
+    $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo "<h4>l'alias de l'usager n'existe pas ou il a déja fait 3 demande de fonds</h4>";
+      return false;
+    }
+    echo "<h4>le solde a été augmenter avec succes</h4>";
+    return true;
+  }
 
 
   //Inventaire:
