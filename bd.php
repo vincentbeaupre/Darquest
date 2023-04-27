@@ -63,7 +63,7 @@ class Database
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
         $_SESSION['estAdmin'] = $joueur['estAdmin'];
-        $_SESSION['estMage'] = $joueur['estMage'];
+        $_SESSION['estMage'] = $joueur['estMage'] == 1 ? true:false;
 
         return true;
       }
@@ -275,22 +275,6 @@ class Database
     return true;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   //Inventaire:
   public static function getInventaire($idJoueur)
   {
@@ -363,11 +347,12 @@ class Database
 
   public static function getBonneReponse($idQuestion)
   {
-    $pdo = Database::connect();
     $sql = "SELECT idReponse
-    FROM Reponses 
-    WHERE idQuestion = :idQuestion
-    AND estBonneReponse = 1";
+            FROM Reponses 
+             WHERE idQuestion = :idQuestion
+            AND estBonneReponse = 1";
+    
+    $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idQuestion" => $idQuestion]);
     $result = $stmt->fetchColumn();
@@ -425,11 +410,47 @@ class Database
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([":idJoueur" => $idJoueur, ":idQuestion" => $idQuestion, ":estBonneReponse" => $estBonneReponse]);
+    Database::disconnect();
 
     return $result;
   }
 
-  public static function modifierSolde($idJoueur, $montant){
+  public static function getBonnesReponsesDifficiles($idJoueur)
+  {
+
+    $sql = "SELECT COUNT(*)
+            FROM Joueurs_Questions jq
+            LEFT JOIN Questions q
+              ON jq.idQuestion = q.idQuestion
+              AND jq.idJoueur = :idJoueur
+            WHERE q.difficulte = 'D'
+              AND estBonneReponse = 1";
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+
+    return $result;
+  }
+
+  public static function updateMageStatus($idJoueur){
+
+    $sql = "UPDATE Joueurs
+            SET estMage = 1
+            WHERE idJoueur = :idJoueur";
+    
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute([":idJoueur" => $idJoueur]);
+    Database::disconnect();
+
+    return $result;
+  }
+
+  public static function modifierSolde($idJoueur, $montant)
+  {
 
     $pdo = Database::connect();
     $stmt = $pdo->prepare("CALL ModifierSolde(?, ?)");
