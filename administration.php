@@ -13,7 +13,10 @@ require_once('bd.php');
 
 
 <main>
-  <?php if (isset($_POST["submit"]) && isset($_SESSION['estAdmin'])) {
+  
+  <div id="ajoutQuestion">
+    <h1>Ajouter une question dans Enigma</h1>
+    <?php if (isset($_POST["submit"]) && isset($_SESSION['estAdmin'])) {
     $enonce = $_POST['question'];
     $difficulty = $_POST['difficulty'];
     $reponse1 = $_POST['response1'];
@@ -22,14 +25,10 @@ require_once('bd.php');
     $reponse4 = $_POST['response4'];
     $correctAnswer = $_POST['correct-answer'];
 
-    echo "Question ajouter avec Succes";
     Database::ajouterQuestion($enonce, $difficulty, $reponse1, $reponse2, $reponse3, $reponse4, $correctAnswer);
   }
 
   ?>
-  <div id="ajoutQuestion">
-    <h1>Ajouter une question dans Enigma</h1>
-
     <form method="Post">
       <label for="question">Question :</label><br>
       <input type="text" id="question" name="question" required><br>
@@ -70,6 +69,10 @@ require_once('bd.php');
   <div id="ajouterSolde">
     <h1>Ajouter du solde a un joueur</h1>
     <br>
+    <?php if (isset($_POST["addSolde"]) && isset($_SESSION['estAdmin'])) {
+      Database::ajouterSolde($_POST["aliasJoueur"]);
+    }
+    ?>
     <form method="Post">
 
       <label for="aliasJoueur">Alias du Joueur :</label><br>
