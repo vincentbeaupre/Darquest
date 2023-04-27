@@ -8,6 +8,7 @@
 main {
   margin-top: 100px;
 }
+
 @media only screen and (max-width: 600px) {
   main {
     margin-top: 120px;
@@ -26,7 +27,7 @@ main {
   border-radius: 2px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 50%;
   right: 50%;
   bottom: 30px;
@@ -39,23 +40,51 @@ main {
 }
 
 @-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 .erreur {
@@ -116,7 +145,7 @@ main {
   margin-left: auto;
 }
 
-.shopping a i, .user_links a i{
+.shopping a i, .user_links a i {
   font-size: 30px;
 }
 
@@ -212,6 +241,7 @@ main {
   font-size: 8vmax;
   font-weight: bold;
 }
+
 /* Market*/
 #boutonPanier {
   height: 10%;
@@ -249,21 +279,20 @@ main {
 
 .itemCardMain {
   display: grid;
-    gap: 2vh;
-    grid-template-columns: auto auto auto auto;
-    justify-content: space-evenly;
-    justify-items: center;
-    width: 100%;
-    text-align: center;
-    margin: 3px;
-    border: 3px black solid;
-    border-radius: 15px;
+  grid-template-columns: repeat(auto-fill, 200px);
+  justify-content: space-evenly;
+  justify-items: center;
+  width: 100%;
+  text-align: center;
+  margin: 3px;
+  border: 3px black solid;
+  border-radius: 15px;
 }
 
 .itemCardChild {
   background-color: #2c2415;
   color: #ffffff;
-  margin: 10px;
+  margin: 8px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -277,10 +306,12 @@ main {
   text-align: center;
   max-width: 200px;
 }
+
 .itemCardLink {
   text-decoration: none;
   color: inherit
 }
+
 .marketMain {
   display: flex;
   flex-direction: row;
@@ -295,6 +326,19 @@ main {
   width: 15%;
   border: 3px black solid;
   border-radius: 15px;
+}
+
+@media only screen and (max-width: 860px) {
+  .marketMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .marketSearch{
+    width:100%;
+  }
 }
 
 /* Item details */
@@ -352,6 +396,7 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
 
 input[type=button], input[type=submit], input[type=reset] {
   background-color: #04AA6D;
+  border-radius: 5px;
   border: none;
   color: white;
   padding: 16px 32px;
@@ -424,29 +469,67 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 /* Section Enigma */
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
+.col-1 {
+  width: 8.33%;
+}
+
+.col-2 {
+  width: 16.66%;
+}
+
+.col-3 {
+  width: 25%;
+}
+
+.col-4 {
+  width: 33.33%;
+}
+
+.col-5 {
+  width: 41.66%;
+}
+
+.col-6 {
+  width: 50%;
+}
+
+.col-7 {
+  width: 58.33%;
+}
+
+.col-8 {
+  width: 66.66%;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.col-10 {
+  width: 83.33%;
+}
+
+.col-11 {
+  width: 91.66%;
+}
+
+.col-12 {
+  width: 100%;
+}
+
 [class*="col-"] {
   float: left;
   padding: 10px;
 }
+
 .row::after {
   content: "";
   clear: both;
   display: table;
   margin: 10px;
 }
-.enigmaContainer{
+
+.enigmaContainer {
   text-align: center;
 }
 .btnQuestion{
@@ -457,7 +540,8 @@ input[type=button], input[type=submit], input[type=reset] {
   transition: background-color 0.3s,font-size 0.3s;
   justify-content: center;
 }
-.btnQuestion:hover{
+
+.btnQuestion:hover {
   cursor: pointer;
   background-color: #999999;
   font-size:calc(100% + 2px);
@@ -466,7 +550,7 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: green;
 }
 
@@ -474,6 +558,6 @@ input[type=button], input[type=submit], input[type=reset] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 10px;
   color: red;
 }

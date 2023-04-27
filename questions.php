@@ -7,6 +7,7 @@ if (isset($_SESSION['idJoueur'])) {
 } else {
   $_SESSION['message'] = "Connectez-vous pour accéder à Enigma";
   header('Location: index.php');
+  exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
@@ -17,6 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     $question = Database::getQuestionAleatoire($idJoueur);
   } else {
     $question = Database::getQuestionDifficulte($idJoueur, $difficulte);
+  }
+
+  if(!$question){
+    $_SESSION['message'] = "Aucune question disponible pour cette catégorie";
+    header('Location: enigma.php');
+    exit();
   }
 
   $_SESSION['question'] = $question;
@@ -33,15 +40,42 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $reponses = $_SESSION['reponses'];
   $reponseJoueur = $_POST['idReponse'];
   $bonneReponse = Database::getBonneReponse($question['idQuestion']);
+  $estBonneReponse = $reponseJoueur == $bonneReponse;
 
   if (!$_SESSION['answered']) {
 
-    if ($reponseJoueur == $bonneReponse) {
-    } else {
-    }
-    //! Update les tables (Joueur_Question & soldes de Joueur) selon le return de la fonction de vérification
+    if (Database::answerQuestion($idJoueur, $question['idQuestion'], $estBonneReponse)) {
 
-    $_SESSION['answered'] = true;
+      if ($estBonneReponse) {
+
+        switch ($question['difficulte']) {
+          case "F":
+            $gain = 10;
+            $typePiece = "de bronze";
+            break;
+          case "M":
+            $gain = 100;
+            $typePiece = "d'argent";
+            break;
+          case "D":
+            $gain = 1000;
+            $typePiece = "d'or";
+            break;
+        }
+
+        Database::modifierSolde($idJoueur, $gain);
+
+        $_SESSION['message'] = "Bonne réponse! Vous gagnez 10 pièces " . $typePiece;
+      } else {
+        
+        $_SESSION['message'] = "Mauvaise réponse... Meilleure chance la prochaine fois";
+      }
+
+      $_SESSION['answered'] = true;
+    } else {
+      $_SESSION['message'] = "Erreur lors de la soumission de votre réponse";
+    }
+
   } else {
     $_SESSION['message'] = "Vous ne pouvez répondre qu'une seule fois à chaque question";
   }
@@ -76,7 +110,9 @@ if (isset($_SESSION['message'])) {
       <form method="POST">
 
         <input type="hidden" name="idReponse" value="<?= $reponse['idReponse'] ?>">
-        <button type='submit' class="col-6 btnQuestion" <?php if ($_SESSION['answered']) {echo "disabled";} ?>>
+        <button type='submit' class="col-6 btnQuestion" <?php if ($_SESSION['answered']) {
+                                                          echo "disabled";
+                                                        } ?>>
           <?= $reponse['reponse'] ?>
           <?php if ($_SERVER['REQUEST_METHOD'] === "POST") { ?>
             <?php if ($reponse['idReponse'] == $bonneReponse) { ?>
@@ -95,6 +131,15 @@ if (isset($_SESSION['message'])) {
   <div class="row">
     <div class="col-12"></div>
   </div>
+
+  <?php if ($_SESSION['answered']) { ?>
+
+    <div class="row">
+      <div class="col-12">
+        <input type="button" value="Rejouer" onclick="window.location.href='enigma.php'"/>
+      </div>
+    </div>
+  <?php } ?>
   <!--
   <div class="row">
     <div class="col-12">
