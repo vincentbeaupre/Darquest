@@ -199,6 +199,14 @@ main {
   align-items: center;
 }
 
+#chapeauMage {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  top: -16px;
+  left: 28px;
+}
+
 @media screen and (max-width: 1000px) {
   .navbar .nav_links, .navbar .user_links {
     display: none;
@@ -220,6 +228,12 @@ main {
     align-items: center;
     padding: 16px 16px;
     font-size: 15px;
+  }
+  #chapeauMage{
+    height: 18px;
+    width: 18px;
+    top: -13px;
+    left: 18px;
   }
 }
 
@@ -336,8 +350,9 @@ main {
     align-items: center;
     flex-wrap: nowrap;
   }
-  .marketSearch{
-    width:100%;
+
+  .marketSearch {
+    width: 100%;
   }
 }
 
@@ -454,6 +469,7 @@ input[type=button], input[type=submit], input[type=reset] {
   border: 6px solid rgb(0, 0, 0);
   text-align: center;
 }
+
 #ajouterSolde {
   border-radius: 10px;
   border: 6px solid rgb(0, 0, 0);
@@ -532,20 +548,22 @@ input[type=button], input[type=submit], input[type=reset] {
 .enigmaContainer {
   text-align: center;
 }
-.btnQuestion{
+
+.btnQuestion {
   position: relative;
   border: 1px solid black;
   border-radius: 15px;
-  background-color:#b3b5b4;
-  transition: background-color 0.3s,font-size 0.3s;
+  background-color: #b3b5b4;
+  transition: background-color 0.3s, font-size 0.3s;
   justify-content: center;
 }
 
 .btnQuestion:hover {
   cursor: pointer;
   background-color: #999999;
-  font-size:calc(100% + 2px);
+  font-size: calc(100% + 2px);
 }
+
 .correctAnswer {
   position: absolute;
   top: 50%;
@@ -560,4 +578,10 @@ input[type=button], input[type=submit], input[type=reset] {
   transform: translateY(-50%);
   right: 10px;
   color: red;
+}
+
+.progressBox {
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: #b3b5b4;
 }
