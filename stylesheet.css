@@ -561,3 +561,9 @@ input[type=button], input[type=submit], input[type=reset] {
   right: 10px;
   color: red;
 }
+
+.progressBox{
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color:#b3b5b4;
+}

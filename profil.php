@@ -73,7 +73,7 @@ require_once('bd.php');
         <br>
         <br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Confirmer">
       </form>
     </div>
 
