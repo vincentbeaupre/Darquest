@@ -50,6 +50,9 @@ require_once "bd.php";
       <div class="user_links">
         <?php if (isset($_SESSION["idJoueur"])) : ?>
           <a href="profil.php">
+            <?php if($_SESSION['estMage']):?>
+              <img src="Assets/MageHat.webp" alt="" id="chapeauMage">
+            <?php endif; ?>
             <i class="fa fa-user-circle-o cart"></i>
             <span>&nbsp;<?= $_SESSION['alias'] ?></span>
           </a>
@@ -81,6 +84,9 @@ require_once "bd.php";
         <a href="administration.php">Administration</a>
         <?php endif; ?>
         <a href="profil.php">
+        <?php if($_SESSION['estMage']):?>
+              <img src="Assets/MageHat.webp" alt="" id="chapeauMage">
+            <?php endif; ?>
           <i class="fa fa-user-circle-o icon"></i>
           <span>&nbsp;<?= $_SESSION['alias'] ?></span>
         </a>
