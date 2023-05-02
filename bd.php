@@ -344,7 +344,6 @@ class Database
     return true;
   }
 
-
   public static function ajouterSolde($alias)
   {
     $pdo = Database::connect();
@@ -359,7 +358,6 @@ class Database
     echo "<h4>le solde a été augmenter avec succes</h4>";
     return true;
   }
-
 
   //Inventaire:
   public static function getInventaire($idJoueur)
@@ -414,6 +412,24 @@ class Database
     return $results;
   }
 
+  public static function estDansInventaire($idJoueur, $idItem)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT EXISTS(
+      SELECT 1
+      FROM Inventaires 
+      WHERE idItem = :idItem
+      AND idJoueur = :idJoueur
+      LIMIT 1
+    )";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+  
+    return (bool) $result;
+  }
+  
   //------------------- Enigma
 
   public static function getReponses($idQuestion)
