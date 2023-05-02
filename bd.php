@@ -63,7 +63,7 @@ class Database
         $_SESSION['prenom'] = $joueur['prenom'];
         $_SESSION['courriel'] = $joueur['courriel'];
         $_SESSION['estAdmin'] = $joueur['estAdmin'];
-        $_SESSION['estMage'] = $joueur['estMage'] == 1 ? true:false;
+        $_SESSION['estMage'] = $joueur['estMage'] == 1 ? true : false;
 
         return true;
       }
@@ -234,76 +234,73 @@ class Database
     Database::disconnect();
     return $results;
   }
- // profil
+  // profil
 
- public static function changerNom($alias, $nouveauNom)
- {
-  $pdo = Database::connect();
-  $stmt = $pdo->prepare("CALL ChangerNom(?,?)");
-  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
-  $stmt->bindParam(2, $nouveauNom, PDO::PARAM_STR);
-  try {
-    $stmt->execute();
-  } catch (PDOException $e) {
-    echo "<h4> Erreur avec le changement de nom veuillez contactez un administrateur </h4>";
-    return false;
+  public static function changerNom($alias, $nouveauNom)
+  {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ChangerNom(?,?)");
+    $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+    $stmt->bindParam(2, $nouveauNom, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo "<h4> Erreur avec le changement de nom veuillez contactez un administrateur </h4>";
+      return false;
+    }
+    $_SESSION['nom'] = $nouveauNom;
+    echo "<h2> Nom changer avec succes </h2>";
+    return true;
   }
-  $_SESSION['nom'] = $nouveauNom;
-  echo "<h2> Nom changer avec succes </h2>";
-  return true;
-
- }
- public static function changerPrenom($alias, $nouveauPrenom)
- {
-  $pdo = Database::connect();
-  $stmt = $pdo->prepare("CALL ChangerPrenom(?,?)");
-  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
-  $stmt->bindParam(2, $nouveauPrenom, PDO::PARAM_STR);
-  try {
-    $stmt->execute();
-  } catch (PDOException $e) {
-    echo "<h4> Erreur avec le changement de prenom veuillez contactez un administrateur </h4>";
-    return false;
+  public static function changerPrenom($alias, $nouveauPrenom)
+  {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ChangerPrenom(?,?)");
+    $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+    $stmt->bindParam(2, $nouveauPrenom, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo "<h4> Erreur avec le changement de prenom veuillez contactez un administrateur </h4>";
+      return false;
+    }
+    $_SESSION['prenom'] = $nouveauPrenom;
+    echo "<h2> Prenom changer avec succes </h2>";
+    return true;
   }
-  $_SESSION['prenom'] = $nouveauPrenom;
-  echo "<h2> Prenom changer avec succes </h2>";
-  return true;
 
- }
-
- public static function ChangerCourriel($alias, $nouveauCourriel)
- {
-  $pdo = Database::connect();
-  $stmt = $pdo->prepare("CALL ChangerCourriel(?,?)");
-  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
-  $stmt->bindParam(2, $nouveauCourriel, PDO::PARAM_STR);
-  try {
-    $stmt->execute();
-  } catch (PDOException $e) {
-    echo "<h4> Erreur avec le changement de courriel veuillez contactez un administrateur </h4>";
-    return false;
+  public static function ChangerCourriel($alias, $nouveauCourriel)
+  {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ChangerCourriel(?,?)");
+    $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+    $stmt->bindParam(2, $nouveauCourriel, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo "<h4> Erreur avec le changement de courriel veuillez contactez un administrateur </h4>";
+      return false;
+    }
+    $_SESSION['courriel'] = $nouveauCourriel;
+    echo "<h2> Courriel changer avec succes </h2>";
+    return true;
   }
-  $_SESSION['courriel'] = $nouveauCourriel;
-  echo "<h2> Courriel changer avec succes </h2>";
-  return true;
- }
 
- public static function ChangerPassword($alias, $nouveauPassword)
- {
-  $pdo = Database::connect();
-  $stmt = $pdo->prepare("CALL ChangerPassword(?,?)");
-  $stmt->bindParam(1, $alias, PDO::PARAM_STR);
-  $stmt->bindParam(2, $nouveauPassword, PDO::PARAM_STR);
-  try {
-    $stmt->execute();
-  } catch (PDOException $e) {
-    echo "<h4> Erreur avec le changement de password veuillez contactez un administrateur </h4>";
-    return false;
+  public static function ChangerPassword($alias, $nouveauPassword)
+  {
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare("CALL ChangerPassword(?,?)");
+    $stmt->bindParam(1, $alias, PDO::PARAM_STR);
+    $stmt->bindParam(2, $nouveauPassword, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo "<h4> Erreur avec le changement de password veuillez contactez un administrateur </h4>";
+      return false;
+    }
+    echo "<h2> Password changer avec succes </h2>";
+    return true;
   }
-  echo "<h2> Password changer avec succes </h2>";
-  return true;
- }
-
 
   //Admin
   public static function ajouterQuestion($enonce, $difficulty, $reponse1, $reponse2, $reponse3, $reponse4, $bonneReponse)
@@ -346,7 +343,6 @@ class Database
     return true;
   }
 
-
   public static function ajouterSolde($alias)
   {
     $pdo = Database::connect();
@@ -361,7 +357,6 @@ class Database
     echo "<h4>le solde a été augmenter avec succes</h4>";
     return true;
   }
-
 
   //Inventaire:
   public static function getInventaire($idJoueur)
@@ -416,6 +411,24 @@ class Database
     return $results;
   }
 
+  public static function estDansInventaire($idJoueur, $idItem)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT EXISTS(
+      SELECT 1
+      FROM Inventaires 
+      WHERE idItem = :idItem
+      AND idJoueur = :idJoueur
+      LIMIT 1
+    )";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+  
+    return (bool) $result;
+  }
+  
   //------------------- Enigma
 
   public static function getReponses($idQuestion)
@@ -439,7 +452,7 @@ class Database
             FROM Reponses 
              WHERE idQuestion = :idQuestion
             AND estBonneReponse = 1";
-    
+
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idQuestion" => $idQuestion]);
@@ -523,12 +536,13 @@ class Database
     return $result;
   }
 
-  public static function updateMageStatus($idJoueur){
+  public static function updateMageStatus($idJoueur)
+  {
 
     $sql = "UPDATE Joueurs
             SET estMage = 1
             WHERE idJoueur = :idJoueur";
-    
+
     $pdo = Database::connect();
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([":idJoueur" => $idJoueur]);

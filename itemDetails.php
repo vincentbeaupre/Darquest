@@ -3,6 +3,7 @@ require_once('fonctions.php');
 session_start();
 
 (isset($_SESSION['idJoueur'])) ? $idJoueur = $_SESSION['idJoueur'] : "";
+
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
   (isset($_GET['idItem'])) ? $idItem = $_GET['idItem'] : "";
   (isset($_GET['typeItem'])) ? $typeItem = $_GET['typeItem'] : "";
@@ -57,9 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       echo 'Il semble y avoir une erreur. Veuillez contactez un administrateur';
     }
     ?>
-    <?php 
+    <?php
     //Ajout d'item au panier.
     if (isset($_SESSION['idJoueur'])) {
+
       if ($typeItem == 'Sorts') {
         if ($_SESSION['estMage'] == 1) {
           echo formAjouterItemPanier($item['idItem'], $item['quantiteStock']);
@@ -71,9 +73,43 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
       }
     } else {
       echo "<span> Afin d'ajouter un item à votre panier et l'acheter, veuillez vous connecter ! </span>";
-    } ?>
+    }
+
+    if (isset($_SESSION['idJoueur']) && Database::estDansInventaire($idJoueur, $idItem)) { ?>
+      <form action="submit_rating.php" method="post">
+        <div class="rating">
+          <span class="star" data-value="1">&#9733;</span>
+          <span class="star" data-value="2">&#9733;</span>
+          <span class="star" data-value="3">&#9733;</span>
+          <span class="star" data-value="4">&#9733;</span>
+          <span class="star" data-value="5">&#9733;</span>
+          <input type="hidden" name="rating" id="rating" value="">
+        </div>
+        <button type="submit">Évaluer</button>
+      </form>
+    <?php } ?>
   </div>
 </main>
+<script>
+  // Add event listener to stars
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      // Set value of hidden input field
+      const ratingInput = document.getElementById('rating');
+      const ratingValue = star.dataset.value;
+      ratingInput.value = ratingValue;
+      // Highlight selected star
+      stars.forEach((s, i) => {
+        if (i < ratingValue) {
+          s.classList.add('selected');
+        } else {
+          s.classList.remove('selected');
+        }
+      });
+    });
+  });
+</script>
 </body>
 
 </html>
