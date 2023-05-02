@@ -302,6 +302,7 @@ class Database
     return true;
   }
 
+
   //Admin
   public static function ajouterQuestion($enonce, $difficulty, $reponse1, $reponse2, $reponse3, $reponse4, $bonneReponse)
   {
@@ -562,5 +563,69 @@ class Database
     $stmt->execute();
 
     Database::disconnect();
+  }
+  public static function getTotalReponseBonne($idJoueur)
+  {
+    $sql = "SELECT COUNT(q.idQuestion)
+    FROM Joueurs_Questions jq
+    LEFT JOIN Questions q
+      ON jq.idQuestion = q.idQuestion
+      AND jq.idJoueur = :idJoueur
+    WHERE estBonneReponse = 1
+    group by difficulte
+    order by difficulte asc";
+
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+
+    return $result;
+    // (0) = D (1) = F (2)= M
+  }
+  public static function getNombresQuestion()
+  {
+    $pdo = Database::connect();
+    //Facile
+    $sql = "SELECT dbdarquest6.totalQuestionFacile()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $totalFacile = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Moyenne
+    $sql = "SELECT dbdarquest6.totalQuestionMoyenne()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $totalMoyenne = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Difficile
+    $sql = "SELECT dbdarquest6.totalQuestionDifficile()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $totalDifficile = $stmt->fetchAll(PDO::FETCH_BOTH);
+
+    Database::disconnect();
+    return array($totalFacile[0], $totalMoyenne[0], $totalDifficile[0]);
+  }
+
+  // Commentaire
+  public static function getAllCommentaireByItemId($itemId)
+  {
+    $pdo = Database::connect();
+    $sql = 'SELECT * FROM Commentaires WHERE idItem = :idItem';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $itemId]);
+    $result = $stmt->fetchAll();
+
+    return $result;
+  }
+  public static function getAliasByIdJoueur($idJoueur)
+  {
+    $sql = "select alias from Joueurs where idJoueur = :idJoueur";
+    $pdo = Database::connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur" => $idJoueur]);
+    $result = $stmt->fetchColumn();
+    Database::disconnect();
+    return $result;
   }
 }

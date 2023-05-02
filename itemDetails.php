@@ -88,6 +88,31 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
         <button type="submit">Évaluer</button>
       </form>
     <?php } ?>
+
+  </div>
+
+
+  <div class="itemDetail">
+    <h3>Commentaire</h3>
+
+
+    <?php
+    $result = Database::getAllCommentaireByItemId($idItem);
+
+    foreach ($result as $comment) {
+      echo "<div class='itemContainer'>";
+
+      echo "<span class='commentaireNom'>";
+      echo  Database::getAliasByIdJoueur($comment['idJoueur']) . " : ";
+      echo "</span>";
+
+      echo "<span class='commentaireContent'>";
+      echo $comment['commentaire'] . " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
+      echo "</span>";
+
+      echo "</div>";
+    }
+    ?>
   </div>
 </main>
 <script>

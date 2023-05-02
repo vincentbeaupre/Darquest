@@ -26,7 +26,7 @@ require_once('bd.php');
           if ($_SESSION['courriel'] != $_POST['courriel']) {
             Database::ChangerCourriel($_SESSION['alias'],$_POST['courriel']);
           }
-          if(isset($_POST['pass']))
+          if(isset($_POST['pass']) && strlen($_POST['pass']) != 0)
           { 
             $motDePasse = password_hash($_POST['pass'], PASSWORD_DEFAULT);
             Database::ChangerPassword($_SESSION['alias'],$motDePasse);
@@ -73,7 +73,7 @@ require_once('bd.php');
         <br>
         <br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Confirmer">
       </form>
     </div>
 
