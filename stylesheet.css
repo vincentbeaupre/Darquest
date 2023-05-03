@@ -367,6 +367,7 @@ main {
   border: 3px black solid;
   border-radius: 15px;
   margin: 5%;
+  margin-bottom: 1%;
   text-align: center;
 }
 
@@ -595,14 +596,7 @@ input[type=button], input[type=submit], input[type=reset] {
   border-radius: 15px;
   background-color: #b3b5b4;
 }
-.commentaireNom {
-  padding-left: 15px;
-  color: black;
-}
-
-.commentaireContent{
-  padding-right: 15px;
-  color: black;
-  word-wrap: break-all;
-  word-break: break-all;
+.commentaireContainer{
+    padding: 10px 3px;
+    justify-content: space-between;
 }
