@@ -613,25 +613,16 @@ class Database
   public static function getAllCommentaireByItemId($itemId)
   {
     $pdo = Database::connect();
-    $sql = 'SELECT * FROM Commentaires WHERE idItem = :idItem';
+    $sql = "SELECT c.idCommentaire,c.idJoueur,c.commentaire, j.alias 
+    FROM Commentaires c JOIN Joueurs j ON c.idJoueur = j.idJoueur
+    WHERE c.idItem = :idItem";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idItem" => $itemId]);
-    $result = $stmt->fetchAll();
-
-    return $result;
-  }
-  public static function getAliasByIdJoueur($idJoueur)
-  {
-    $sql = "select alias from Joueurs where idJoueur = :idJoueur";
-    $pdo = Database::connect();
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur" => $idJoueur]);
-    $result = $stmt->fetchColumn();
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
     Database::disconnect();
-    return $result;
+    return $resultat;
   }
 
-  //Évalutations/Commentaire
   public static function ajouterCommentaire($idJoueur,$idItem,$commentaire){
     $pdo = Database::connect();
       $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");

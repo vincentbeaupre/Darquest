@@ -7,14 +7,12 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
   (isset($_GET['idItem'])) ? $idItem = $_GET['idItem'] : "";
   (isset($_GET['typeItem'])) ? $typeItem = $_GET['typeItem'] : "";
-}
-else if($_SERVER['REQUEST_METHOD'] === "POST"){
+} else if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $idItem = $_POST['idItem'];
   $typeItem = $_POST['typeItem'];
-  if(Database::ajouterCommentaire($_SESSION['idJoueur'],$idItem,$_POST['commentaire'])){
+  if (Database::ajouterCommentaire($_SESSION['idJoueur'], $idItem, $_POST['commentaire'])) {
     $_SESSION['message'] = "Merci pour votre commentaire.";
-  }
-  else{
+  } else {
     $_SESSION['message'] = "Il semble y avoir eu une erreur lors de l'ajout de votre commentaire.";
   }
 }
@@ -24,6 +22,7 @@ if (isset($_SESSION['message'])) {
   unset($_SESSION['message']);
 }
 
+$listCommentaire = Database::getAllCommentaireByItemId($idItem);
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +31,7 @@ if (isset($_SESSION['message'])) {
 <?php include "header.php" ?>
 
 <main>
-<?php if (isset($message)) : ?>
+  <?php if (isset($message)) : ?>
     <div id="snackbar"><?= $message ?></div>
   <?php endif; ?>
   <div class="itemDetail">
@@ -106,45 +105,66 @@ if (isset($_SESSION['message'])) {
         </div>
         <button type="submit">Évaluer</button>
       </form>
+      <span>
+        <form action="" method="POST" id="commForm">
+          <h5>Ajouter un commentaire:</h5>
+          <textarea id="commentaire" name="commentaire" rows="3" cols="50" minlength="0" maxlength="200" form="commForm" required></textarea>
+          <input type="hidden" name="idItem" value="<?= $idItem ?>">
+          <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
+          <button id="btnSubmit" type="submit">
+            <i class="fa fa-sign-in"></i>
+          </button>
+        </form>
+      </span>
     <?php } ?>
 
   </div>
 
-
-  <div class="itemDetail">
-    <h3>Commentaire</h3>
-
-
-    <?php
-    $result = Database::getAllCommentaireByItemId($idItem);
-
-    foreach ($result as $comment) {
-      echo "<div class='itemContainer'>";
-
-      echo "<span class='commentaireNom'>";
-      echo  Database::getAliasByIdJoueur($comment['idJoueur']) . " : ";
-      echo "</span>";
-
-      echo "<span class='commentaireContent'>";
-      echo $comment['commentaire'] . " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
-      echo "</span>";
-
-      echo "</div>";
-    }
-    ?>
-  </div>
-  <span>
-    <form action="" method="POST" id="commForm">
-      <h5>Ajouter un commentaire:</h5>
-    <textarea id="commentaire" name="commentaire" rows="3" cols="50" minlength="0" maxlength="200" form="commForm" required></textarea>
-    <input type="hidden" name="idItem" value="<?=$idItem?>">
-    <input type="hidden" name="typeItem" value="<?=$typeItem?>">
-    <button id="btnSubmit" type="submit">
-        <i class="fa fa-sign-in"></i>
-      </button>
-    </form>
-  </span>
+  <div class="cartContainer">
+    <h3 style="text-align:center">Commentaire:</h3>
+    <div class="itemsContainer">
+      <?php if (sizeof($listCommentaire) > 0) : ?>
+        <?php
+        foreach ($listCommentaire as $commentaire) {
+        ?>
+          <div class="itemContainer commentaireContainer">
+            <span><?=$commentaire['alias']?></span>
+            <span><?=$commentaire['commentaire']?></span>
+            <input type="hidden" name="idCommentaire" value="<?=$commentaire['idCommentaire']?>">
+          </div>
+        <?php } ?>
+      <?php else : ?>
+        <div>
+          Il n'y a aucun commentaire.
+        </div>
+      <?php endif; ?>
 </main>
+<script>
+//Message du SnackBar
+if (document.getElementById("snackbar") != null) {
+ var snackbar = document.getElementById("snackbar");
+ snackbar.classList.add("show");
+ setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
+}
+  // Add event listener to stars
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      // Set value of hidden input field
+      const ratingInput = document.getElementById('rating');
+      const ratingValue = star.dataset.value;
+      ratingInput.value = ratingValue;
+      // Highlight selected star
+      stars.forEach((s, i) => {
+        if (i < ratingValue) {
+          s.classList.add('selected');
+        } else {
+          s.classList.remove('selected');
+        }
+      });
+    });
+  });
+</script>
 </body>
 
 </html>
