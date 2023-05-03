@@ -564,25 +564,27 @@ class Database
 
     Database::disconnect();
   }
-  public static function getTotalReponseBonne($idJoueur)
+  public static function getTotalBonneRep($idJoueur)
   {
-    $sql = "SELECT COUNT(q.idQuestion)
-    FROM Joueurs_Questions jq
-    LEFT JOIN Questions q
-      ON jq.idQuestion = q.idQuestion
-      AND jq.idJoueur = :idJoueur
-    WHERE estBonneReponse = 1
-    group by difficulte
-    order by difficulte asc";
-
     $pdo = Database::connect();
+    //Facile
+    $sql = "SELECT dbdarquest6.totalBonneRepFacile(:idJoueur)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur" => $idJoueur]);
-    $result = $stmt->fetchAll(PDO::FETCH_BOTH);
-    Database::disconnect();
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalFacile = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Moyenne
+    $sql = "SELECT dbdarquest6.totalBonneRepMoyenne(:idJoueur)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalMoyenne = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Difficile
+    $sql = "SELECT dbdarquest6.totalBonneRepDifficile(:idJoueur)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalDifficile = $stmt->fetchAll(PDO::FETCH_BOTH);
 
-    return $result;
-    // (0) = D (1) = F (2)= M
+    Database::disconnect();
+    return array($totalFacile[0],$totalMoyenne[0],$totalDifficile[0]);
   }
   public static function getNombresQuestion()
   {
@@ -627,5 +629,20 @@ class Database
     $result = $stmt->fetchColumn();
     Database::disconnect();
     return $result;
+  }
+
+  //Évalutations/Commentaire
+  public static function ajouterCommentaire($idJoueur,$idItem,$commentaire){
+    $pdo = Database::connect();
+      $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");
+      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+      $stmt->bindParam(3, $commentaire, PDO::PARAM_STR);
+      try {
+        $stmt->execute();
+      } catch (PDOException $e) {
+        return false;
+      }
+      return true;
   }
 }
