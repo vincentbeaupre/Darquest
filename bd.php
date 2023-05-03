@@ -591,4 +591,19 @@ class Database
     Database::disconnect();
     return array($totalFacile[0],$totalMoyenne[0],$totalDifficile[0]);
   }
+
+  //Évalutations/Commentaire
+  public static function ajouterCommentaire($idJoueur,$idItem,$commentaire){
+    $pdo = Database::connect();
+      $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");
+      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+      $stmt->bindParam(3, $commentaire, PDO::PARAM_STR);
+      try {
+        $stmt->execute();
+      } catch (PDOException $e) {
+        return false;
+      }
+      return true;
+  }
 }
