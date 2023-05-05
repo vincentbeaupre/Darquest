@@ -597,6 +597,9 @@ input[type=button], input[type=submit], input[type=reset] {
   background-color: #b3b5b4;
 }
 .commentaireContainer{
-    padding: 10px 3px;
+    padding: 10px 8px;
     justify-content: space-between;
+}
+.commentaireContainer > span{
+  padding:10px;
 }

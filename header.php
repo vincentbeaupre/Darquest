@@ -9,6 +9,7 @@ require_once "bd.php";
   <link href="Assets/favicon.ico" rel="icon" type="image/x-icon" />
   <link rel="stylesheet" href="stylesheet.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js" integrity="sha256-a2yjHM4jnF9f54xUQakjZGaqYs/V1CYvWpoqZzC2/Bw=" crossorigin="anonymous"></script>
   <script src="fonctions.js"></script>
 </head>
 
