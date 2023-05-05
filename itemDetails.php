@@ -7,6 +7,13 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
   (isset($_GET['idItem'])) ? $idItem = $_GET['idItem'] : "";
   (isset($_GET['typeItem'])) ? $typeItem = $_GET['typeItem'] : "";
+  if (isset($_GET['idCommentaire'])) {
+    if (Database::supprimerCommentaire($_GET['idCommentaire'])) {
+      $_SESSION['message'] = "Le commentaire a été supprimé.";
+    } else {
+      $_SESSION['message'] = "Il semble y avoir eu une erreur lors de la supression de votre commentaire.";
+    }
+  }
 } else if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $idItem = $_POST['idItem'];
   $typeItem = $_POST['typeItem'];
@@ -119,7 +126,6 @@ $listCommentaire = Database::getAllCommentaireByItemId($idItem);
     <?php } ?>
 
   </div>
-
   <div class="cartContainer">
     <h3 style="text-align:center">Commentaire:</h3>
     <div class="itemsContainer">
@@ -128,9 +134,21 @@ $listCommentaire = Database::getAllCommentaireByItemId($idItem);
         foreach ($listCommentaire as $commentaire) {
         ?>
           <div class="itemContainer commentaireContainer">
-            <span><?=$commentaire['alias']?></span>
-            <span><?=$commentaire['commentaire']?></span>
-            <input type="hidden" name="idCommentaire" value="<?=$commentaire['idCommentaire']?>">
+            <span><?= $commentaire['alias'] ?></span>
+            <span><?= $commentaire['commentaire'] ?></span>
+            <?php if (isset($_SESSION['idJoueur'])) {
+            if($commentaire['idJoueur'] == $_SESSION['idJoueur'] || $_SESSION['estAdmin']) : ?>
+              <form method="GET" id="deleteForm">
+                <input type="hidden" name="idCommentaire" value="<?= $commentaire['idCommentaire'] ?>">
+                <input type="hidden" name="idJoueur" value="<?= $commentaire['idJoueur'] ?>">
+                <input type="hidden" name="idItem" value="<?= $idItem ?>">
+                <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
+                <button id='btnSubmit' type='submit'>
+                  <i class='fa fa-trash fa-2x' style="color:red;"></i>
+                </button>
+              </form>
+            <?php endif; }?>
+
           </div>
         <?php } ?>
       <?php else : ?>
@@ -140,12 +158,15 @@ $listCommentaire = Database::getAllCommentaireByItemId($idItem);
       <?php endif; ?>
 </main>
 <script>
-//Message du SnackBar
-if (document.getElementById("snackbar") != null) {
- var snackbar = document.getElementById("snackbar");
- snackbar.classList.add("show");
- setTimeout(function(){ snackbar.classList.remove("show"); }, 3000);
-}
+  //Message du SnackBar
+  if (document.getElementById("snackbar") != null) {
+    var snackbar = document.getElementById("snackbar");
+    snackbar.classList.add("show");
+    setTimeout(function() {
+      snackbar.classList.remove("show");
+    }, 3000);
+  }
+
   // Add event listener to stars
   const stars = document.querySelectorAll('.star');
   stars.forEach(star => {

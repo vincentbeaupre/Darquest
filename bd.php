@@ -636,4 +636,18 @@ class Database
       }
       return true;
   }
+
+  public static function supprimerCommentaire($idCommentaire){
+    $pdo = Database::connect();
+    $sql = "DELETE FROM Commentaires WHERE idCommentaire = :idCommentaire";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommentaire" => $idCommentaire]);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    Database::disconnect();
+    return true;
+  }
 }
