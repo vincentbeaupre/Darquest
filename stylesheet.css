@@ -605,6 +605,7 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 .barreEvaluations{
-  color: #000!important;
-  background-color: #f1f1f1!important;
+  color: #000;
+  background-color: #f1f1f1;
+  margin:3px;
 }
