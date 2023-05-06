@@ -603,3 +603,8 @@ input[type=button], input[type=submit], input[type=reset] {
 .commentaireContainer > span{
   padding:10px;
 }
+
+.barreEvaluations{
+  color: #000!important;
+  background-color: #f1f1f1!important;
+}

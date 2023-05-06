@@ -650,4 +650,49 @@ class Database
     Database::disconnect();
     return true;
   }
+
+  public static function getMoyenneEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT IFNULL(AVG(evaluation),0) AS moyenneEvaluation FROM Evaluations WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat[0];
+  }
+
+  public static function getTotalEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat[0];
+  }
+
+  public static function getStatsEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem AND evaluation = :nbEtoiles";
+    $stmt = $pdo->prepare($sql);
+    //1 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 1]);
+    $result1 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //2 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 2]);
+    $result2 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //3 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 3]);
+    $result3 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //4 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 4]);
+    $result4 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //5 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 5]);
+    $result5 = $stmt->fetchAll(PDO::FETCH_BOTH);
+
+    Database::disconnect();
+    return array($result1[0][0],$result2[0][0],$result3[0][0],$result4[0][0],$result5[0][0]);
+  }
+
 }
