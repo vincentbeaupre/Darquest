@@ -131,32 +131,34 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
   </div>
   <div>
     <div class="rating">
-      <?php for($x = 0; $x <= 5; $x++){
+      <?php for($x = 0; $x < 5; $x++){
         if($x < floor($moyenneEtoiles['moyenneEvaluation'])){
           echo "<span class='star selected'>&#9733;</span>";
         }else{
           echo "<span class='star'>&#9733;</span>";
         }
       }
-      echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
+      //echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
+      echo "il y a " . $totalEval . " evaluations avec une moyenne de ".$moyenneEtoiles['moyenneEvaluation']." étoiles";
+
        ?>
     </div>
     <?php if($totalEval > 0){?>
     <div style="width: 10%;">
       <div class="barreEvaluations">
-        <div style="background-color:gold;width:10%;">1&#9733;</div>
+        <div style="background-color:gold;width:<?= ($nbEvaluations[0] / $totalEval)*100 ?>%;">1&#9733;</div>
       </div>
       <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval) ?>%;">2&#9733;</div>
+        <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval)*100 ?>%;">2&#9733;</div>
       </div>
       <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval) ?>%;">3&#9733;</div>
+        <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval)*100 ?>%;">3&#9733;</div>
       </div>
       <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval) ?>%;">4&#9733;</div>
+        <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval)*100 ?>%;">4&#9733;</div>
       </div>
       <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval) ?>%;">5&#9733;</div>
+        <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval)*100 ?>%;">5&#9733;</div>
       </div>
     </div>
     <?php };?>
