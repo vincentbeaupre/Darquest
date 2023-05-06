@@ -650,4 +650,25 @@ class Database
     Database::disconnect();
     return true;
   }
+
+  public static function getMoyenneEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT AVG(evaluation) AS moyenneEvaluation FROM Evaluations WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat;
+  }
+
+  public static function getNbEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem GROUP by evaluation";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat;
+  }
+
 }
