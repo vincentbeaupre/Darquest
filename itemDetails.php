@@ -30,6 +30,9 @@ if (isset($_SESSION['message'])) {
 }
 
 $listCommentaire = Database::getAllCommentaireByItemId($idItem);
+$moyenneEtoiles = Database::getMoyenneEvaluation($idItem);
+$nbEvaluations = Database::getStatsEvaluation($idItem);
+$totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
 ?>
 
 <!DOCTYPE html>
@@ -126,6 +129,38 @@ $listCommentaire = Database::getAllCommentaireByItemId($idItem);
     <?php } ?>
 
   </div>
+  <div>
+    <div class="rating">
+      <?php for($x = 0; $x <= 5; $x++){
+        if($x < floor($moyenneEtoiles['moyenneEvaluation'])){
+          echo "<span class='star selected'>&#9733;</span>";
+        }else{
+          echo "<span class='star'>&#9733;</span>";
+        }
+      }
+      echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
+       ?>
+    </div>
+    <?php if($totalEval > 0){?>
+    <div style="width: 10%;">
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:10%;">1&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval) ?>%;">2&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval) ?>%;">3&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval) ?>%;">4&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval) ?>%;">5&#9733;</div>
+      </div>
+    </div>
+    <?php };?>
+  </div>
   <div class="cartContainer">
     <h3 style="text-align:center">Commentaire:</h3>
     <div class="itemsContainer">
@@ -137,17 +172,18 @@ $listCommentaire = Database::getAllCommentaireByItemId($idItem);
             <span><?= $commentaire['alias'] ?></span>
             <span><?= $commentaire['commentaire'] ?></span>
             <?php if (isset($_SESSION['idJoueur'])) {
-            if($commentaire['idJoueur'] == $_SESSION['idJoueur'] || $_SESSION['estAdmin']) : ?>
-              <form method="GET" id="deleteForm">
-                <input type="hidden" name="idCommentaire" value="<?= $commentaire['idCommentaire'] ?>">
-                <input type="hidden" name="idJoueur" value="<?= $commentaire['idJoueur'] ?>">
-                <input type="hidden" name="idItem" value="<?= $idItem ?>">
-                <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
-                <button id='btnSubmit' type='submit'>
-                  <i class='fa fa-trash fa-2x' style="color:red;"></i>
-                </button>
-              </form>
-            <?php endif; }?>
+              if ($commentaire['idJoueur'] == $_SESSION['idJoueur'] || $_SESSION['estAdmin']) : ?>
+                <form method="GET" id="deleteForm">
+                  <input type="hidden" name="idCommentaire" value="<?= $commentaire['idCommentaire'] ?>">
+                  <input type="hidden" name="idJoueur" value="<?= $commentaire['idJoueur'] ?>">
+                  <input type="hidden" name="idItem" value="<?= $idItem ?>">
+                  <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
+                  <button id='btnSubmit' type='submit'>
+                    <i class='fa fa-trash fa-2x' style="color:red;"></i>
+                  </button>
+                </form>
+            <?php endif;
+            } ?>
 
           </div>
         <?php } ?>
