@@ -585,25 +585,27 @@ class Database
 
     Database::disconnect();
   }
-  public static function getTotalReponseBonne($idJoueur)
+  public static function getTotalBonneRep($idJoueur)
   {
-    $sql = "SELECT COUNT(q.idQuestion)
-    FROM Joueurs_Questions jq
-    LEFT JOIN Questions q
-      ON jq.idQuestion = q.idQuestion
-      AND jq.idJoueur = :idJoueur
-    WHERE estBonneReponse = 1
-    group by difficulte
-    order by difficulte asc";
-
     $pdo = Database::connect();
+    //Facile
+    $sql = "SELECT dbdarquest6.totalBonneRepFacile(:idJoueur)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur" => $idJoueur]);
-    $result = $stmt->fetchAll(PDO::FETCH_BOTH);
-    Database::disconnect();
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalFacile = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Moyenne
+    $sql = "SELECT dbdarquest6.totalBonneRepMoyenne(:idJoueur)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalMoyenne = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //Difficile
+    $sql = "SELECT dbdarquest6.totalBonneRepDifficile(:idJoueur)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $totalDifficile = $stmt->fetchAll(PDO::FETCH_BOTH);
 
-    return $result;
-    // (0) = D (1) = F (2)= M
+    Database::disconnect();
+    return array($totalFacile[0],$totalMoyenne[0],$totalDifficile[0]);
   }
   public static function getNombresQuestion()
   {
@@ -632,21 +634,86 @@ class Database
   public static function getAllCommentaireByItemId($itemId)
   {
     $pdo = Database::connect();
-    $sql = 'SELECT * FROM Commentaires WHERE idItem = :idItem';
+    $sql = "SELECT c.idCommentaire,c.idJoueur,c.commentaire, j.alias 
+    FROM Commentaires c JOIN Joueurs j ON c.idJoueur = j.idJoueur
+    WHERE c.idItem = :idItem";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idItem" => $itemId]);
-    $result = $stmt->fetchAll();
-
-    return $result;
-  }
-  public static function getAliasByIdJoueur($idJoueur)
-  {
-    $sql = "select alias from Joueurs where idJoueur = :idJoueur";
-    $pdo = Database::connect();
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur" => $idJoueur]);
-    $result = $stmt->fetchColumn();
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
     Database::disconnect();
-    return $result;
+    return $resultat;
   }
+
+  public static function ajouterCommentaire($idJoueur,$idItem,$commentaire){
+    $pdo = Database::connect();
+      $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");
+      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+      $stmt->bindParam(3, $commentaire, PDO::PARAM_STR);
+      try {
+        $stmt->execute();
+      } catch (PDOException $e) {
+        return false;
+      }
+      return true;
+  }
+
+  public static function supprimerCommentaire($idCommentaire){
+    $pdo = Database::connect();
+    $sql = "DELETE FROM Commentaires WHERE idCommentaire = :idCommentaire";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommentaire" => $idCommentaire]);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    Database::disconnect();
+    return true;
+  }
+
+  public static function getMoyenneEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT IFNULL(AVG(evaluation),0) AS moyenneEvaluation FROM Evaluations WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat[0];
+  }
+
+  public static function getTotalEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem]);
+    $resultat = $stmt->fetchAll(PDO::FETCH_BOTH);
+    Database::disconnect();
+    return $resultat[0];
+  }
+
+  public static function getStatsEvaluation($idItem){
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem AND evaluation = :nbEtoiles";
+    $stmt = $pdo->prepare($sql);
+    //1 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 1]);
+    $result1 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //2 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 2]);
+    $result2 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //3 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 3]);
+    $result3 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //4 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 4]);
+    $result4 = $stmt->fetchAll(PDO::FETCH_BOTH);
+    //5 etoile
+    $stmt->execute([":idItem" => $idItem, "nbEtoiles" => 5]);
+    $result5 = $stmt->fetchAll(PDO::FETCH_BOTH);
+
+    Database::disconnect();
+    return array($result1[0][0],$result2[0][0],$result3[0][0],$result4[0][0],$result5[0][0]);
+  }
+
 }

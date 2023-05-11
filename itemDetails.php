@@ -7,7 +7,32 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
   (isset($_GET['idItem'])) ? $idItem = $_GET['idItem'] : "";
   (isset($_GET['typeItem'])) ? $typeItem = $_GET['typeItem'] : "";
+  if (isset($_GET['idCommentaire'])) {
+    if (Database::supprimerCommentaire($_GET['idCommentaire'])) {
+      $_SESSION['message'] = "Le commentaire a été supprimé.";
+    } else {
+      $_SESSION['message'] = "Il semble y avoir eu une erreur lors de la supression de votre commentaire.";
+    }
+  }
+} else if ($_SERVER['REQUEST_METHOD'] === "POST") {
+  $idItem = $_POST['idItem'];
+  $typeItem = $_POST['typeItem'];
+  if (Database::ajouterCommentaire($_SESSION['idJoueur'], $idItem, $_POST['commentaire'])) {
+    $_SESSION['message'] = "Merci pour votre commentaire.";
+  } else {
+    $_SESSION['message'] = "Il semble y avoir eu une erreur lors de l'ajout de votre commentaire.";
+  }
 }
+
+if (isset($_SESSION['message'])) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+}
+
+$listCommentaire = Database::getAllCommentaireByItemId($idItem);
+$moyenneEtoiles = Database::getMoyenneEvaluation($idItem);
+$nbEvaluations = Database::getStatsEvaluation($idItem);
+$totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 <?php include "header.php" ?>
 
 <main>
+  <?php if (isset($message)) : ?>
+    <div id="snackbar"><?= $message ?></div>
+  <?php endif; ?>
   <div class="itemDetail">
     <?php
     if (isset($idItem) && isset($typeItem)) {
@@ -87,35 +115,96 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
         </div>
         <button type="submit">Évaluer</button>
       </form>
+      <span>
+        <form action="" method="POST" id="commForm">
+          <h5>Ajouter un commentaire:</h5>
+          <textarea id="commentaire" name="commentaire" rows="3" cols="50" minlength="0" maxlength="200" form="commForm" required></textarea>
+          <input type="hidden" name="idItem" value="<?= $idItem ?>">
+          <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
+          <button id="btnSubmit" type="submit">
+            <i class="fa fa-sign-in"></i>
+          </button>
+        </form>
+      </span>
     <?php } ?>
 
   </div>
+  <div>
+    <div class="rating">
+      <?php for($x = 0; $x < 5; $x++){
+        if($x < floor($moyenneEtoiles['moyenneEvaluation'])){
+          echo "<span class='star selected'>&#9733;</span>";
+        }else{
+          echo "<span class='star'>&#9733;</span>";
+        }
+      }
+      //echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
+      echo "il y a " . $totalEval . " evaluations avec une moyenne de ".$moyenneEtoiles['moyenneEvaluation']." étoiles";
 
-
-  <div class="itemDetail">
-    <h3>Commentaire</h3>
-
-
-    <?php
-    $result = Database::getAllCommentaireByItemId($idItem);
-
-    foreach ($result as $comment) {
-      echo "<div class='itemContainer'>";
-
-      echo "<span class='commentaireNom'>";
-      echo  Database::getAliasByIdJoueur($comment['idJoueur']) . " : ";
-      echo "</span>";
-
-      echo "<span class='commentaireContent'>";
-      echo $comment['commentaire'] . " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
-      echo "</span>";
-
-      echo "</div>";
-    }
-    ?>
+       ?>
+    </div>
+    <?php if($totalEval > 0){?>
+    <div style="width: 10%;">
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[0] / $totalEval)*100 ?>%;">1&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval)*100 ?>%;">2&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval)*100 ?>%;">3&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval)*100 ?>%;">4&#9733;</div>
+      </div>
+      <div class="barreEvaluations">
+        <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval)*100 ?>%;">5&#9733;</div>
+      </div>
+    </div>
+    <?php };?>
   </div>
+  <div class="cartContainer">
+    <h3 style="text-align:center">Commentaire:</h3>
+    <div class="itemsContainer">
+      <?php if (sizeof($listCommentaire) > 0) : ?>
+        <?php
+        foreach ($listCommentaire as $commentaire) {
+        ?>
+          <div class="itemContainer commentaireContainer">
+            <span><?= $commentaire['alias'] ?></span>
+            <span><?= $commentaire['commentaire'] ?></span>
+            <?php if (isset($_SESSION['idJoueur'])) {
+              if ($commentaire['idJoueur'] == $_SESSION['idJoueur'] || $_SESSION['estAdmin']) : ?>
+                <form method="GET" id="deleteForm">
+                  <input type="hidden" name="idCommentaire" value="<?= $commentaire['idCommentaire'] ?>">
+                  <input type="hidden" name="idJoueur" value="<?= $commentaire['idJoueur'] ?>">
+                  <input type="hidden" name="idItem" value="<?= $idItem ?>">
+                  <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
+                  <button id='btnSubmit' type='submit'>
+                    <i class='fa fa-trash fa-2x' style="color:red;"></i>
+                  </button>
+                </form>
+            <?php endif;
+            } ?>
+
+          </div>
+        <?php } ?>
+      <?php else : ?>
+        <div>
+          Il n'y a aucun commentaire.
+        </div>
+      <?php endif; ?>
 </main>
 <script>
+  //Message du SnackBar
+  if (document.getElementById("snackbar") != null) {
+    var snackbar = document.getElementById("snackbar");
+    snackbar.classList.add("show");
+    setTimeout(function() {
+      snackbar.classList.remove("show");
+    }, 3000);
+  }
+
   // Add event listener to stars
   const stars = document.querySelectorAll('.star');
   stars.forEach(star => {

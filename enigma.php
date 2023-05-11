@@ -14,7 +14,7 @@ if (isset($_SESSION['message'])) {
   unset($_SESSION['message']);
 }
 
-$totalBonneReponse = Database::getTotalReponseBonne($_SESSION['idJoueur']);
+$totalBonneRep = Database::getTotalBonneRep($_SESSION['idJoueur']);
 $totalNbQuestions = Database::getNombresQuestion();
 ?>
 
@@ -93,17 +93,17 @@ $totalNbQuestions = Database::getNombresQuestion();
     <div class="col-6 progressBox">
       <div>
         <label for="facile">Facile:</label>
-        <progress name="facile" value="<?= $totalBonneReponse[1][0] ?>" max="<?= $totalNbQuestions[0][0] ?>"></progress>
-        <?php echo $totalBonneReponse[1][0] . "/" . $totalNbQuestions[0][0] ?>
+        <progress name="facile" value="<?= $totalBonneRep[0][0] ?>" max="<?= $totalNbQuestions[0][0] ?>"></progress>
+        <?php echo $totalBonneRep[0][0] . "/" . $totalNbQuestions[0][0] ?>
       </div>
       <div><label for="moyen">Moyen:</label>
-        <progress name="moyen" value="<?= $totalBonneReponse[2][0] ?>" max="<?= $totalNbQuestions[1][0] ?>"></progress>
-        <?php echo $totalBonneReponse[2][0] . "/" . $totalNbQuestions[1][0] ?>
+        <progress name="moyen" value="<?= $totalBonneRep[1][0] ?>" max="<?= $totalNbQuestions[1][0] ?>"></progress>
+        <?php echo $totalBonneRep[1][0] . "/" . $totalNbQuestions[1][0] ?>
       </div>
       <div>
         <label for="difficile">Difficile:</label>
-        <progress name="difficile" value="<?= $totalBonneReponse[0][0] ?>" max="<?= $totalNbQuestions[2][0] ?>"></progress>
-        <?php echo $totalBonneReponse[0][0] . "/" . $totalNbQuestions[2][0] ?>
+        <progress name="difficile" value="<?= $totalBonneRep[2][0] ?>" max="<?= $totalNbQuestions[2][0] ?>"></progress>
+        <?php echo $totalBonneRep[2][0] . "/" . $totalNbQuestions[2][0] ?>
       </div>
     </div>
     <div class="col-3"></div>
