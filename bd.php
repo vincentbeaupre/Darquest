@@ -430,6 +430,27 @@ class Database
     return (bool) $result;
   }
   
+  public static function evaluerItem($idJoueur, $idItem, $evaluation)
+  {
+    $pdo = Database::connect();
+    $sql = "SELECT COUNT(*) FROM Evaluations WHERE idItem = :idItem AND idJoueur = :idJoueur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+    $count = $stmt->fetchColumn();
+    if ($count > 0) {
+      // Update existing rating
+      $sql = "UPDATE Evaluations SET evaluation = :evaluation WHERE idItem = :idItem AND idJoueur = :idJoueur";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([":note" => $evaluation, ":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+    } else {
+      // Insert new rating
+      $sql = "INSERT INTO Evaluations (idItem, idJoueur, evaluation) VALUES (:idItem, :idJoueur, :evaluation)";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur, ":evaluation" => $evaluation]);
+    }
+    Database::disconnect();
+  }
+  
   //------------------- Enigma
 
   public static function getReponses($idQuestion)
