@@ -17,10 +17,21 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 } else if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $idItem = $_POST['idItem'];
   $typeItem = $_POST['typeItem'];
-  if (Database::ajouterCommentaire($_SESSION['idJoueur'], $idItem, $_POST['commentaire'])) {
-    $_SESSION['message'] = "Merci pour votre commentaire.";
-  } else {
-    $_SESSION['message'] = "Il semble y avoir eu une erreur lors de l'ajout de votre commentaire.";
+
+  if (isset($_POST['rating'])) {
+    if (Database::evaluerItem($idJoueur, $idItem, $_POST['rating'])) {
+      $_SESSION['message'] = "Merci pour votre évaluation.";
+    } else {
+      $_SESSION['message'] = "Il semble y avoir eu une erreur lors de l'ajout de votre évaluation.";
+    }
+  }
+
+  if (isset($_POST['commentaire'])) {
+    if (Database::ajouterCommentaire($_SESSION['idJoueur'], $idItem, $_POST['commentaire'])) {
+      $_SESSION['message'] = "Merci pour votre commentaire.";
+    } else {
+      $_SESSION['message'] = "Il semble y avoir eu une erreur lors de l'ajout de votre commentaire.";
+    }
   }
 }
 
@@ -104,7 +115,8 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
     }
 
     if (isset($_SESSION['idJoueur']) && Database::estDansInventaire($idJoueur, $idItem)) { ?>
-      <form action="submit_rating.php" method="post">
+      
+      <form method="POST">
         <div class="rating">
           <span class="star" data-value="1">&#9733;</span>
           <span class="star" data-value="2">&#9733;</span>
@@ -112,9 +124,12 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
           <span class="star" data-value="4">&#9733;</span>
           <span class="star" data-value="5">&#9733;</span>
           <input type="hidden" name="rating" id="rating" value="">
+          <input type="hidden" name="idItem" value="<?= $idItem ?>">
+          <input type="hidden" name="typeItem" value="<?= $typeItem ?>">
         </div>
-        <button type="submit">Évaluer</button>
+        <input type="submit" value="Évaluer"></input>
       </form>
+
       <span>
         <form action="" method="POST" id="commForm">
           <h5>Ajouter un commentaire:</h5>
@@ -131,37 +146,37 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
   </div>
   <div>
     <div class="rating">
-      <?php for($x = 0; $x < 5; $x++){
-        if($x < floor($moyenneEtoiles['moyenneEvaluation'])){
+      <?php for ($x = 0; $x < 5; $x++) {
+        if ($x < floor($moyenneEtoiles['moyenneEvaluation'])) {
           echo "<span class='star selected'>&#9733;</span>";
-        }else{
+        } else {
           echo "<span class='star'>&#9733;</span>";
         }
       }
       //echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
-      echo "il y a " . $totalEval . " evaluations avec une moyenne de ".$moyenneEtoiles['moyenneEvaluation']." étoiles";
+      echo "il y a " . $totalEval . " evaluations avec une moyenne de " . $moyenneEtoiles['moyenneEvaluation'] . " étoiles";
 
-       ?>
+      ?>
     </div>
-    <?php if($totalEval > 0){?>
-    <div style="width: 10%;">
-      <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[0] / $totalEval)*100 ?>%;">1&#9733;</div>
+    <?php if ($totalEval > 0) { ?>
+      <div style="width: 10%;">
+        <div class="barreEvaluations">
+          <div style="background-color:gold;width:<?= ($nbEvaluations[0] / $totalEval) * 100 ?>%;">1&#9733;</div>
+        </div>
+        <div class="barreEvaluations">
+          <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval) * 100 ?>%;">2&#9733;</div>
+        </div>
+        <div class="barreEvaluations">
+          <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval) * 100 ?>%;">3&#9733;</div>
+        </div>
+        <div class="barreEvaluations">
+          <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval) * 100 ?>%;">4&#9733;</div>
+        </div>
+        <div class="barreEvaluations">
+          <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval) * 100 ?>%;">5&#9733;</div>
+        </div>
       </div>
-      <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[1] / $totalEval)*100 ?>%;">2&#9733;</div>
-      </div>
-      <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[2] / $totalEval)*100 ?>%;">3&#9733;</div>
-      </div>
-      <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[3] / $totalEval)*100 ?>%;">4&#9733;</div>
-      </div>
-      <div class="barreEvaluations">
-        <div style="background-color:gold;width:<?= ($nbEvaluations[4] / $totalEval)*100 ?>%;">5&#9733;</div>
-      </div>
-    </div>
-    <?php };?>
+    <?php }; ?>
   </div>
   <div class="cartContainer">
     <h3 style="text-align:center">Commentaire:</h3>
@@ -205,15 +220,14 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
     }, 3000);
   }
 
-  // Add event listener to stars
   const stars = document.querySelectorAll('.star');
   stars.forEach(star => {
+
     star.addEventListener('click', () => {
-      // Set value of hidden input field
       const ratingInput = document.getElementById('rating');
       const ratingValue = star.dataset.value;
       ratingInput.value = ratingValue;
-      // Highlight selected star
+
       stars.forEach((s, i) => {
         if (i < ratingValue) {
           s.classList.add('selected');

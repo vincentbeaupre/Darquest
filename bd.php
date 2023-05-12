@@ -426,10 +426,10 @@ class Database
     $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
     $result = $stmt->fetchColumn();
     Database::disconnect();
-  
+
     return (bool) $result;
   }
-  
+
   public static function evaluerItem($idJoueur, $idItem, $evaluation)
   {
     $pdo = Database::connect();
@@ -437,20 +437,23 @@ class Database
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur]);
     $count = $stmt->fetchColumn();
+
     if ($count > 0) {
-      // Update existing rating
+
       $sql = "UPDATE Evaluations SET evaluation = :evaluation WHERE idItem = :idItem AND idJoueur = :idJoueur";
       $stmt = $pdo->prepare($sql);
-      $stmt->execute([":note" => $evaluation, ":idItem" => $idItem, ":idJoueur" => $idJoueur]);
+      $result = $stmt->execute([":evaluation" => $evaluation, ":idItem" => $idItem, ":idJoueur" => $idJoueur]);
     } else {
-      // Insert new rating
+
       $sql = "INSERT INTO Evaluations (idItem, idJoueur, evaluation) VALUES (:idItem, :idJoueur, :evaluation)";
       $stmt = $pdo->prepare($sql);
-      $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur, ":evaluation" => $evaluation]);
+      $result = $stmt->execute([":idItem" => $idItem, ":idJoueur" => $idJoueur, ":evaluation" => $evaluation]);
     }
     Database::disconnect();
+
+    return $result;
   }
-  
+
   //------------------- Enigma
 
   public static function getReponses($idQuestion)
@@ -591,21 +594,21 @@ class Database
     //Facile
     $sql = "SELECT dbdarquest6.totalBonneRepFacile(:idJoueur)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $stmt->execute([":idJoueur" => $idJoueur]);
     $totalFacile = $stmt->fetchAll(PDO::FETCH_BOTH);
     //Moyenne
     $sql = "SELECT dbdarquest6.totalBonneRepMoyenne(:idJoueur)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $stmt->execute([":idJoueur" => $idJoueur]);
     $totalMoyenne = $stmt->fetchAll(PDO::FETCH_BOTH);
     //Difficile
     $sql = "SELECT dbdarquest6.totalBonneRepDifficile(:idJoueur)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([":idJoueur"=> $idJoueur]);
+    $stmt->execute([":idJoueur" => $idJoueur]);
     $totalDifficile = $stmt->fetchAll(PDO::FETCH_BOTH);
 
     Database::disconnect();
-    return array($totalFacile[0],$totalMoyenne[0],$totalDifficile[0]);
+    return array($totalFacile[0], $totalMoyenne[0], $totalDifficile[0]);
   }
   public static function getNombresQuestion()
   {
@@ -644,21 +647,23 @@ class Database
     return $resultat;
   }
 
-  public static function ajouterCommentaire($idJoueur,$idItem,$commentaire){
+  public static function ajouterCommentaire($idJoueur, $idItem, $commentaire)
+  {
     $pdo = Database::connect();
-      $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");
-      $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
-      $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
-      $stmt->bindParam(3, $commentaire, PDO::PARAM_STR);
-      try {
-        $stmt->execute();
-      } catch (PDOException $e) {
-        return false;
-      }
-      return true;
+    $stmt = $pdo->prepare("CALL ajouterCommentaire(?,?,?)");
+    $stmt->bindParam(1, $idJoueur, PDO::PARAM_INT);
+    $stmt->bindParam(2, $idItem, PDO::PARAM_INT);
+    $stmt->bindParam(3, $commentaire, PDO::PARAM_STR);
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return true;
   }
 
-  public static function supprimerCommentaire($idCommentaire){
+  public static function supprimerCommentaire($idCommentaire)
+  {
     $pdo = Database::connect();
     $sql = "DELETE FROM Commentaires WHERE idCommentaire = :idCommentaire";
     $stmt = $pdo->prepare($sql);
@@ -672,7 +677,8 @@ class Database
     return true;
   }
 
-  public static function getMoyenneEvaluation($idItem){
+  public static function getMoyenneEvaluation($idItem)
+  {
     $pdo = Database::connect();
     $sql = "SELECT IFNULL(AVG(evaluation),0) AS moyenneEvaluation FROM Evaluations WHERE idItem = :idItem";
     $stmt = $pdo->prepare($sql);
@@ -682,7 +688,8 @@ class Database
     return $resultat[0];
   }
 
-  public static function getTotalEvaluation($idItem){
+  public static function getTotalEvaluation($idItem)
+  {
     $pdo = Database::connect();
     $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem";
     $stmt = $pdo->prepare($sql);
@@ -692,7 +699,8 @@ class Database
     return $resultat[0];
   }
 
-  public static function getStatsEvaluation($idItem){
+  public static function getStatsEvaluation($idItem)
+  {
     $pdo = Database::connect();
     $sql = "SELECT COUNT(idJoueur) AS nbEvaluation FROM Evaluations WHERE idItem = :idItem AND evaluation = :nbEtoiles";
     $stmt = $pdo->prepare($sql);
@@ -713,7 +721,6 @@ class Database
     $result5 = $stmt->fetchAll(PDO::FETCH_BOTH);
 
     Database::disconnect();
-    return array($result1[0][0],$result2[0][0],$result3[0][0],$result4[0][0],$result5[0][0]);
+    return array($result1[0][0], $result2[0][0], $result3[0][0], $result4[0][0], $result5[0][0]);
   }
-
 }
