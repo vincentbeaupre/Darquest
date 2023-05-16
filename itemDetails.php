@@ -144,7 +144,13 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
     <?php } ?>
 
   </div>
-  <div>
+  <div style="
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+">
     <div class="rating">
       <?php for ($x = 0; $x < 5; $x++) {
         if ($x < floor($moyenneEtoiles['moyenneEvaluation'])) {
@@ -154,7 +160,7 @@ $totalEval = Database::getTotalEvaluation($idItem)['nbEvaluation'];
         }
       }
       //echo "il y a " . floor($moyenneEtoiles['moyenneEvaluation']) . " evaluations.";
-      echo "il y a " . $totalEval . " evaluations avec une moyenne de " . $moyenneEtoiles['moyenneEvaluation'] . " étoiles";
+      echo $totalEval . " évaluations - " . $moyenneEtoiles['moyenneEvaluation'] . " étoiles en moyenne.";
 
       ?>
     </div>
